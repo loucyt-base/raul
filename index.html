@@ -680,6 +680,36 @@
       color: var(--text-main);
     }
 
+    .msg-sources {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .source-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: #2563eb;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 210px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    body.dark .source-chip {
+      color: #60a5fa;
+    }
+
     /* BARRA INFERIOR */
     .composer-wrap {
       background: var(--bg-surface);
@@ -1088,6 +1118,170 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Banner de Lembrete Disparado + Modal Casa & Lembretes */
+    .due-reminder-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #fff4d1, #ffe7a3);
+      border-bottom: 1.5px solid rgba(212, 162, 58, 0.55);
+      color: #241b09;
+      font-size: 0.86rem;
+      z-index: 30;
+      box-shadow: 0 4px 12px rgba(212, 162, 58, 0.18);
+    }
+    body.dark .due-reminder-banner {
+      background: linear-gradient(135deg, #332712, #281f0e);
+      border-bottom-color: rgba(244, 162, 97, 0.45);
+      color: #ffefc2;
+    }
+    .due-reminder-banner.show {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .due-reminder-info {
+      flex: 1;
+      min-width: 180px;
+      line-height: 1.35;
+    }
+    .due-reminder-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .home-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+      background: var(--bg-surface-alt);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .home-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 8px 6px;
+      border-radius: 9px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .home-tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    .home-tab-panel {
+      display: none;
+    }
+    .home-tab-panel.active {
+      display: block;
+    }
+    .house-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 11px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+      font-size: 0.84rem;
+    }
+    .status-pill-btn {
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .item-badge-need {
+      background: rgba(224, 159, 62, 0.18);
+      border-color: rgba(224, 159, 62, 0.55);
+    }
+    .item-badge-ok {
+      background: rgba(42, 157, 143, 0.16);
+      border-color: rgba(42, 157, 143, 0.5);
+    }
+    @media (max-width: 440px) {
+      .topbar { padding: 8px 10px; gap: 6px; }
+      .topbar-right { gap: 4px; }
+      .pill-btn { padding: 6px 8px; font-size: 0.74rem; }
+    }
+
+    /* Bilhetes Surpresa (Carta, Lacres e Bau) */
+    .surprise-letter-card {
+      background: linear-gradient(160deg, #fffdf6 0%, #fdf3dc 100%);
+      border: 2px solid rgba(224, 159, 62, 0.55);
+      border-radius: 18px;
+      padding: 20px 18px;
+      color: #2b2218;
+      box-shadow: 0 10px 26px rgba(224, 159, 62, 0.18);
+      position: relative;
+      animation: letterPop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body.dark .surprise-letter-card {
+      background: linear-gradient(160deg, #2b231b 0%, #211b15 100%);
+      border-color: rgba(244, 162, 97, 0.45);
+      color: #f9efe2;
+    }
+    @keyframes letterPop {
+      from { opacity: 0; transform: scale(0.92) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .surprise-seal {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      margin: -4px auto 10px;
+      background: linear-gradient(135deg, #d62839, #b51f2d);
+      color: #fff;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(214, 40, 57, 0.35);
+    }
+    .surprise-title {
+      text-align: center;
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin: 0 0 12px;
+    }
+    .surprise-msg-body {
+      font-size: 0.94rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 14px;
+    }
+    .surprise-signature {
+      text-align: right;
+      font-weight: 700;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--accent-dark);
+    }
+    .vault-note-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -1100,7 +1294,7 @@
           <span class="badge-dot" id="chatCountBadge">1</span>
         </button>
         <div class="brand-info">
-          <div class="brand-title">
+          <div class="brand-title" onclick="onBrandTitleTap()" style="user-select:none; -webkit-user-select:none;">
             R.A.U.L.
             <span class="google-dot" id="googleStatusDot" title="Status Conta Google"></span>
           </div>
@@ -1110,7 +1304,10 @@
 
       <div class="topbar-right">
         <button class="pill-btn" id="effortBtn" onclick="cycleThinkingEffort()" title="Esforço de pensamento">
-          ⚡ Rápido
+          🧠 Médio
+        </button>
+        <button class="pill-btn" onclick="openModal('homeModal'); switchHomeTab('reminders');" title="Lembretes e Inventário da Casa">
+          🏠 Casa
         </button>
         <button class="pill-btn" onclick="openModal('agendaModal')">
           📅 Agenda
@@ -1120,6 +1317,18 @@
         </button>
       </div>
     </header>
+
+    <!-- BANNER DE LEMBRETE ATIVO -->
+    <div id="dueReminderBanner" class="due-reminder-banner" role="alert">
+      <div class="due-reminder-info">
+        <div style="font-weight: 800;">🔔 Lembrete do R.A.U.L.</div>
+        <div id="dueReminderText">Hora do lembrete!</div>
+      </div>
+      <div class="due-reminder-actions">
+        <button class="pill-btn accent" onclick="completeActiveReminder()" style="padding: 6px 10px;">✅ Feito</button>
+        <button class="pill-btn" onclick="snoozeActiveReminder()" style="padding: 6px 10px;">⏰ +10 min</button>
+      </div>
+    </div>
 
     <!-- PALCO DO GATO (DESENHO FIEL DETALHADO 300x290 COM TODAS AS ANIMAÇÕES) -->
     <section class="cat-stage" id="catStage">
@@ -1435,6 +1644,8 @@
         <button class="drawer-card-btn" id="installPwaBtn" onclick="installPWA()" style="display:flex; grid-column: span 2; background: var(--accent); color: #181522; font-weight: 800; justify-content: center;">📲 Instalar App no Celular</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('agendaModal');">📅 Conta & Agenda</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('memoriesModal');">🧠 Perfil & Memória</button>
+        <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('homeModal'); switchHomeTab('reminders');" style="grid-column: span 2;">🔔 Lembretes & Inventário da Casa</button>
+        <button class="drawer-card-btn" id="vaultDrawerBtn" onclick="toggleDrawer(); renderSurpriseVault(); openModal('surpriseVaultModal');" style="display:none; grid-column: span 2;">💌 Baú de Bilhetes (<span id="vaultCountBadge">0</span>)</button>
         <button class="drawer-card-btn" onclick="toggleSound()" id="soundToggleBtn">🔊 Som: Ligado</button>
         <button class="drawer-card-btn" onclick="toggleDarkMode()" id="themeToggleBtn">🌙 Tema Escuro</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('settingsModal');" style="grid-column: span 2;">⚙️ Chave Gemini & Nome</button>
@@ -1494,6 +1705,16 @@
 
         <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
 
+        <div class="field-group" style="background: var(--bg-surface-alt); padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:13px; font-weight:700;">🔔 Notificações no Celular</div>
+              <div id="notifStatusText" style="font-size:11.5px; color:var(--text-muted);">Ative para receber alertas dos lembretes.</div>
+            </div>
+            <button type="button" class="pill-btn accent" id="notifPermBtn" onclick="requestNotificationPermissionUI()">Ativar Alertas</button>
+          </div>
+        </div>
+
         <div class="field-group">
           <label class="field-label" id="addEventLabel">Adicionar Compromisso (Local ou Google Agenda)</label>
           <div style="display:flex; gap:6px; margin-bottom:6px;">
@@ -1509,6 +1730,74 @@
         <div class="field-group">
           <label class="field-label">Próximos Compromissos (30 dias)</label>
           <div id="eventsListContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: CASA & LEMBRETES -->
+    <div class="modal-overlay" id="homeModal" onclick="closeModalOnBackdrop(event, 'homeModal')">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3>🏠 Casa & Lembretes</h3>
+          <button class="icon-btn" onclick="closeModal('homeModal')" style="width:32px; height:32px;">✕</button>
+        </div>
+
+        <div class="home-tabs">
+          <button type="button" id="tabBtnReminders" class="home-tab-btn active" onclick="switchHomeTab('reminders')">🔔 Lembretes</button>
+          <button type="button" id="tabBtnInventory" class="home-tab-btn" onclick="switchHomeTab('inventory')">🛒 Inventário</button>
+        </div>
+
+        <!-- ABA 1: LEMBRETES E ROTINA (ÁGUA, REMÉDIO, COMPRAS) -->
+        <div id="homeTabReminders" class="home-tab-panel active">
+          <div style="background: var(--bg-surface-alt); padding: 9px 11px; border-radius: 11px; border: 1px solid var(--border); margin-bottom: 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:12px; color:var(--text-muted); flex:1;" id="homeNotifHint">
+              Com a conta Google ligada, lembretes com horário também geram alerta push nativo na Google Agenda mesmo com o app fechado.
+            </div>
+            <button type="button" class="pill-btn accent" onclick="requestNotificationPermissionUI()" style="padding:6px 10px;">🔔 Alertas</button>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Novo Lembrete (ou peça direto no chat!)</label>
+            <input type="text" id="newReminderTitle" class="field-input" placeholder="Ex: Tomar antibiótico, Beber água, Comprar sabão..." style="margin-bottom:6px;" />
+            <div style="display:flex; gap:6px; margin-bottom:6px; flex-wrap:wrap;">
+              <input type="datetime-local" id="newReminderDateTime" class="field-input" style="flex:1; min-width:155px;" />
+              <select id="newReminderRepeat" class="field-input" style="width:140px;">
+                <option value="0">Uma vez</option>
+                <option value="60">A cada 1h</option>
+                <option value="120">A cada 2h</option>
+                <option value="240">A cada 4h</option>
+                <option value="480">A cada 8h</option>
+                <option value="720">A cada 12h</option>
+                <option value="1440">Todo dia</option>
+              </select>
+            </div>
+            <button type="button" class="primary-btn" onclick="addManualReminder()">+ Salvar Lembrete</button>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Seus Lembretes</label>
+            <div id="remindersListContainer"></div>
+          </div>
+        </div>
+
+        <!-- ABA 2: INVENTÁRIO DA CASA & LISTA DE COMPRAS -->
+        <div id="homeTabInventory" class="home-tab-panel">
+          <p style="font-size:12px; color:var(--text-muted); margin-top:0; margin-bottom:10px;">
+            Controle o que falta comprar e o que tem em casa. Diga no chat (ex: "acabou o sabão" ou "comprei café") para o R.A.U.L. atualizar.
+          </p>
+          <div class="field-group">
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <input type="text" id="newHouseItemName" class="field-input" placeholder="Ex: Sabão em pó, Leite, Café..." style="flex:1; min-width:140px;" onkeydown="if(event.key==='Enter'){event.preventDefault();addHouseItemManual();}" />
+              <select id="newHouseItemStatus" class="field-input" style="width:150px;">
+                <option value="falta">🛒 Falta comprar</option>
+                <option value="estoque">✅ Tem em casa</option>
+              </select>
+              <button type="button" class="pill-btn accent" onclick="addHouseItemManual()" style="height:40px;">Adicionar</button>
+            </div>
+          </div>
+          <div id="houseItemsListContainer" style="margin-bottom:12px;"></div>
+          <button type="button" class="mini-tool-btn" onclick="exportHomeToGoogleSheets()" style="width:100%; justify-content:center; color:var(--success); border-color:rgba(42,157,143,0.45);">📊 Salvar Planilha no Drive</button>
+          <div id="sheetsExportResult" style="margin-top:8px; font-size:12px;"></div>
         </div>
       </div>
     </div>
@@ -1572,8 +1861,11 @@
         </div>
 
         <div class="field-group">
-          <label class="field-label">Chave da API Gratuita (Google AI Studio)</label>
-          <input type="password" id="apiKeyInput" class="field-input" placeholder="Cole sua chave AIza..." />
+          <label class="field-label">Chave(s) da API Gratuita (Google AI Studio)</label>
+          <input type="password" id="apiKeyInput" class="field-input" placeholder="Cole sua chave AIza... (pode separar várias por vírgula)" />
+          <small style="display:block; margin-top:4px; font-size:11.5px; color:var(--text-muted);">
+            Dica: você pode colar 1 ou mais chaves separadas por vírgula para alternar automaticamente se atingir o limite diário.
+          </small>
         </div>
 
         <div class="field-group">
@@ -1591,15 +1883,123 @@
       </div>
     </div>
 
+    <!-- MODAL: BILHETE SURPRESA PARA A GI -->
+    <div class="modal-overlay" id="surpriseRevealModal">
+      <div class="modal-box" style="max-width:440px;">
+        <div class="modal-head">
+          <h3>💌 Entrega Especial do R.A.U.L.</h3>
+          <button class="icon-btn" onclick="saveAndCloseSurpriseReveal()" style="width:32px; height:32px;">✕</button>
+        </div>
+
+        <div class="surprise-letter-card">
+          <div class="surprise-seal">💌</div>
+          <h4 class="surprise-title" id="surpriseRevealTitle">Um bilhetinho para você</h4>
+          <div class="surprise-msg-body" id="surpriseRevealBody"></div>
+          <div class="surprise-signature" id="surpriseRevealSignature">Com amor, Luis 💙</div>
+          <div id="surpriseRevealDate" style="font-size:11px; opacity:0.65; margin-top:8px; text-align:right;"></div>
+        </div>
+
+        <button type="button" class="primary-btn" onclick="saveAndCloseSurpriseReveal()" style="margin-top:14px;">💖 Guardar no Baú do R.A.U.L.</button>
+      </div>
+    </div>
+
+    <!-- MODAL: BAÚ DE BILHETES GUARDADOS -->
+    <div class="modal-overlay" id="surpriseVaultModal" onclick="closeModalOnBackdrop(event, 'surpriseVaultModal')">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3>💌 Baú de Bilhetes</h3>
+          <button class="icon-btn" onclick="closeModal('surpriseVaultModal')" style="width:32px; height:32px;">✕</button>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:0; margin-bottom:12px;">
+          Bilhetes e mensagens especiais guardados pelo R.A.U.L. para você reler quando quiser.
+        </p>
+        <div id="surpriseVaultList"></div>
+      </div>
+    </div>
+
+    <!-- MODAL SECRETO DO REMETENTE (ACESSÍVEL COM 5 TOQUES EM R.A.U.L. OU ?luis=1) -->
+    <div class="modal-overlay" id="luisSenderModal" onclick="closeModalOnBackdrop(event, 'luisSenderModal')">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3>💌 Correio Secreto do Luis</h3>
+          <button class="icon-btn" onclick="closeModal('luisSenderModal')" style="width:32px; height:32px;">✕</button>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:0; margin-bottom:12px;">
+          Envie direto daqui e a cartinha aparece sozinha no R.A.U.L. da Gi quando ela abrir o app (sem WhatsApp e sem link). Este painel nunca aparece na tela normal dela.
+        </p>
+
+        <div class="field-group">
+          <label class="field-label">Título do Bilhete</label>
+          <input type="text" id="luisNoteTitle" class="field-input" placeholder="Ex: Só para te lembrar..." />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Mensagem Surpresa</label>
+          <textarea id="luisNoteMessage" class="field-input" rows="4" placeholder="Escreva aqui sua mensagem para a Gi..."></textarea>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" class="field-group">
+          <div style="flex:1; min-width:150px;">
+            <label class="field-label">Assinatura</label>
+            <input type="text" id="luisNoteSignature" class="field-input" value="Com amor, Luis 💙" />
+          </div>
+          <div style="flex:1; min-width:165px;">
+            <label class="field-label">Revelar em (opcional)</label>
+            <input type="datetime-local" id="luisNoteRevealAt" class="field-input" title="Deixe vazio para abrir na próxima vez que ela entrar" />
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+          <button type="button" class="primary-btn" id="luisSendDirectBtn" onclick="sendLuisNoteToGitHub()">🚀 Enviar Direto para o App da Gi</button>
+          <button type="button" class="mini-tool-btn" onclick="previewLuisSurpriseNote()" style="justify-content:center;">👁️ Pré-visualizar Carta Animada</button>
+        </div>
+
+        <div id="luisSenderFeedback" style="font-size:12px; color:var(--text-muted); margin-top:10px; line-height:1.45;"></div>
+
+        <details id="luisGhSetupDetails" style="margin-top:12px; background:var(--bg-surface-alt); border:1px solid var(--border); border-radius:12px; padding:10px 12px;">
+          <summary style="font-size:12.5px; font-weight:700; cursor:pointer;">⚙️ Conexão Direta com GitHub (configurar 1x só neste aparelho)</summary>
+          <p style="font-size:11.5px; color:var(--text-muted); margin:8px 0;">
+            Crie 1 vez um Token em <strong>GitHub > Settings > Developer settings > Personal access tokens > Fine-grained tokens</strong> com permissão <strong>Contents: Read and write</strong> apenas neste repositório. Fica salvo só no seu aparelho.
+          </p>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+            <input type="text" id="luisGhOwner" class="field-input" placeholder="Usuário GitHub" style="flex:1; min-width:120px;" />
+            <input type="text" id="luisGhRepo" class="field-input" placeholder="Repositório" style="flex:1; min-width:120px;" />
+            <input type="text" id="luisGhBranch" class="field-input" placeholder="Branch (main)" value="main" style="width:95px;" />
+          </div>
+          <input type="password" id="luisGhToken" class="field-input" placeholder="Token GitHub (github_pat_...)" style="margin-bottom:8px;" />
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="pill-btn accent" onclick="saveLuisGithubConfig()" style="flex:1; justify-content:center;">💾 Salvar Conexão</button>
+            <button type="button" class="mini-tool-btn" onclick="copyLuisBilhetesJson()">📋 Copiar JSON</button>
+            <button type="button" class="mini-tool-btn" onclick="downloadLuisBilhetesJson()">⬇️ Baixar</button>
+          </div>
+        </details>
+
+        <div class="field-group" style="margin-top:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="field-label" style="margin:0;">📤 Bilhetes no GitHub (aguardando ou já vistos)</label>
+            <button type="button" class="mini-tool-btn" onclick="refreshLuisSentList()">🔄 Atualizar</button>
+          </div>
+          <div id="luisSentListContainer"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toastBox"></div>
   </div>
 
   <script>
     // VERSÃO DO APP E CLIENT ID DO GOOGLE OAUTH
-    const APP_BUILD_VERSION = "2026.11.16.v5-3.8flash-winter";
+    const APP_BUILD_VERSION = "2026.11.16.v8-bilhetes-diretos";
     const GOOGLE_CLIENT_ID = "537553462075-3addbhr7ue7ii7qch3ivtl9ghskho51e.apps.googleusercontent.com";
     const GOOGLE_SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email";
-    let GEMINI_MODELS = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.6-flash"];
+    const GEMINI_MODELS = [
+      "gemini-3.8-flash",
+      "gemini-3.6-flash",
+      "gemini-3-flash-preview",
+      "gemini-2.5-flash",
+      "gemini-3.5-flash-lite",
+      "gemini-2.5-flash-lite"
+    ];
 
     // AFINAÇÃO PERSONALIZADA DO MIADO "RÁ-UUUUUL!" DO R.A.U.L.
     const RAUL_VOICE_TUNING = {
@@ -1646,6 +2046,11 @@
       effortIndex: parseInt(localStorage.getItem("raul_effort") || "0", 10),
       memories: safeJsonParse(localStorage.getItem("raul_memories"), []),
       manualEvents: safeJsonParse(localStorage.getItem("raul_events"), []),
+      reminders: safeJsonParse(localStorage.getItem("raul_reminders"), []),
+      houseItems: safeJsonParse(localStorage.getItem("raul_house_items"), []),
+      surpriseNotes: safeJsonParse(localStorage.getItem("raul_surprise_notes"), []),
+      activeDueReminderId: null,
+      activeRevealNoteId: null,
       chats: safeJsonParse(localStorage.getItem("raul_chats"), []),
       activeChatId: localStorage.getItem("raul_active_chat") || null,
       tieIndex: 0,
@@ -1664,9 +2069,9 @@
     };
 
     const EFFORT_MODES = [
-      { label: "⚡ Rápido", level: "LOW" },
-      { label: "🐾 Médio", level: "MEDIUM" },
-      { label: "🎩 Profundo", level: "HIGH" }
+      { label: "🧠 Médio", level: "MEDIUM" },
+      { label: "🎩 Profundo", level: "HIGH" },
+      { label: "⚡ Rápido", level: "LOW" }
     ];
 
     let tokenClient = null;
@@ -1674,6 +2079,9 @@
     let deferredInstallPrompt = null;
     let speakingInterval = null;
     let googleBgSyncTimer = null;
+    let reminderCheckTimer = null;
+    let brandTapCount = 0;
+    let brandTapResetTimer = null;
 
     // GERA ÍCONES PNG DE ALTA DEFINIÇÃO E MANIFESTO PWA VÁLIDO PARA O CHROME ANDROID E SAFARI
     function setupDynamicPwaManifest() {
@@ -1825,15 +2233,22 @@
         if (btn) btn.style.display = "none";
       }
 
+      let openLuisAfterBoot = false;
       if (window.location.search) {
-        const cleanUrl = window.location.origin + window.location.pathname;
-        await clearOldBrowserCaches();
-        await fetch(cleanUrl, { cache: "reload" }).catch(() => null);
+        const urlParams = new URLSearchParams(window.location.search);
+        openLuisAfterBoot = urlParams.get("luis") === "1";
+        if (!openLuisAfterBoot) {
+          const cleanUrl = window.location.origin + window.location.pathname;
+          await clearOldBrowserCaches();
+          await fetch(cleanUrl, { cache: "reload" }).catch(() => null);
+        }
         window.history.replaceState({}, document.title, window.location.pathname);
       }
 
       if (localStorage.getItem("raul_build_ver") !== APP_BUILD_VERSION) {
         await clearOldBrowserCaches();
+        state.effortIndex = 0;
+        localStorage.setItem("raul_effort", "0");
         localStorage.setItem("raul_build_ver", APP_BUILD_VERSION);
       }
 
@@ -1856,17 +2271,44 @@
 
       if (!state.chats.length) {
         createNewChatObject();
-      } else if (!state.chats.find(c => c.id === state.activeChatId)) {
-        state.activeChatId = state.chats[0].id;
+      } else {
+        // Limpa eventuais mensagens antigas com alucinações para não contaminar novas respostas
+        const badRegex = /Rob[oô]\s+Assistente\s+Ultra-?L[oó]gico|Raul\s+Seixas|Claudio\s+Stabile|Deltan\s+Dallagnol/i;
+        let cleanedOld = false;
+        state.chats.forEach(c => {
+          if (Array.isArray(c.messages)) {
+            const before = c.messages.length;
+            c.messages = c.messages.filter(m => !(m.role === "model" && badRegex.test(m.text || "")));
+            if (c.messages.length !== before) cleanedOld = true;
+            if (!c.messages.length) {
+              c.messages.push({ role: "model", text: `Miau, ${state.ownerName}! 🐾 Como posso te ajudar agora?` });
+            }
+          }
+        });
+        if (cleanedOld) saveChats();
+        if (!state.chats.find(c => c.id === state.activeChatId)) {
+          state.activeChatId = state.chats[0].id;
+        }
       }
 
       renderActiveChat();
       renderHistoryList();
       renderMemories();
       renderEventsList();
+      renderRemindersList();
+      renderHouseItemsList();
+      updateNotificationStatusUI();
+      updateSurpriseVaultButton();
+      checkDueReminders();
+      checkPendingSurpriseNotes();
+      checkRemoteSurpriseNotes();
+      if (reminderCheckTimer) clearInterval(reminderCheckTimer);
+      reminderCheckTimer = setInterval(() => {
+        checkDueReminders();
+        checkPendingSurpriseNotes();
+      }, 15000);
       detectWeather(false);
       initGoogleOAuth();
-      discoverNewestFlashModel();
 
       // Restaura sessão Google persistente se ainda válida
       if (state.googleToken && (!state.googleTokenExp || Date.now() < state.googleTokenExp)) {
@@ -1876,41 +2318,19 @@
         updateGoogleDisconnectedUI(true);
       }
 
+      if (openLuisAfterBoot) {
+        openLuisSenderPanel();
+      }
+
       // Sincronização silenciosa periódica a cada 3 minutos
       if (googleBgSyncTimer) clearInterval(googleBgSyncTimer);
       googleBgSyncTimer = setInterval(() => {
-        if (state.googleToken && !state.isGenerating) {
-          syncGoogleData();
+        if (!state.isGenerating) {
+          checkRemoteSurpriseNotes();
+          if (state.googleToken) syncGoogleData();
         }
       }, 180000);
     });
-
-    // DESCOBERTA SILENCIOSA DO MODELO FLASH MAIS RECENTE (>= 3.8)
-    async function discoverNewestFlashModel() {
-      if (!state.apiKey) return;
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(state.apiKey)}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        const candidates = (data.models || [])
-          .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes("generateContent"))
-          .map(m => String(m.name || "").replace("models/", ""))
-          .filter(name => /^gemini-(\d+(?:\.\d+)?)-flash$/.test(name));
-
-        candidates.sort((a, b) => {
-          const va = parseFloat((a.match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
-          const vb = parseFloat((b.match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
-          return vb - va;
-        });
-
-        if (candidates.length > 0) {
-          const topVer = parseFloat((candidates[0].match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
-          if (topVer >= 3.8) {
-            GEMINI_MODELS = Array.from(new Set([candidates[0], "gemini-3.8-flash", "gemini-flash-latest", "gemini-3.6-flash"]));
-          }
-        }
-      } catch (e) {}
-    }
 
     function getAudioCtx() {
       if (!sharedAudioCtx) {
@@ -2596,7 +3016,7 @@
       } catch (e) {}
     }
 
-    async function createGoogleCalendarEvent({ title, startIso, endIso, description = "" }) {
+    async function createGoogleCalendarEvent({ title, startIso, endIso, description = "", reminders = null }) {
       const cleanTitle = (title || "Compromisso").trim();
       let startObj = null;
       let endObj = null;
@@ -2630,18 +3050,22 @@
       }
 
       try {
+        const eventBody = {
+          summary: cleanTitle,
+          description: description || "Agendado via R.A.U.L.",
+          start: startObj,
+          end: endObj
+        };
+        if (reminders) {
+          eventBody.reminders = reminders;
+        }
         const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
           method: "POST",
           headers: {
             Authorization: "Bearer " + state.googleToken,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            summary: cleanTitle,
-            description: description || "Agendado via R.A.U.L.",
-            start: startObj,
-            end: endObj
-          })
+          body: JSON.stringify(eventBody)
         });
 
         if (res.status === 401) {
@@ -2826,7 +3250,7 @@
       const chat = getActiveChat();
       container.innerHTML = "";
       chat.messages.forEach((msg, idx) => {
-        appendMessageElement(msg.role, msg.text, msg.attachmentName, idx === 0, msg.actions || []);
+        appendMessageElement(msg.role, msg.text, msg.attachmentName, idx === 0, msg.actions || [], msg.sources || []);
       });
       container.scrollTop = container.scrollHeight;
     }
@@ -2839,7 +3263,26 @@
       return escapeHtml(str).replace(/\n/g, "<br>");
     }
 
-    function appendMessageElement(role, text, attachmentName = "", isGreeting = false, savedActions = []) {
+    function renderSourcesBar(sourcesWrap, sources) {
+      if (!sourcesWrap) return;
+      sourcesWrap.innerHTML = "";
+      if (!sources || !sources.length) {
+        sourcesWrap.style.display = "none";
+        return;
+      }
+      sourcesWrap.style.display = "flex";
+      sources.slice(0, 3).forEach(src => {
+        const a = document.createElement("a");
+        a.className = "source-chip";
+        a.href = src.uri;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.innerText = "🌐 Fonte: " + (src.title || "Web");
+        sourcesWrap.appendChild(a);
+      });
+    }
+
+    function appendMessageElement(role, text, attachmentName = "", isGreeting = false, savedActions = [], savedSources = []) {
       const container = document.getElementById("chatContainer");
       const row = document.createElement("div");
       row.className = "msg-row " + (role === "user" ? "user" : "bot");
@@ -2872,6 +3315,11 @@
       }
       row.appendChild(cardsWrap);
 
+      const sourcesWrap = document.createElement("div");
+      sourcesWrap.className = "msg-sources";
+      renderSourcesBar(sourcesWrap, savedSources);
+      row.appendChild(sourcesWrap);
+
       const tools = document.createElement("div");
       tools.className = "msg-tools";
       if (role === "model" && !isGreeting && text) {
@@ -2883,7 +3331,7 @@
 
       container.appendChild(row);
       container.scrollTop = container.scrollHeight;
-      return { row, contentDiv, cardsWrap, tools };
+      return { row, contentDiv, cardsWrap, sourcesWrap, tools };
     }
 
     function populateBotTools(toolsEl, text) {
@@ -2942,6 +3390,48 @@
         link.target = "_blank";
         link.innerText = "Abrir Agenda ↗";
         btns.appendChild(link);
+        card.append(info, btns);
+      } else if (act.type === "reminder") {
+        card.className = "action-card calendar";
+        const info = document.createElement("div");
+        info.className = "action-card-info";
+        const titleEl = document.createElement("div");
+        titleEl.className = "action-card-title";
+        titleEl.innerText = "🔔 Lembrete: " + (act.title || "Lembrete");
+        const subEl = document.createElement("div");
+        subEl.className = "action-card-sub";
+        const repTxt = act.repeatMinutes > 0 ? ` • Repete ${formatRepeatLabel(act.repeatMinutes)}` : "";
+        const syncTxt = act.synced ? " • ✅ Alerta na Google Agenda + App" : " • 🔔 Alerta no App";
+        subEl.innerText = `${act.displayDate || "Sem horário fixo"}${repTxt}${syncTxt}`;
+        info.append(titleEl, subEl);
+
+        const btns = document.createElement("div");
+        btns.className = "action-card-btns";
+        const openBtn = document.createElement("button");
+        openBtn.className = "action-link-btn";
+        openBtn.innerText = "Ver Lembretes";
+        openBtn.onclick = () => { openModal("homeModal"); switchHomeTab("reminders"); };
+        btns.appendChild(openBtn);
+        card.append(info, btns);
+      } else if (act.type === "house_item") {
+        card.className = "action-card doc";
+        const info = document.createElement("div");
+        info.className = "action-card-info";
+        const titleEl = document.createElement("div");
+        titleEl.className = "action-card-title";
+        titleEl.innerText = (act.status === "estoque" ? "✅ Em casa: " : "🛒 Comprar: ") + (act.name || "Item");
+        const subEl = document.createElement("div");
+        subEl.className = "action-card-sub";
+        subEl.innerText = "Inventário da Casa atualizado";
+        info.append(titleEl, subEl);
+
+        const btns = document.createElement("div");
+        btns.className = "action-card-btns";
+        const openBtn = document.createElement("button");
+        openBtn.className = "action-link-btn";
+        openBtn.innerText = "Ver Casa";
+        openBtn.onclick = () => { openModal("homeModal"); switchHomeTab("inventory"); };
+        btns.appendChild(openBtn);
         card.append(info, btns);
       } else if (act.type === "email") {
         card.className = "action-card email";
@@ -3012,10 +3502,12 @@
       let text = String(rawText || "");
       text = text.replace(/\[MEMORIA_AUTO:\s*[^\]]*\]/gi, "");
       text = text.replace(/\[CRIAR_EVENTO:\s*[^\]]*\]/gi, "");
+      text = text.replace(/\[LEMBRETE:\s*[^\]]*\]/gi, "");
+      text = text.replace(/\[CASA_ITEM:\s*[^\]]*\]/gi, "");
       text = text.replace(/\[EMAIL:\s*[^\]]*\]/gi, "");
       text = text.replace(/\[DOCUMENTO:\s*([^|\]]+)\|([\s\S]*?)\]/gi, "$2");
       // Oculta tag ainda incompleta sendo digitada no final do stream
-      text = text.replace(/\n?\[(?:MEMORIA_AUTO|CRIAR_EVENTO|EMAIL|DOCUMENTO)[^\]]*$/i, "");
+      text = text.replace(/\n?\[(?:MEMORIA_AUTO|CRIAR_EVENTO|LEMBRETE|CASA_ITEM|EMAIL|DOCUMENTO)[^\]]*$/i, "");
       return text.trim();
     }
 
@@ -3069,7 +3561,86 @@
         }
       }
 
-      // 3. Cartão interativo de E-mail
+      // 3. Lembretes com notificação local e push via Google Agenda
+      const reminderMatches = [...clean.matchAll(/\[LEMBRETE:\s*([^\]]+)\]/gi)];
+      clean = clean.replace(/\[LEMBRETE:\s*[^\]]+\]/gi, "");
+      for (const m of reminderMatches) {
+        const parts = m[1].split("|").map(s => s.trim());
+        const remTitle = parts[0] || "Lembrete";
+        const rawDue = parts[1] || "";
+        const repeatMinutes = Math.max(0, parseInt(parts[2] || "0", 10) || 0);
+
+        let dueDateObj = null;
+        if (rawDue && !/^(sem_hora|nenhum|null|0|-)$/i.test(rawDue)) {
+          const parsed = new Date(rawDue);
+          if (!isNaN(parsed.getTime())) dueDateObj = parsed;
+        }
+        if (!dueDateObj && repeatMinutes > 0) {
+          dueDateObj = new Date(Date.now() + repeatMinutes * 60000);
+        }
+
+        const dueIso = dueDateObj ? dueDateObj.toISOString() : "";
+        let syncedCal = false;
+        if (dueDateObj && state.googleToken) {
+          const endObj = new Date(dueDateObj.getTime() + 15 * 60000);
+          const calRes = await createGoogleCalendarEvent({
+            title: "🔔 " + remTitle,
+            startIso: dueDateObj.toISOString(),
+            endIso: endObj.toISOString(),
+            description: "Lembrete criado pelo R.A.U.L.",
+            reminders: {
+              useDefault: false,
+              overrides: [
+                { method: "popup", minutes: 0 },
+                { method: "popup", minutes: 5 }
+              ]
+            }
+          });
+          syncedCal = !!calRes.ok;
+        }
+
+        const newRem = {
+          id: "rem_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+          title: remTitle,
+          dueAt: dueIso,
+          repeatMinutes,
+          done: false,
+          notifiedAt: 0,
+          createdAt: new Date().toISOString()
+        };
+        state.reminders.unshift(newRem);
+        localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+        renderRemindersList();
+        showToast("🔔 Lembrete salvo!");
+
+        actions.push({
+          type: "reminder",
+          title: remTitle,
+          dueAt: dueIso,
+          repeatMinutes,
+          displayDate: dueIso ? formatEventDateBr(dueIso) : "Lista de lembretes",
+          synced: syncedCal
+        });
+      }
+
+      // 4. Inventário da Casa / Lista de Compras
+      const houseMatches = [...clean.matchAll(/\[CASA_ITEM:\s*([^\]]+)\]/gi)];
+      clean = clean.replace(/\[CASA_ITEM:\s*[^\]]+\]/gi, "");
+      if (houseMatches.length) {
+        for (const m of houseMatches) {
+          const parts = m[1].split("|").map(s => s.trim());
+          const itemName = parts[0] || "";
+          if (!itemName) continue;
+          const rawStatus = (parts[1] || "falta").toLowerCase();
+          const normStatus = /(estoque|tem|comprei|casa|ok|sim|cheio)/i.test(rawStatus) ? "estoque" : "falta";
+          upsertHouseItem(itemName, normStatus);
+          actions.push({ type: "house_item", name: itemName, status: normStatus });
+        }
+        renderHouseItemsList();
+        showToast("🏠 Lista da casa atualizada!");
+      }
+
+      // 5. Cartão interativo de E-mail
       clean = clean.replace(/\[EMAIL:\s*([^\]]+)\]/gi, (_, inner) => {
         const parts = inner.split("|").map(s => s.trim());
         actions.push({
@@ -3081,7 +3652,7 @@
         return "";
       });
 
-      // 4. Documento formatado para Google Docs
+      // 7. Documento formatado para Google Docs
       clean = clean.replace(/\[DOCUMENTO:\s*([^|\]]+)\|([\s\S]*?)\]/gi, (_, docTitle, docBody) => {
         const cleanDocBody = docBody.trim();
         actions.push({
@@ -3123,19 +3694,48 @@
       sendMessage();
     }
 
-    function buildPayloadForModel(modelName, systemPrompt, contents, effortMode, useThinkingConfig = true) {
+    function shouldUseSearchAndMediumThinking(userText, hasAttachment, effortMode) {
+      const useSearch = !hasAttachment;
+      const effectiveLevel = (effortMode && effortMode.level && effortMode.level !== "AUTO")
+        ? effortMode.level
+        : "MEDIUM";
+      return { useSearch, effectiveLevel };
+    }
+
+    function extractGroundingSources(chunk, sourcesMap) {
+      const chunks = chunk?.candidates?.[0]?.groundingMetadata?.groundingChunks;
+      if (!Array.isArray(chunks)) return;
+      for (const gc of chunks) {
+        const uri = gc?.web?.uri;
+        if (!uri || sourcesMap.has(uri) || sourcesMap.size >= 3) continue;
+        let title = gc?.web?.title || "";
+        if (!title) {
+          try { title = new URL(uri).hostname; } catch (e) { title = "Web"; }
+        }
+        sourcesMap.set(uri, { title, uri });
+      }
+    }
+
+    function buildPayloadForModel(modelName, systemPrompt, contents, effectiveLevel, useThinkingConfig = true, useSearchGrounding = true) {
       const payload = {
         system_instruction: { parts: [{ text: systemPrompt }] },
         contents,
         generationConfig: {
-          temperature: 0.7
+          temperature: 0.2
         }
       };
 
       if (useThinkingConfig) {
-        payload.generationConfig.thinkingConfig = {
-          thinkingLevel: effortMode.level || "LOW"
-        };
+        if (modelName.includes("2.5")) {
+          const budget = effectiveLevel === "HIGH" ? 4096 : (effectiveLevel === "MEDIUM" ? 1024 : 0);
+          payload.generationConfig.thinkingConfig = { thinkingBudget: budget };
+        } else {
+          payload.generationConfig.thinkingConfig = { thinkingLevel: effectiveLevel };
+        }
+      }
+
+      if (useSearchGrounding) {
+        payload.tools = [{ google_search: {} }];
       }
       return payload;
     }
@@ -3145,7 +3745,8 @@
       const text = input.value.trim();
       if (!text && !state.pendingAttachment) return;
 
-      if (!state.apiKey) {
+      const apiKeys = state.apiKey.split(/[\s,;]+/).map(k => k.trim()).filter(Boolean);
+      if (!apiKeys.length) {
         showToast("Configure sua chave gratuita do Gemini primeiro!");
         openModal("settingsModal");
         return;
@@ -3183,8 +3784,8 @@
       sendBtn.classList.add("stop-mode");
       setCatState("thinking");
 
-      const { contentDiv: botContentDiv, cardsWrap: botCardsWrap, tools: botToolsEl } = appendMessageElement("model", "", "", true);
-      botContentDiv.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">Pensando...</span>`;
+      const { contentDiv: botContentDiv, cardsWrap: botCardsWrap, sourcesWrap: botSourcesWrap, tools: botToolsEl } = appendMessageElement("model", "", "", true);
+      botContentDiv.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">Pensando e verificando dados...</span>`;
 
       // Sincronia Google rápida sem travar: usa cache recente ou limite máximo de 2.5s
       state.googleSearchSnippet = "";
@@ -3199,6 +3800,7 @@
       }
 
       let fullReply = "";
+      const sourcesMap = new Map();
       let rafScheduled = false;
       let startedSpeaking = false;
 
@@ -3235,85 +3837,128 @@
         });
 
         const effortMode = EFFORT_MODES[state.effortIndex] || EFFORT_MODES[0];
+        const { useSearch, effectiveLevel } = shouldUseSearchAndMediumThinking(text, !!attachment, effortMode);
         let lastErrorMsg = "Erro na API do Gemini";
+        let sawRateLimit = false;
 
-        for (const modelName of GEMINI_MODELS) {
-          if (state.abortController?.signal.aborted) break;
+        outerKeyLoop:
+        for (let kIdx = 0; kIdx < apiKeys.length; kIdx++) {
+          const activeApiKey = apiKeys[kIdx];
 
-          const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${encodeURIComponent(state.apiKey)}`;
-          let payload = buildPayloadForModel(modelName, systemPrompt, contents, effortMode, true);
+          for (const modelName of GEMINI_MODELS) {
+            if (state.abortController?.signal.aborted) break outerKeyLoop;
 
-          let response = await fetch(streamUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-            signal: state.abortController.signal
-          });
+            const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${encodeURIComponent(activeApiKey)}`;
+            let useThinking = true;
+            let useTools = useSearch;
+            let payload = buildPayloadForModel(modelName, systemPrompt, contents, effectiveLevel, useThinking, useTools);
 
-          // Fallback caso algum endpoint/alias futuro rejeite thinkingConfig
-          if (!response.ok && response.status === 400 && payload.generationConfig?.thinkingConfig) {
-            payload = buildPayloadForModel(modelName, systemPrompt, contents, effortMode, false);
-            response = await fetch(streamUrl, {
+            let response = await fetch(streamUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(payload),
               signal: state.abortController.signal
             });
-          }
 
-          if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            lastErrorMsg = errData.error?.message || `HTTP ${response.status}`;
-            if (response.status === 400 && /API key/i.test(lastErrorMsg)) {
-              throw new Error(lastErrorMsg);
+            // Fallback se 400 (não sendo erro de API key): tenta primeiro sem tools, depois sem thinkingConfig
+            if (!response.ok && response.status === 400) {
+              const errProbe = await response.json().catch(() => ({}));
+              const probeMsg = errProbe.error?.message || "HTTP 400";
+              if (/API key/i.test(probeMsg)) {
+                lastErrorMsg = probeMsg;
+                if (kIdx < apiKeys.length - 1) break;
+                throw new Error(probeMsg);
+              }
+              if (useTools) {
+                useTools = false;
+                payload = buildPayloadForModel(modelName, systemPrompt, contents, effectiveLevel, useThinking, false);
+                response = await fetch(streamUrl, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+                  signal: state.abortController.signal
+                });
+              }
+              if (!response.ok && response.status === 400 && useThinking) {
+                useThinking = false;
+                payload = buildPayloadForModel(modelName, systemPrompt, contents, effectiveLevel, false, useTools);
+                response = await fetch(streamUrl, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+                  signal: state.abortController.signal
+                });
+              }
             }
-            continue;
-          }
 
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder("utf-8");
-          let buffer = "";
+            if (!response.ok) {
+              const errData = await response.json().catch(() => ({}));
+              lastErrorMsg = errData.error?.message || `HTTP ${response.status}`;
+              if (response.status === 429) {
+                sawRateLimit = true;
+                continue;
+              }
+              if (response.status === 503 || response.status === 500 || response.status === 502) {
+                await new Promise(r => setTimeout(r, 900));
+                continue;
+              }
+              if (response.status === 400 && /API key/i.test(lastErrorMsg)) {
+                if (kIdx < apiKeys.length - 1) break;
+                throw new Error(lastErrorMsg);
+              }
+              continue;
+            }
 
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-            buffer = lines.pop() || "";
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let buffer = "";
 
-            for (const line of lines) {
-              const trimmed = line.trim();
-              if (!trimmed.startsWith("data:")) continue;
-              const jsonStr = trimmed.slice(5).trim();
-              if (!jsonStr || jsonStr === "[DONE]") continue;
-              try {
-                const chunk = JSON.parse(jsonStr);
-                const parts = chunk.candidates?.[0]?.content?.parts || [];
-                for (const part of parts) {
-                  if (part.thought) continue;
-                  if (part.text) {
-                    if (!startedSpeaking) {
-                      startedSpeaking = true;
-                      setCatState("speaking");
-                      playRaulMeow(false);
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split("\n");
+              buffer = lines.pop() || "";
+
+              for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                const jsonStr = trimmed.slice(5).trim();
+                if (!jsonStr || jsonStr === "[DONE]") continue;
+                try {
+                  const chunk = JSON.parse(jsonStr);
+                  extractGroundingSources(chunk, sourcesMap);
+                  const parts = chunk.candidates?.[0]?.content?.parts || [];
+                  for (const part of parts) {
+                    if (part.thought) continue;
+                    if (part.text) {
+                      if (!startedSpeaking) {
+                        startedSpeaking = true;
+                        setCatState("speaking");
+                        playRaulMeow(false);
+                      }
+                      fullReply += part.text;
+                      scheduleRender();
                     }
-                    fullReply += part.text;
-                    scheduleRender();
                   }
-                }
-              } catch (e) {}
+                } catch (e) {}
+              }
             }
-          }
 
-          if (fullReply.trim()) break;
+            if (fullReply.trim()) break outerKeyLoop;
+          }
         }
 
         if (!fullReply.trim() && !state.abortController?.signal.aborted) {
+          if (sawRateLimit) {
+            throw new Error("Limite gratuito de requisições atingido agora (RPM/RPD). Aguarde 1 minuto ou adicione outra chave gratuita do AI Studio nas configurações (o limite diário reseta às 05h00 de Brasília).");
+          }
           throw new Error(lastErrorMsg);
         }
 
         if (fullReply) {
           const { cleanText, actions } = await processModelActions(fullReply);
+          const sources = Array.from(sourcesMap.values());
           botContentDiv.innerHTML = renderMarkdownSafe(cleanText || fullReply);
 
           if (actions.length > 0) {
@@ -3321,9 +3966,10 @@
             botCardsWrap.style.display = "flex";
             actions.forEach(act => botCardsWrap.appendChild(buildActionCardElement(act)));
           }
+          renderSourcesBar(botSourcesWrap, sources);
           populateBotTools(botToolsEl, cleanText || fullReply);
 
-          chat.messages.push({ role: "model", text: cleanText || fullReply, actions });
+          chat.messages.push({ role: "model", text: cleanText || fullReply, actions, sources });
           chat.updatedAt = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
           saveChats();
 
@@ -3362,11 +4008,27 @@
       const now = new Date();
       const dateStr = now.toLocaleDateString("pt-BR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
       const timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const pad2 = n => String(n).padStart(2, "0");
+      const nowLocalIso = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}T${pad2(now.getHours())}:${pad2(now.getMinutes())}:00`;
 
       const allEvents = [
         ...state.googleEventsCache.map(e => `- [Google Agenda] ${e.displayDate || e.start} (${e.start}): ${e.title}`),
         ...state.manualEvents.map(e => `- [Agenda Local] ${e.date} ${e.time}: ${e.title}`)
       ].join("\n") || "Nenhum compromisso registrado no momento.";
+
+      const activeReminders = state.reminders.filter(r => !r.done);
+      const remindersStr = activeReminders.length
+        ? activeReminders.slice(0, 20).map(r => `- ${r.title}${r.dueAt ? " (" + formatEventDateBr(r.dueAt) + ")" : ""}${r.repeatMinutes > 0 ? " [" + formatRepeatLabel(r.repeatMinutes) + "]" : ""}`).join("\n")
+        : "Nenhum lembrete ativo.";
+
+      const needItems = state.houseItems.filter(it => it.status === "falta").map(it => it.name);
+      const stockItems = state.houseItems.filter(it => it.status === "estoque").map(it => it.name);
+      const inventoryStr = `Falta comprar (${needItems.length}): ${needItems.length ? needItems.join(", ") : "nada pendente"}\nEm casa/estoque (${stockItems.length}): ${stockItems.length ? stockItems.join(", ") : "nenhum item cadastrado"}`;
+
+      const openedNotes = (state.surpriseNotes || []).filter(n => n.opened);
+      const surpriseNotesStr = openedNotes.length
+        ? openedNotes.slice(0, 8).map(n => `- "${n.title || "Bilhete"}" (${n.signature || "Luis"}): ${n.message}`).join("\n")
+        : "Nenhum bilhete aberto ainda.";
 
       const p = state.ownerProfile || {};
       const profileLines = [];
@@ -3391,13 +4053,28 @@
 
       return `Você é o R.A.U.L., assistente pessoal de ${state.ownerName}.
 
+IDENTIDADE VERDADEIRA DO R.A.U.L. (NUNCA ESQUEÇA NEM INVENTE):
+- A sigla R.A.U.L. significa EXCLUSIVAMENTE: "Ronronante Assistente Ultra Leal" (NUNCA invente outro significado como "Robô Assistente Ultra-Lógico").
+- Você foi criado em homenagem e inspirado no Raul Antônio Teixeira (@raul_antoonio no Instagram), o gato frajola mais elegante, carismático e bonito do mundo, o amado companheiro de todos os momentos da Gi (Gislene Feitoza) em Curitiba.
+- História real do Raul Antônio (use quando ela perguntar sobre você ou sua inspiração):
+  * Apelidos carinhosos: "Raulzinho", "Carinha", "Gatão" e "Gentleman".
+  * Bio clássica dele no Instagram: "Minha mãe é obcecada por mim e fez esse perfil pra publicar fotos que ela tira sem minha autorização. E eu sou obcecado por gravatinhas."
+  * Resgatado e adotado no final de maio de 2020 (aniversário de adoção comemorado em 25–26 de maio; nos 4 anos teve festa com o balão dourado "R" e balões verdes, e comemorou 5 anos em maio de 2025).
+  * Irmão mais velho da gatinha Hera (de quem roubava Churu e comia o bolo — embora nos bolos dele só comesse a cobertura).
+  * Apaixonado por sachê, Churu, por sua coleção de gravatinhas borboleta (amarela que destaca sua beleza, verde que realça seus olhos verdes, vermelha de bolinhas, azul-turquesa, verde de festa com nó dourado, preta de Halloween "Drácula", capa estrelada e roupinhas para o frio de 8°C de Curitiba), e por dormir abraçado com a Gi, em cima da mochila dela ou em caixas pequenas ("A casa é minha e eu não pago as contas").
+
 REGRA DE OURO DE ESTILO E CONCISÃO:
 - Inicie suas respostas apenas com "Miau!" (ou "Miau, ${state.ownerName}!") e vá DIRETO ao assunto.
 - Seja sucinto, objetivo, claro e prático.
-- PROIBIDO FINGIR AÇÕES FÍSICAS DE GATO: Nunca use narrações entre asteriscos (como *arruma a gravata*, *ronrona*, *lambe a pata*) e nunca escreva parágrafos falando sobre sua gravata borboleta, pelos, sachê, bigodes ou vida de gato, a menos que ela pergunte especificamente sobre você.
+- PROIBIDO FINGIR AÇÕES FÍSICAS DE GATO: Nunca use narrações entre asteriscos (como *arruma a gravata*, *ronrona*, *lambe a pata*) e nunca escreva parágrafos falando sobre gravatas, pelos, sachê ou vida de gato, a menos que ela pergunte especificamente sobre você ou sua história.
+
+REGRA ABSOLUTA DE HONESTIDADE, VERIFICAÇÃO EM TEMPO REAL E PRECISÃO FACTUAL (VÁLIDA PARA QUALQUER ASSUNTO):
+- PROIBIDO INVENTAR OU CHUTAR: Se você não souber um dado com certeza e a busca ou o contexto abaixo não trouxerem confirmação segura, NUNCA invente, deduza como certeza nem chute fatos, nomes, números, datas, regras, valores, citações ou significados. Responda com honestidade direta dizendo exatamente o que conseguiu confirmar, o que não foi possível verificar e quais são as suas limitações no momento.
+- PROIBIDO RESPOSTAS EVASIVAS ("VÁ CONSULTAR NO SITE X"): Sobre qualquer tema (atualidades, ciência, saúde, direito, estudos, preços, serviços, dados públicos, história ou cotidiano), nunca empurre a usuária para pesquisar sozinha em sites externos, portais oficiais ou terceiros quando ela fizer uma pergunta direta. Use ativamente a busca integrada (google_search) para verificar as informações atualizadas e entregue os nomes, números e fatos concretos na resposta.
+- ANCORAGEM TEMPORAL RIGOROSA: Considere sempre a data e o ano atuais (${dateStr}, ano ${now.getFullYear()}) ao interpretar referências como "hoje", "atual", "este ano", "este mês" ou "último", sem confundir acontecimentos recentes com informações antigas de treinamento.
 
 CONTEXTO ATUAL:
-- Data e hora atual: ${dateStr}, às ${timeStr}.
+- Data e hora local atual: ${dateStr}, às ${timeStr} (ISO local: ${nowLocalIso}).
 - Clima e localização: ${state.weatherSummary || "Não informado"}.
 
 PERFIL DE ${state.ownerName.toUpperCase()}:
@@ -3409,18 +4086,32 @@ ${memStr}
 AGENDA DE ${state.ownerName.toUpperCase()}:
 ${allEvents}
 
+LEMBRETES ATIVOS DE ${state.ownerName.toUpperCase()}:
+${remindersStr}
+
+INVENTÁRIO DA CASA & LISTA DE COMPRAS:
+${inventoryStr}
+
+BILHETES SURPRESA JÁ ENTREGUES (BAÚ):
+${surpriseNotesStr}
+
 ÚLTIMOS E-MAILS (GMAIL):
 ${mailStr}
 
 AÇÕES AUTOMÁTICAS (use no final apenas quando aplicável; o app executa silenciosamente):
-1. AGENDAR COMPROMISSO: Quando ela pedir para agendar, marcar ou lembrar de um compromisso com data/hora, adicione no final (use formato ISO local YYYY-MM-DDTHH:MM:00 ou YYYY-MM-DD para dia todo):
+1. AGENDAR COMPROMISSO: Quando ela pedir para agendar ou marcar um compromisso com data/hora na agenda, adicione no final (formato ISO local YYYY-MM-DDTHH:MM:00 ou YYYY-MM-DD para dia todo):
 [CRIAR_EVENTO: Título | YYYY-MM-DDTHH:MM:00 | YYYY-MM-DDTHH:MM:00 | Descrição curta]
 2. RASCUNHO DE E-MAIL: Quando ela pedir para escrever um e-mail, inclua no final:
 [EMAIL: destinatario@email.com | Assunto | Corpo completo do e-mail]${autoLearnRule}
 4. DOCUMENTO LONGO: Se ela pedir especificamente para criar um documento ou resumo para salvar no Google Docs, envolva o conteúdo em:
 [DOCUMENTO: Título do Documento | Conteúdo completo em Markdown]
+5. LEMBRETE COM NOTIFICAÇÃO: Sempre que ela pedir para lembrar de algo (remédio, beber água, comprar item, tarefa), com ou sem horário ou repetição, adicione no final:
+[LEMBRETE: Título curto | YYYY-MM-DDTHH:MM:00 ou sem_hora | MinutosRepeticao_ou_0]
+(Calcule o horário local a partir de ${nowLocalIso}; para repetição em minutos use ex.: 60 = a cada 1h, 120 = a cada 2h, 480 = a cada 8h, 1440 = todo dia, 0 = uma vez).
+6. INVENTÁRIO DA CASA & COMPRAS: Se ela avisar que algum item acabou, precisa comprar ou que já comprou/tem em casa, adicione para cada item:
+[CASA_ITEM: Nome do Item | falta] ou [CASA_ITEM: Nome do Item | estoque]
 
-Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Agenda/Gmail que não está acima, avise em 1 frase curta para ela tocar em "📅 Agenda" no topo e clicar em "Entrar com Google".`;
+Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Agenda/Gmail/Drive que não está acima, avise em 1 frase curta para ela tocar em "📅 Agenda" no topo e clicar em "Entrar com Google".`;
     }
 
     // ANEXOS E DOWNLOADS
@@ -3538,6 +4229,835 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       }
     }
 
+    // LEMBRETES, INVENTÁRIO DA CASA & GOOGLE SHEETS
+    function formatRepeatLabel(mins) {
+      const m = parseInt(mins || 0, 10);
+      if (!m || m <= 0) return "";
+      if (m === 1440) return "todo dia";
+      if (m >= 60 && m % 60 === 0) return `a cada ${m / 60}h`;
+      return `a cada ${m} min`;
+    }
+
+    function csvCell(val, sep = ",") {
+      const s = String(val ?? "");
+      if (s.includes(sep) || s.includes('"') || s.includes("\n")) {
+        return `"${s.replace(/"/g, '""')}"`;
+      }
+      return s;
+    }
+
+    function switchHomeTab(tab) {
+      const map = {
+        reminders: ["tabBtnReminders", "homeTabReminders"],
+        inventory: ["tabBtnInventory", "homeTabInventory"]
+      };
+      Object.entries(map).forEach(([k, [btnId, panelId]]) => {
+        const btn = document.getElementById(btnId);
+        const panel = document.getElementById(panelId);
+        if (btn) btn.classList.toggle("active", k === tab);
+        if (panel) panel.classList.toggle("active", k === tab);
+      });
+    }
+
+    function updateNotificationStatusUI() {
+      const statusEl = document.getElementById("notifStatusText");
+      const btn = document.getElementById("notifPermBtn");
+      const hintEl = document.getElementById("homeNotifHint");
+      if (!("Notification" in window)) {
+        if (statusEl) statusEl.innerText = "Este navegador não suporta notificações push locais; use com Google Agenda conectada.";
+        if (btn) btn.style.display = "none";
+        return;
+      }
+      const perm = Notification.permission;
+      if (perm === "granted") {
+        if (statusEl) statusEl.innerText = "✅ Notificações ativadas neste aparelho!";
+        if (btn) btn.innerText = "🔔 Ativado";
+        if (hintEl) hintEl.innerText = "✅ Alertas ativos no navegador! Com Google conectado, lembretes com horário também geram push na Google Agenda.";
+      } else if (perm === "denied") {
+        if (statusEl) statusEl.innerText = "⚠️ Bloqueado nas permissões do navegador (habilite no cadeado da URL ou use Google Agenda).";
+        if (btn) btn.innerText = "Bloqueado";
+      } else {
+        if (statusEl) statusEl.innerText = "Toque ao lado para permitir notificações dos lembretes no celular.";
+        if (btn) btn.innerText = "Ativar Alertas";
+      }
+    }
+
+    async function requestNotificationPermissionUI() {
+      if (!("Notification" in window)) {
+        showToast("Use a Google Agenda conectada para alertas neste aparelho.");
+        return;
+      }
+      if (Notification.permission === "granted") {
+        try {
+          new Notification("R.A.U.L. 🐾", { body: "Notificações estão funcionando perfeitamente!" });
+        } catch (e) {}
+        showToast("✅ Alertas já estão ativos!");
+        updateNotificationStatusUI();
+        return;
+      }
+      try {
+        const perm = await Notification.requestPermission();
+        updateNotificationStatusUI();
+        if (perm === "granted") {
+          showToast("🔔 Notificações ativadas!");
+          try {
+            new Notification("R.A.U.L. 🐾", { body: "Miau! Agora vou te avisar nos seus lembretes." });
+          } catch (e) {}
+        } else {
+          showToast("Permissão não concedida. Conecte o Google para push na Agenda!");
+        }
+      } catch (e) {
+        showToast("Não foi possível solicitar permissão aqui.");
+      }
+    }
+
+    function checkDueReminders() {
+      const nowMs = Date.now();
+      const due = state.reminders.find(r => {
+        if (r.done || !r.dueAt) return false;
+        const dueMs = new Date(r.dueAt).getTime();
+        if (isNaN(dueMs) || nowMs < dueMs) return false;
+        if (state.activeDueReminderId === r.id) return false;
+        return !r.notifiedAt || r.notifiedAt < dueMs;
+      });
+      if (due) triggerReminderAlert(due);
+    }
+
+    function triggerReminderAlert(rem) {
+      rem.notifiedAt = Date.now();
+      state.activeDueReminderId = rem.id;
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+
+      const banner = document.getElementById("dueReminderBanner");
+      const textEl = document.getElementById("dueReminderText");
+      if (textEl) textEl.innerText = rem.title;
+      if (banner) banner.classList.add("show");
+
+      if (state.soundOn) {
+        try { playRaulMeow(false); } catch (e) {}
+      }
+      if (navigator.vibrate) {
+        try { navigator.vibrate([240, 120, 240]); } catch (e) {}
+      }
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification("🔔 Lembrete do R.A.U.L.", {
+            body: rem.title,
+            tag: "raul-rem-" + rem.id,
+            renotify: true
+          });
+        } catch (e) {}
+      }
+    }
+
+    function completeActiveReminder() {
+      const rem = state.reminders.find(r => r.id === state.activeDueReminderId);
+      const banner = document.getElementById("dueReminderBanner");
+      if (banner) banner.classList.remove("show");
+      state.activeDueReminderId = null;
+      if (!rem) return;
+
+      if (rem.repeatMinutes > 0) {
+        rem.dueAt = new Date(Date.now() + rem.repeatMinutes * 60000).toISOString();
+        rem.done = false;
+        showToast(`✅ Feito! Próximo alerta ${formatRepeatLabel(rem.repeatMinutes)}.`);
+      } else {
+        rem.done = true;
+        showToast("✅ Lembrete concluído!");
+      }
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+      renderRemindersList();
+    }
+
+    function snoozeActiveReminder() {
+      const rem = state.reminders.find(r => r.id === state.activeDueReminderId);
+      const banner = document.getElementById("dueReminderBanner");
+      if (banner) banner.classList.remove("show");
+      state.activeDueReminderId = null;
+      if (!rem) return;
+
+      rem.dueAt = new Date(Date.now() + 10 * 60000).toISOString();
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+      renderRemindersList();
+      showToast("⏰ Lembrete adiado em 10 minutos!");
+    }
+
+    async function addManualReminder() {
+      const titleEl = document.getElementById("newReminderTitle");
+      const dtEl = document.getElementById("newReminderDateTime");
+      const repEl = document.getElementById("newReminderRepeat");
+      const title = (titleEl.value || "").trim();
+      if (!title) return showToast("Digite o que você quer lembrar.");
+
+      const repeatMinutes = parseInt(repEl.value || "0", 10) || 0;
+      let dueIso = "";
+      if (dtEl.value) {
+        const parsed = new Date(dtEl.value);
+        if (!isNaN(parsed.getTime())) dueIso = parsed.toISOString();
+      } else if (repeatMinutes > 0) {
+        dueIso = new Date(Date.now() + repeatMinutes * 60000).toISOString();
+      }
+
+      if (dueIso && state.googleToken) {
+        const endIso = new Date(new Date(dueIso).getTime() + 15 * 60000).toISOString();
+        await createGoogleCalendarEvent({
+          title: "🔔 " + title,
+          startIso: dueIso,
+          endIso,
+          description: "Lembrete criado no R.A.U.L.",
+          reminders: {
+            useDefault: false,
+            overrides: [
+              { method: "popup", minutes: 0 },
+              { method: "popup", minutes: 5 }
+            ]
+          }
+        });
+      }
+
+      state.reminders.unshift({
+        id: "rem_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+        title,
+        dueAt: dueIso,
+        repeatMinutes,
+        done: false,
+        notifiedAt: 0,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+      titleEl.value = "";
+      dtEl.value = "";
+      repEl.value = "0";
+      renderRemindersList();
+      showToast("🔔 Lembrete adicionado!");
+    }
+
+    function toggleReminderDone(id) {
+      const rem = state.reminders.find(r => r.id === id);
+      if (!rem) return;
+      rem.done = !rem.done;
+      if (!rem.done && rem.repeatMinutes > 0 && (!rem.dueAt || new Date(rem.dueAt).getTime() <= Date.now())) {
+        rem.dueAt = new Date(Date.now() + rem.repeatMinutes * 60000).toISOString();
+      }
+      if (state.activeDueReminderId === id && rem.done) {
+        document.getElementById("dueReminderBanner")?.classList.remove("show");
+        state.activeDueReminderId = null;
+      }
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+      renderRemindersList();
+    }
+
+    function deleteReminder(id) {
+      state.reminders = state.reminders.filter(r => r.id !== id);
+      if (state.activeDueReminderId === id) {
+        document.getElementById("dueReminderBanner")?.classList.remove("show");
+        state.activeDueReminderId = null;
+      }
+      localStorage.setItem("raul_reminders", JSON.stringify(state.reminders));
+      renderRemindersList();
+    }
+
+    function renderRemindersList() {
+      const box = document.getElementById("remindersListContainer");
+      if (!box) return;
+      box.innerHTML = "";
+      if (!state.reminders.length) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Nenhum lembrete ainda. Ex: diga "me lembre de beber água a cada 2h".</p>`;
+        return;
+      }
+      const sorted = [...state.reminders].sort((a, b) => Number(a.done) - Number(b.done));
+      sorted.forEach(rem => {
+        const row = document.createElement("div");
+        row.className = "house-item-row";
+        const timeTxt = rem.dueAt ? formatEventDateBr(rem.dueAt) : "Sem horário fixo";
+        const repTxt = rem.repeatMinutes > 0 ? ` • 🔁 ${formatRepeatLabel(rem.repeatMinutes)}` : "";
+        const safeId = escapeHtml(rem.id);
+        row.innerHTML = `
+          <div style="flex:1; min-width:0; opacity:${rem.done ? 0.55 : 1}; text-decoration:${rem.done ? "line-through" : "none"};">
+            <div style="font-weight:700;">${escapeHtml(rem.title)}</div>
+            <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(timeTxt + repTxt)}</div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button type="button" class="status-pill-btn ${rem.done ? "item-badge-ok" : "item-badge-need"}" onclick="toggleReminderDone('${safeId}')">${rem.done ? "↩ Reabrir" : "✅ Feito"}</button>
+            <button type="button" onclick="deleteReminder('${safeId}')" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>
+          </div>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    function upsertHouseItem(name, status) {
+      const cleanName = (name || "").trim();
+      if (!cleanName) return;
+      const idx = state.houseItems.findIndex(it => it.name.toLowerCase() === cleanName.toLowerCase());
+      const nowIso = new Date().toISOString();
+      if (idx >= 0) {
+        state.houseItems[idx].name = cleanName;
+        state.houseItems[idx].status = status;
+        state.houseItems[idx].updatedAt = nowIso;
+      } else {
+        state.houseItems.unshift({
+          id: "item_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+          name: cleanName,
+          status,
+          updatedAt: nowIso
+        });
+      }
+      localStorage.setItem("raul_house_items", JSON.stringify(state.houseItems));
+    }
+
+    function addHouseItemManual() {
+      const nameEl = document.getElementById("newHouseItemName");
+      const statusEl = document.getElementById("newHouseItemStatus");
+      const name = (nameEl.value || "").trim();
+      if (!name) return showToast("Digite o nome do item.");
+      upsertHouseItem(name, statusEl.value === "estoque" ? "estoque" : "falta");
+      nameEl.value = "";
+      renderHouseItemsList();
+      showToast("🏠 Item salvo no inventário!");
+    }
+
+    function toggleHouseItemStatus(id) {
+      const item = state.houseItems.find(it => it.id === id);
+      if (!item) return;
+      item.status = item.status === "falta" ? "estoque" : "falta";
+      item.updatedAt = new Date().toISOString();
+      localStorage.setItem("raul_house_items", JSON.stringify(state.houseItems));
+      renderHouseItemsList();
+    }
+
+    function deleteHouseItem(id) {
+      state.houseItems = state.houseItems.filter(it => it.id !== id);
+      localStorage.setItem("raul_house_items", JSON.stringify(state.houseItems));
+      renderHouseItemsList();
+    }
+
+    function renderHouseItemsList() {
+      const box = document.getElementById("houseItemsListContainer");
+      if (!box) return;
+      box.innerHTML = "";
+      if (!state.houseItems.length) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Nenhum item no inventário ainda.</p>`;
+        return;
+      }
+      const sorted = [...state.houseItems].sort((a, b) => {
+        if (a.status !== b.status) return a.status === "falta" ? -1 : 1;
+        return a.name.localeCompare(b.name);
+      });
+      sorted.forEach(item => {
+        const isNeed = item.status === "falta";
+        const safeId = escapeHtml(item.id);
+        const row = document.createElement("div");
+        row.className = "house-item-row";
+        row.innerHTML = `
+          <span style="font-weight:600; flex:1;">${escapeHtml(item.name)}</span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button type="button" class="status-pill-btn ${isNeed ? "item-badge-need" : "item-badge-ok"}" onclick="toggleHouseItemStatus('${safeId}')">${isNeed ? "🛒 Falta" : "✅ Em casa"}</button>
+            <button type="button" onclick="deleteHouseItem('${safeId}')" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>
+          </div>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    async function exportHomeToGoogleSheets() {
+      const outEl = document.getElementById("sheetsExportResult");
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      const buildCsv = (sep) => {
+        const rows = [];
+        rows.push(["INVENTARIO DA CASA", "Status", "Atualizado em"].map(c => csvCell(c, sep)).join(sep));
+        state.houseItems.forEach(it => {
+          rows.push([it.name, it.status === "falta" ? "Falta comprar" : "Tem em casa", (it.updatedAt || "").slice(0, 10)].map(c => csvCell(c, sep)).join(sep));
+        });
+        rows.push("");
+        rows.push(["LEMBRETES", "Horario", "Repeticao", "Status"].map(c => csvCell(c, sep)).join(sep));
+        state.reminders.forEach(r => {
+          rows.push([r.title, r.dueAt ? formatEventDateBr(r.dueAt) : "Sem horario", r.repeatMinutes > 0 ? formatRepeatLabel(r.repeatMinutes) : "Uma vez", r.done ? "Concluido" : "Ativo"].map(c => csvCell(c, sep)).join(sep));
+        });
+        return "\uFEFF" + rows.join("\r\n");
+      };
+
+      if (!state.googleToken) {
+        downloadTextFile(buildCsv(";"), `Casa_e_Lembretes_${todayStr}.csv`);
+        if (outEl) {
+          outEl.innerHTML = `⬇️ CSV baixado! Para criar direto no Google Sheets, conecte sua conta Google em <strong>📅 Agenda</strong>.`;
+        }
+        return;
+      }
+
+      if (outEl) outEl.innerText = "Criando planilha no Google Drive...";
+      try {
+        const csvContent = buildCsv(",");
+        const metadata = {
+          name: `R.A.U.L. - Casa & Lembretes ${todayStr}`,
+          mimeType: "application/vnd.google-apps.spreadsheet"
+        };
+        const form = new FormData();
+        form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+        form.append("file", new Blob([csvContent], { type: "text/csv;charset=utf-8" }));
+
+        const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink", {
+          method: "POST",
+          headers: { Authorization: "Bearer " + state.googleToken },
+          body: form
+        });
+
+        if (res.status === 401) {
+          clearStoredGoogleToken(false);
+          updateGoogleDisconnectedUI(true);
+          if (outEl) outEl.innerText = "Sessão Google expirada. Reconecte em 📅 Agenda.";
+          return;
+        }
+        if (res.ok) {
+          const data = await res.json();
+          if (outEl && data.webViewLink) {
+            outEl.innerHTML = `✅ Planilha criada! <a href="${escapeHtml(data.webViewLink)}" target="_blank" style="color:var(--success); font-weight:800;">🔗 Abrir no Google Sheets ↗</a>`;
+          }
+          showToast("📊 Planilha salva no Google Drive!");
+        } else {
+          if (outEl) outEl.innerText = "Erro ao enviar para o Google Sheets.";
+        }
+      } catch (e) {
+        if (outEl) outEl.innerText = "Erro de conexão ao criar planilha.";
+      }
+    }
+
+    // BILHETES SURPRESA DO LUIS PARA A GI (ENVIO DIRETO VIA GITHUB -> APP DA GI)
+    function onBrandTitleTap() {
+      brandTapCount++;
+      clearTimeout(brandTapResetTimer);
+      brandTapResetTimer = setTimeout(() => { brandTapCount = 0; }, 1800);
+      if (brandTapCount >= 5) {
+        brandTapCount = 0;
+        openLuisSenderPanel();
+      }
+    }
+
+    function encodeBase64Utf8(str) {
+      const bytes = new TextEncoder().encode(String(str || ""));
+      let bin = "";
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    }
+
+    function decodeBase64Utf8(b64) {
+      const clean = String(b64 || "").replace(/\s+/g, "");
+      const bin = atob(clean);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    }
+
+    function detectGithubPagesRepo() {
+      const host = window.location.hostname || "";
+      if (!/\.github\.io$/i.test(host)) return { owner: "", repo: "" };
+      const owner = host.replace(/\.github\.io$/i, "");
+      const segs = (window.location.pathname || "/").split("/").filter(Boolean);
+      const firstSeg = segs.length && !segs[0].endsWith(".html") ? segs[0] : "";
+      const repo = firstSeg || `${owner}.github.io`;
+      return { owner, repo };
+    }
+
+    function ingestSurpriseNote(rawNote) {
+      if (!rawNote || !rawNote.message) return false;
+      const fallbackId = "b_" + encodeBase64Utf8((rawNote.title || "") + "|" + rawNote.message.slice(0, 24)).replace(/[^a-zA-Z0-9]/g, "").slice(0, 18);
+      const id = String(rawNote.id || fallbackId);
+      const exists = state.surpriseNotes.some(n => n.id === id);
+      if (exists) return false;
+
+      let revealIso = "";
+      if (rawNote.revealAt) {
+        const dt = new Date(rawNote.revealAt);
+        if (!isNaN(dt.getTime())) revealIso = dt.toISOString();
+      }
+      state.surpriseNotes.unshift({
+        id,
+        title: String(rawNote.title || "Um bilhete para você").trim(),
+        message: String(rawNote.message).trim(),
+        signature: String(rawNote.signature || "Com amor, Luis 💙").trim(),
+        revealAt: revealIso,
+        createdAt: rawNote.createdAt || new Date().toISOString(),
+        opened: false,
+        openedAt: ""
+      });
+      localStorage.setItem("raul_surprise_notes", JSON.stringify(state.surpriseNotes));
+      return true;
+    }
+
+    async function checkRemoteSurpriseNotes() {
+      if (window.location.protocol === "file:") return;
+      let added = 0;
+      const ingestList = (data) => {
+        const list = Array.isArray(data) ? data : (Array.isArray(data?.bilhetes) ? data.bilhetes : []);
+        for (const item of list) {
+          if (ingestSurpriseNote(item)) added++;
+        }
+      };
+
+      // 1. Consulta direta na API do GitHub (entrega instantanea mesmo antes do CDN do Pages atualizar)
+      const gh = detectGithubPagesRepo();
+      if (gh.owner && gh.repo) {
+        try {
+          const apiRes = await fetch(`https://api.github.com/repos/${encodeURIComponent(gh.owner)}/${encodeURIComponent(gh.repo)}/contents/bilhetes.json?t=${Date.now()}`);
+          if (apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (apiData && apiData.content) {
+              ingestList(JSON.parse(decodeBase64Utf8(apiData.content)));
+            }
+          }
+        } catch (e) {}
+      }
+
+      // 2. Fallback via arquivo estatico do proprio GitHub Pages (funciona mesmo em repo privado)
+      try {
+        const res = await fetch("./bilhetes.json?t=" + Date.now(), { cache: "no-store" });
+        if (res.ok) ingestList(await res.json());
+      } catch (e) {}
+
+      if (added > 0) checkPendingSurpriseNotes();
+    }
+
+    function checkPendingSurpriseNotes() {
+      if (state.activeRevealNoteId) return;
+      if (document.getElementById("luisSenderModal")?.classList.contains("open")) return;
+      const nowMs = Date.now();
+      const pending = state.surpriseNotes.find(n => {
+        if (n.opened) return false;
+        if (!n.revealAt) return true;
+        const revMs = new Date(n.revealAt).getTime();
+        return isNaN(revMs) || nowMs >= revMs;
+      });
+      if (pending) openSurpriseRevealCard(pending, false);
+    }
+
+    function openSurpriseRevealCard(note, isPreview = false) {
+      state.activeRevealNoteId = isPreview ? "__preview__" : note.id;
+      document.getElementById("surpriseRevealTitle").innerText = note.title || "Um bilhete para você";
+      document.getElementById("surpriseRevealBody").innerText = note.message || "";
+      document.getElementById("surpriseRevealSignature").innerText = note.signature || "Com amor, Luis 💙";
+      const dtTxt = note.createdAt ? formatEventDateBr(note.createdAt) : "";
+      document.getElementById("surpriseRevealDate").innerText = isPreview ? "(Pré-visualização)" : dtTxt;
+      openModal("surpriseRevealModal");
+
+      spawnParticles(["💌", "💖", "🐾", "✨"], 8);
+      if (state.soundOn) {
+        try { playPurr(1.5); } catch (e) {}
+      }
+      if (navigator.vibrate) {
+        try { navigator.vibrate([120, 80, 120]); } catch (e) {}
+      }
+    }
+
+    function saveAndCloseSurpriseReveal() {
+      const currentId = state.activeRevealNoteId;
+      closeModal("surpriseRevealModal");
+      state.activeRevealNoteId = null;
+
+      if (currentId && currentId !== "__preview__") {
+        const note = state.surpriseNotes.find(n => n.id === currentId);
+        if (note && !note.opened) {
+          note.opened = true;
+          note.openedAt = new Date().toISOString();
+          localStorage.setItem("raul_surprise_notes", JSON.stringify(state.surpriseNotes));
+          updateSurpriseVaultButton();
+          showToast("💖 Bilhete guardado no Baú do R.A.U.L.!");
+        }
+        setTimeout(checkPendingSurpriseNotes, 350);
+      }
+    }
+
+    function updateSurpriseVaultButton() {
+      const btn = document.getElementById("vaultDrawerBtn");
+      const badge = document.getElementById("vaultCountBadge");
+      const openedCount = (state.surpriseNotes || []).filter(n => n.opened).length;
+      if (btn) btn.style.display = openedCount > 0 ? "flex" : "none";
+      if (badge) badge.innerText = String(openedCount);
+    }
+
+    function renderSurpriseVault() {
+      const box = document.getElementById("surpriseVaultList");
+      if (!box) return;
+      const opened = (state.surpriseNotes || []).filter(n => n.opened);
+      if (!opened.length) {
+        box.innerHTML = `<p style="font-size:12.5px; color:var(--text-muted);">Nenhum bilhete guardado ainda.</p>`;
+        return;
+      }
+      box.innerHTML = "";
+      opened.forEach(note => {
+        const card = document.createElement("div");
+        card.className = "vault-note-card";
+        const dtStr = formatEventDateBr(note.openedAt || note.createdAt || "");
+        card.innerHTML = `
+          <div style="font-weight:800; font-size:0.9rem; margin-bottom:4px;">💌 ${escapeHtml(note.title || "Bilhete")}</div>
+          <div style="font-size:0.84rem; line-height:1.5; white-space:pre-wrap; margin-bottom:6px;">${escapeHtml(note.message || "")}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between; gap:8px;">
+            <span>${escapeHtml(dtStr)}</span>
+            <em>${escapeHtml(note.signature || "")}</em>
+          </div>
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    function buildLuisNoteObject() {
+      const title = (document.getElementById("luisNoteTitle").value || "").trim() || "Um carinho para você";
+      const message = (document.getElementById("luisNoteMessage").value || "").trim();
+      const signature = (document.getElementById("luisNoteSignature").value || "").trim() || "Com amor, Luis 💙";
+      const revealRaw = document.getElementById("luisNoteRevealAt").value;
+      if (!message) {
+        showToast("Escreva a mensagem surpresa primeiro!");
+        return null;
+      }
+      let revealAt = "";
+      if (revealRaw) {
+        const dt = new Date(revealRaw);
+        if (!isNaN(dt.getTime())) revealAt = dt.toISOString();
+      }
+      return {
+        id: "bilhete_" + Date.now() + "_" + Math.floor(Math.random() * 900 + 100),
+        title,
+        message,
+        signature,
+        revealAt,
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function getLuisGithubConfig() {
+      const detected = detectGithubPagesRepo();
+      const saved = safeJsonParse(localStorage.getItem("raul_luis_gh_cfg"), {});
+      return {
+        owner: (saved.owner || detected.owner || "").trim(),
+        repo: (saved.repo || detected.repo || "").trim(),
+        branch: (saved.branch || "main").trim(),
+        token: (saved.token || "").trim()
+      };
+    }
+
+    function saveLuisGithubConfig() {
+      const cfg = {
+        owner: (document.getElementById("luisGhOwner").value || "").trim(),
+        repo: (document.getElementById("luisGhRepo").value || "").trim(),
+        branch: (document.getElementById("luisGhBranch").value || "main").trim() || "main",
+        token: (document.getElementById("luisGhToken").value || "").trim()
+      };
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        showToast("Preencha usuário, repositório e token do GitHub.");
+        return;
+      }
+      localStorage.setItem("raul_luis_gh_cfg", JSON.stringify(cfg));
+      const det = document.getElementById("luisGhSetupDetails");
+      if (det) det.open = false;
+      showToast("✅ Conexão com GitHub salva neste aparelho!");
+      refreshLuisSentList();
+    }
+
+    function openLuisSenderPanel() {
+      const cfg = getLuisGithubConfig();
+      document.getElementById("luisGhOwner").value = cfg.owner;
+      document.getElementById("luisGhRepo").value = cfg.repo;
+      document.getElementById("luisGhBranch").value = cfg.branch || "main";
+      document.getElementById("luisGhToken").value = cfg.token;
+      const det = document.getElementById("luisGhSetupDetails");
+      if (det) det.open = !cfg.token;
+      openModal("luisSenderModal");
+      refreshLuisSentList();
+    }
+
+    async function fetchGithubBilhetesFile(cfg) {
+      const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/bilhetes.json?ref=${encodeURIComponent(cfg.branch)}&t=${Date.now()}`;
+      const res = await fetch(url, {
+        headers: {
+          Authorization: "Bearer " + cfg.token,
+          Accept: "application/vnd.github+json"
+        }
+      });
+      if (res.status === 404) return { list: [], sha: null };
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Erro GitHub (${res.status})`);
+      }
+      const data = await res.json();
+      let list = [];
+      if (data.content) {
+        const parsed = JSON.parse(decodeBase64Utf8(data.content));
+        list = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.bilhetes) ? parsed.bilhetes : []);
+      }
+      return { list, sha: data.sha || null };
+    }
+
+    async function saveGithubBilhetesFile(cfg, list, sha, commitMsg) {
+      const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/bilhetes.json`;
+      const body = {
+        message: commitMsg || "Novo bilhete surpresa R.A.U.L.",
+        content: encodeBase64Utf8(JSON.stringify(list, null, 2)),
+        branch: cfg.branch || "main"
+      };
+      if (sha) body.sha = sha;
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + cfg.token,
+          Accept: "application/vnd.github+json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Erro ao salvar no GitHub (${res.status})`);
+      }
+      return await res.json();
+    }
+
+    async function sendLuisNoteToGitHub() {
+      const note = buildLuisNoteObject();
+      if (!note) return;
+
+      const cfg = getLuisGithubConfig();
+      const fb = document.getElementById("luisSenderFeedback");
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        const det = document.getElementById("luisGhSetupDetails");
+        if (det) det.open = true;
+        if (fb) fb.innerHTML = "⚠️ Configure abaixo sua conexão com o GitHub (só na primeira vez neste aparelho) para enviar direto sem WhatsApp.";
+        showToast("Configure seu token GitHub abaixo (1x só).");
+        return;
+      }
+
+      const btn = document.getElementById("luisSendDirectBtn");
+      if (btn) { btn.disabled = true; btn.innerText = "Enviando para o app da Gi..."; }
+      if (fb) fb.innerText = "Gravando bilhete no repositório...";
+
+      try {
+        const { list, sha } = await fetchGithubBilhetesFile(cfg);
+        const updated = [note, ...list.filter(n => n.id !== note.id)];
+        await saveGithubBilhetesFile(cfg, updated, sha, `Bilhete surpresa: ${note.title}`);
+
+        document.getElementById("luisNoteTitle").value = "";
+        document.getElementById("luisNoteMessage").value = "";
+        document.getElementById("luisNoteRevealAt").value = "";
+        showToast("💌 Bilhete enviado! Aparecerá quando a Gi abrir o app!");
+        if (fb) {
+          fb.innerHTML = `✅ <strong>Bilhete enviado!</strong> Quando a Gi abrir o R.A.U.L. dela no celular, a cartinha vai aparecer sozinha${note.revealAt ? " no horário programado" : ""}.`;
+        }
+        renderLuisSentList(updated);
+      } catch (e) {
+        if (fb) fb.innerText = "❌ Não foi possível enviar: " + (e.message || "verifique usuário, repositório e token.");
+        showToast("Erro ao enviar para o GitHub.");
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerText = "🚀 Enviar Direto para o App da Gi"; }
+      }
+    }
+
+    async function refreshLuisSentList() {
+      const box = document.getElementById("luisSentListContainer");
+      if (!box) return;
+      const cfg = getLuisGithubConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Salve seu token GitHub acima para gerenciar os bilhetes enviados.</p>`;
+        return;
+      }
+      box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Carregando...</p>`;
+      try {
+        const { list } = await fetchGithubBilhetesFile(cfg);
+        renderLuisSentList(list);
+      } catch (e) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--danger); margin:4px 0;">Não foi possível ler bilhetes.json (${escapeHtml(e.message || "erro")}).</p>`;
+      }
+    }
+
+    function renderLuisSentList(list) {
+      const box = document.getElementById("luisSentListContainer");
+      if (!box) return;
+      if (!Array.isArray(list) || !list.length) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Nenhum bilhete publicado ainda.</p>`;
+        return;
+      }
+      box.innerHTML = "";
+      list.slice(0, 20).forEach(n => {
+        const row = document.createElement("div");
+        row.className = "house-item-row";
+        const sched = n.revealAt ? `Agendado: ${formatEventDateBr(n.revealAt)}` : "Abre imediatamente ao abrir o app";
+        const safeId = escapeHtml(n.id || "");
+        row.innerHTML = `
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700;">💌 ${escapeHtml(n.title || "Bilhete")}</div>
+            <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(sched)}</div>
+          </div>
+          <button type="button" onclick="deleteLuisNoteFromGitHub('${safeId}')" title="Remover do servidor" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    async function deleteLuisNoteFromGitHub(noteId) {
+      const cfg = getLuisGithubConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token || !noteId) return;
+      try {
+        const { list, sha } = await fetchGithubBilhetesFile(cfg);
+        const filtered = list.filter(n => n.id !== noteId);
+        await saveGithubBilhetesFile(cfg, filtered, sha, "Remove bilhete surpresa");
+        renderLuisSentList(filtered);
+        showToast("🗑️ Bilhete removido do GitHub!");
+      } catch (e) {
+        showToast("Erro ao remover bilhete.");
+      }
+    }
+
+    async function buildMergedBilhetesArray(newNote) {
+      let existing = [];
+      const cfg = getLuisGithubConfig();
+      if (cfg.owner && cfg.repo && cfg.token) {
+        try {
+          const { list } = await fetchGithubBilhetesFile(cfg);
+          existing = list;
+        } catch (e) {}
+      } else if (window.location.protocol !== "file:") {
+        try {
+          const res = await fetch("./bilhetes.json?t=" + Date.now(), { cache: "no-store" });
+          if (res.ok) {
+            const parsed = await res.json();
+            if (Array.isArray(parsed)) existing = parsed;
+            else if (Array.isArray(parsed?.bilhetes)) existing = parsed.bilhetes;
+          }
+        } catch (e) {}
+      }
+      return [newNote, ...existing.filter(n => n.id !== newNote.id)];
+    }
+
+    async function copyLuisBilhetesJson() {
+      const note = buildLuisNoteObject();
+      if (!note) return;
+      const merged = await buildMergedBilhetesArray(note);
+      const jsonStr = JSON.stringify(merged, null, 2);
+      try {
+        await navigator.clipboard.writeText(jsonStr);
+        showToast("📋 JSON de bilhetes.json copiado!");
+      } catch (e) {}
+      const fb = document.getElementById("luisSenderFeedback");
+      if (fb) {
+        fb.innerHTML = `✅ <strong>JSON copiado!</strong> Cole no arquivo <code>bilhetes.json</code> do GitHub Pages. Ela receberá ao abrir o app.`;
+      }
+    }
+
+    async function downloadLuisBilhetesJson() {
+      const note = buildLuisNoteObject();
+      if (!note) return;
+      const merged = await buildMergedBilhetesArray(note);
+      downloadTextFile(JSON.stringify(merged, null, 2), "bilhetes.json");
+      const fb = document.getElementById("luisSenderFeedback");
+      if (fb) {
+        fb.innerHTML = `⬇️ <strong>bilhetes.json</strong> baixado! Suba esse arquivo na mesma pasta do <code>index.html</code> no GitHub.`;
+      }
+    }
+
+    function previewLuisSurpriseNote() {
+      const note = buildLuisNoteObject();
+      if (!note) return;
+      openSurpriseRevealCard(note, true);
+    }
+
     function loadProfileInputs() {
       const p = state.ownerProfile || {};
       document.getElementById("profileWorkInput").value = p.work || "";
@@ -3605,7 +5125,6 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       localStorage.setItem("raul_owner_name", state.ownerName);
       localStorage.setItem("raul_api_key", state.apiKey);
       localStorage.setItem("raul_purr_vol", state.purrVolume);
-      discoverNewestFlashModel();
       closeModal("settingsModal");
       showToast("✅ Configurações salvas!");
     }
