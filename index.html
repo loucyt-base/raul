@@ -268,6 +268,28 @@
       user-select: none;
     }
 
+    .particles-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 15;
+    }
+
+    .floating-particle {
+      position: absolute;
+      font-size: 18px;
+      animation: floatParticle 1.35s ease-out forwards;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes floatParticle {
+      0% { opacity: 0; transform: translateY(8px) scale(0.6) rotate(-8deg); }
+      25% { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(8deg); }
+      100% { opacity: 0; transform: translateY(-56px) scale(0.85) rotate(-10deg); }
+    }
+
     svg#raulSvg {
       width: 100%;
       height: 100%;
@@ -325,6 +347,13 @@
       75% { transform: translate(-1px, -0.8px); }
     }
 
+    @keyframes bowtiePop {
+      0% { transform: scale(1) rotate(0deg); }
+      40% { transform: scale(1.18) rotate(-5deg); }
+      75% { transform: scale(0.95) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
     .cat-body-group {
       animation: floatBreath 4.2s ease-in-out infinite;
       transform-origin: 150px 260px;
@@ -340,6 +369,10 @@
       transform-origin: 150px 118px;
     }
 
+    .raul-pupil {
+      transition: transform 0.09s ease-out;
+    }
+
     .cat-ear-left {
       animation: earTwitchL 6.5s ease-in-out infinite;
       transform-origin: 100px 100px;
@@ -353,6 +386,11 @@
     .cat-tail {
       animation: tailWag 3.4s ease-in-out infinite;
       transform-origin: 190px 250px;
+    }
+
+    .bowtie-pop {
+      animation: bowtiePop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: 0px 0px;
     }
 
     /* Estados visuais do R.A.U.L. */
@@ -535,6 +573,86 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+    }
+
+    .msg-action-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 7px;
+      width: 100%;
+    }
+
+    .action-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 13px;
+      padding: 9px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .action-card.calendar {
+      border-left-color: #2563eb;
+    }
+
+    .action-card.email {
+      border-left-color: #d62839;
+    }
+
+    .action-card.doc {
+      border-left-color: #059669;
+    }
+
+    .action-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .action-card-title {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .action-card-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .action-card-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .action-link-btn {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 9px;
+      border: none;
+      background: var(--accent);
+      color: #181522;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .action-link-btn.secondary {
+      background: var(--bg-surface-alt);
+      color: var(--text-main);
+      border: 1px solid var(--border);
     }
 
     .msg-tools {
@@ -805,8 +923,8 @@
 
     .modal-box {
       width: 100%;
-      max-width: 440px;
-      max-height: 86dvh;
+      max-width: 460px;
+      max-height: 88dvh;
       overflow-y: auto;
       background: var(--bg-surface);
       border-radius: 22px;
@@ -828,7 +946,7 @@
     }
 
     .field-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .field-label {
@@ -841,13 +959,18 @@
 
     .field-input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--bg-surface-alt);
       color: var(--text-main);
-      font-size: 14px;
+      font-size: 13.5px;
       font-family: inherit;
+    }
+
+    textarea.field-input {
+      resize: vertical;
+      min-height: 54px;
     }
 
     .google-big-btn {
@@ -878,6 +1001,17 @@
       border-color: #34a853;
     }
 
+    .google-sub-actions {
+      display: none;
+      gap: 8px;
+      margin-top: 8px;
+      justify-content: center;
+    }
+
+    .google-sub-actions.show {
+      display: flex;
+    }
+
     .primary-btn {
       width: 100%;
       padding: 12px;
@@ -888,6 +1022,20 @@
       font-size: 14.5px;
       font-weight: 800;
       cursor: pointer;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
     .event-card {
@@ -901,6 +1049,17 @@
       align-items: center;
       gap: 8px;
       font-size: 13px;
+    }
+
+    .auto-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 99px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      margin-right: 4px;
     }
 
     .toast {
@@ -919,6 +1078,9 @@
       transition: all 0.25s ease;
       z-index: 90;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-width: 90vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
@@ -971,6 +1133,7 @@
       </div>
 
       <div class="cat-canvas-wrap" id="catAvatarWrap" onclick="petRaul()">
+        <div class="particles-layer" id="particlesLayer"></div>
         <svg id="raulSvg" viewBox="0 0 300 290" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="polkaDots" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -980,6 +1143,31 @@
             <pattern id="yellowWeave" width="8" height="8" patternUnits="userSpaceOnUse">
               <path d="M 0 4 H 8 M 4 0 V 8" stroke="#ca8a04" stroke-width="0.6" opacity="0.35" />
             </pattern>
+            <pattern id="ribbedTurquoise" width="6" height="8" patternUnits="userSpaceOnUse">
+              <line x1="2" y1="0" x2="2" y2="8" stroke="#0f766e" stroke-width="1.2" opacity="0.28" />
+              <line x1="5" y1="0" x2="5" y2="8" stroke="#99f6e4" stroke-width="0.8" opacity="0.22" />
+            </pattern>
+            <pattern id="partyDots" width="14" height="14" patternUnits="userSpaceOnUse">
+              <circle cx="4" cy="4" r="1.2" fill="#fef08a" opacity="0.85" />
+              <circle cx="11" cy="11" r="1.1" fill="#ffffff" opacity="0.7" />
+            </pattern>
+            <pattern id="halloweenPattern" width="16" height="16" patternUnits="userSpaceOnUse">
+              <circle cx="4" cy="4" r="1.1" fill="#f97316" opacity="0.75" />
+              <path d="M 11 9 L 12 11.5 L 14.5 11.5 L 12.5 13 L 13 15.5 L 11 14 L 9 15.5 L 9.5 13 L 7.5 11.5 L 10 11.5 Z" fill="#e2e8f0" opacity="0.55" />
+            </pattern>
+            <pattern id="starCapePattern" width="16" height="16" patternUnits="userSpaceOnUse">
+              <path d="M 8 2 L 9.2 5.4 L 12.8 5.4 L 9.9 7.5 L 11 11 L 8 8.9 L 5 11 L 6.1 7.5 L 3.2 5.4 L 6.8 5.4 Z" fill="#e2e8f0" opacity="0.65" />
+              <circle cx="2" cy="13" r="0.9" fill="#f8fafc" opacity="0.5" />
+            </pattern>
+            <pattern id="boucleWool" width="10" height="10" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="2.2" fill="none" stroke="#c7bfb0" stroke-width="0.9" opacity="0.65" />
+              <circle cx="8" cy="7" r="2.0" fill="none" stroke="#ffffff" stroke-width="0.9" opacity="0.8" />
+            </pattern>
+            <linearGradient id="coatGrayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e2e8f0" />
+              <stop offset="55%" stop-color="#cbd5e1" />
+              <stop offset="100%" stop-color="#94a3b8" />
+            </linearGradient>
             <radialGradient id="raulEyeGrad" cx="50%" cy="45%" r="50%">
               <stop offset="0%" stop-color="#c3d96b" />
               <stop offset="55%" stop-color="#84a94c" />
@@ -1034,6 +1222,61 @@
               <path d="M 187 268 V 278 M 195 267 V 279 M 203 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
             </g>
 
+            <!-- Acessório Capa Estrelada com 2 Sinhos Dourados (Foto real) -->
+            <g id="starCapeAccessory" style="display:none;">
+              <path d="M 78 184 Q 108 208 150 206 Q 192 208 222 184 L 242 214 Q 202 228 150 218 Q 98 228 58 214 Z" fill="#18181f" stroke="#09090b" stroke-width="1.5" />
+              <path d="M 78 184 Q 108 208 150 206 Q 192 208 222 184 L 242 214 Q 202 228 150 218 Q 98 228 58 214 Z" fill="url(#starCapePattern)" />
+              <path d="M 149 208 Q 145 232 143 248" fill="none" stroke="#111115" stroke-width="2.4" stroke-linecap="round" />
+              <path d="M 151 208 Q 156 230 158 244" fill="none" stroke="#111115" stroke-width="2.4" stroke-linecap="round" />
+              <circle cx="143" cy="251" r="5" fill="#eab308" stroke="#854d0e" stroke-width="1.2" />
+              <circle cx="141.8" cy="249.5" r="1.4" fill="#fef08a" />
+              <circle cx="158" cy="247" r="5" fill="#eab308" stroke="#854d0e" stroke-width="1.2" />
+              <circle cx="156.8" cy="245.5" r="1.4" fill="#fef08a" />
+            </g>
+
+            <!-- Roupa de Frio: Casaco Cinza com Gola e Punhos Felpudos (Foto 15) -->
+            <g id="winterCoatAccessory" style="display:none;">
+              <!-- Corpo e mangas do casaco cinza-claro cobrindo ombros e tronco -->
+              <path d="M 74 176 Q 50 212 56 263 L 92 266 L 122 263 L 128 246 L 172 246 L 178 263 L 208 266 L 244 263 Q 250 212 226 176 Q 190 164 150 166 Q 110 164 74 176 Z"
+                    fill="url(#coatGrayGrad)" stroke="#64748b" stroke-width="1.6" stroke-linejoin="round" />
+              <!-- Parte central aconchegante com costura -->
+              <path d="M 150 202 V 265" stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="3,2" />
+              <path d="M 118 202 Q 150 220 182 202 L 176 265 H 124 Z" fill="#cbd5e1" opacity="0.45" />
+              <!-- Punhos felpudos brancos acima das patinhas -->
+              <path d="M 78 256 Q 88 248 98 255 Q 108 248 118 255 Q 126 250 130 262 Q 115 268 104 267 Q 88 268 76 262 Z"
+                    fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4" stroke-linejoin="round" />
+              <path d="M 170 262 Q 174 250 182 255 Q 192 248 202 255 Q 212 248 222 256 L 224 262 Q 212 268 196 267 Q 185 268 170 262 Z"
+                    fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4" stroke-linejoin="round" />
+              <!-- Pequeno bordado dourado no peito/ombro (como na foto) -->
+              <g transform="translate(196, 224)">
+                <circle cx="0" cy="0" r="8" fill="none" stroke="#eab308" stroke-width="1.3" opacity="0.85" />
+                <path d="M -4 2 L -3 -3 L 0 -1 L 3 -3 L 4 2 Z" fill="#eab308" opacity="0.9" />
+              </g>
+              <!-- Gola alta de pelúcia branca bem felpuda ao redor do pescoço -->
+              <path d="M 74 178 Q 84 168 96 176 Q 110 168 124 178 Q 138 172 150 176 Q 162 172 176 178 Q 190 168 204 176 Q 216 168 226 178
+                       L 234 196 Q 222 208 208 202 Q 194 214 178 206 Q 164 218 150 212 Q 136 218 122 206 Q 106 214 92 202 Q 78 208 66 196 Z"
+                    fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M 92 192 Q 112 204 132 196 M 168 196 Q 188 204 208 192 M 138 202 Q 150 208 162 202"
+                    fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
+            </g>
+
+            <!-- Cachecol de Lã Tricotado Creme/Cinza Claro (Foto 6) -->
+            <g id="woolScarfAccessory" style="display:none;">
+              <!-- Pontas com franjas caindo sobre o peito -->
+              <path d="M 102 206 L 84 260 L 118 264 L 136 208 Z" fill="#ebe6dc" stroke="#c7bfb0" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M 102 206 L 84 260 L 118 264 L 136 208 Z" fill="url(#boucleWool)" />
+              <path d="M 88 261 L 84 272 M 96 262 L 94 273 M 104 263 L 103 274 M 113 263 L 114 273" stroke="#c7bfb0" stroke-width="2" stroke-linecap="round" />
+              <path d="M 156 208 L 166 254 L 198 250 L 184 204 Z" fill="#e4ded2" stroke="#c7bfb0" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M 156 208 L 166 254 L 198 250 L 184 204 Z" fill="url(#boucleWool)" />
+              <path d="M 170 253 L 171 264 M 179 252 L 181 263 M 188 251 L 190 262 M 195 250 L 198 260" stroke="#c7bfb0" stroke-width="2" stroke-linecap="round" />
+              <!-- Gola enrolada fofinha de lã bouclé -->
+              <path d="M 80 180 Q 150 198 220 180 Q 232 192 222 208 Q 186 224 150 220 Q 114 224 78 208 Q 68 192 80 180 Z"
+                    fill="#f4f0e8" stroke="#c7bfb0" stroke-width="1.7" stroke-linejoin="round" />
+              <path d="M 80 180 Q 150 198 220 180 Q 232 192 222 208 Q 186 224 150 220 Q 114 224 78 208 Q 68 192 80 180 Z"
+                    fill="url(#boucleWool)" />
+              <path d="M 94 200 Q 124 212 150 208 Q 176 212 206 200" fill="none" stroke="#d4cdc0" stroke-width="2" stroke-linecap="round" />
+            </g>
+
             <!-- Cabeça e Orelhas do R.A.U.L. -->
             <g class="cat-head-group" id="raulHeadGroup">
               <!-- Orelha Esquerda com Tufos Brancos -->
@@ -1052,8 +1295,8 @@
               <!-- Base Preta Peluda da Cabeça -->
               <path d="M 72 108 Q 95 62 150 62 Q 205 62 228 108 L 242 122 L 232 130 L 246 144 L 230 154 L 236 166 Q 195 186 150 186 Q 105 186 64 166 L 70 154 L 54 144 L 68 130 L 58 122 Z" fill="#15151a" />
 
-              <!-- Marcação Branca do Focinho, Bochechas Peludas e Testa -->
-              <path d="M 147 82 L 140 112 Q 132 132 105 142 L 74 152 L 84 160 L 72 168 L 95 178 Q 150 192 205 178 L 228 168 L 216 160 L 226 152 L 195 142 Q 166 132 156 112 Z" fill="#ffffff" />
+              <!-- Marcação Branca do Focinho, Bochechas Peludas e Chama Fina na Testa -->
+              <path d="M 148 77 L 140 112 Q 132 132 105 142 L 74 152 L 84 160 L 72 168 L 95 178 Q 150 192 205 178 L 228 168 L 216 160 L 226 152 L 195 142 Q 166 132 156 112 Z" fill="#ffffff" />
               <path d="M 82 146 L 64 152 L 78 160 L 66 170 L 92 175 M 218 146 L 236 152 L 222 160 L 234 170 L 208 175" fill="#ffffff" />
 
               <!-- Mandíbula Articulada, Cavanhaque Preto e Boca -->
@@ -1066,32 +1309,38 @@
                 <ellipse id="raulMouthCavity" cx="148" cy="161" rx="9" ry="0" fill="#be123c" stroke="#881337" stroke-width="1.2" style="transition: all 0.08s ease-out;" />
                 <ellipse id="raulMouthTongue" cx="148" cy="163" rx="6" ry="0" fill="#fb7185" style="transition: all 0.08s ease-out;" />
 
-                <!-- Linguinha Blep (quando ativada no botão) -->
-                <path class="blep-tongue" d="M 141 160 Q 148 175 155 160 Z" fill="#fb7185" stroke="#be123c" stroke-width="1" style="opacity:0; transition: opacity 0.2s;" />
+                <!-- Linguinha Blep discreta e retinha fiel à foto na janela -->
+                <path class="blep-tongue" d="M 141 159 C 141 167, 154 167, 154 159 Z" fill="#fb7185" stroke="#be123c" stroke-width="1" style="opacity:0; transition: opacity 0.2s;" />
               </g>
 
               <!-- Meio-Bigode Preto Característico (Lado Direito de quem olha) -->
               <path d="M 148 151 Q 166 148 179 156 Q 182 161 175 164 Q 160 166 146 161 Z" fill="#15151a" />
 
-              <!-- Detalhe Rosado Acima do Nariz + Nariz Preto -->
+              <!-- Detalhe Rosado Acima do Nariz + Nariz Preto em Coração -->
               <ellipse cx="143" cy="136" rx="4.5" ry="3" fill="#fda4af" opacity="0.45" />
               <path d="M 137 139 Q 149 135 161 139 Q 162 146 149 153 Q 136 146 137 139 Z" fill="#111115" />
               <ellipse cx="146" cy="141" rx="4" ry="1.8" fill="#475569" opacity="0.55" />
               <path d="M 148 152 Q 137 161 124 157" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
 
-              <!-- Olhos Verdes Expressivos (Abertos e Piscando) -->
+              <!-- Olhos Verdes Expressivos (Com a sarda âmbar real no olho esquerdo) -->
               <g class="eyes-normal cat-eye-blink">
                 <g transform="translate(110, 118)">
                   <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-                  <ellipse cx="1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                  <circle cx="-3" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                  <circle cx="4" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  <!-- Manchinha âmbar-dourada real do Raul na íris -->
+                  <circle cx="8" cy="2" r="2.6" fill="#b45309" opacity="0.78" />
+                  <g class="raul-pupil">
+                    <ellipse cx="1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
+                    <circle cx="-3" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
+                    <circle cx="4" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  </g>
                 </g>
                 <g transform="translate(188, 118)">
                   <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-                  <ellipse cx="-1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                  <circle cx="-4" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                  <circle cx="3" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  <g class="raul-pupil">
+                    <ellipse cx="-1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
+                    <circle cx="-4" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
+                    <circle cx="3" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  </g>
                 </g>
               </g>
 
@@ -1118,14 +1367,16 @@
 
             <!-- Gravata Borboleta com Dobras Realistas e Sombra -->
             <g id="bowTieGroup" transform="translate(150, 206)" filter="url(#bowShadow)" onclick="event.stopPropagation(); cycleBowTie();" style="cursor:pointer;">
-              <path id="bowBackLeft" d="M -6 -6 L -48 -24 Q -56 -24 -56 -14 L -54 16 Q -52 24 -44 22 L -6 6 Z" fill="#991b1b" />
-              <path id="bowBackRight" d="M 6 -6 L 48 -24 Q 56 -24 56 -14 L 54 16 Q 52 24 44 22 L 6 6 Z" fill="#991b1b" />
-              <path id="tieLeftWing" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="#dc2626" />
-              <path id="tiePatternLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="url(#polkaDots)" />
-              <path id="tieRightWing" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="#dc2626" />
-              <path id="tiePatternRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="url(#polkaDots)" />
-              <rect id="tieKnot" x="-10" y="-11" width="20" height="22" rx="6" fill="#b91c1c" />
-              <rect id="tieKnotPattern" x="-10" y="-11" width="20" height="22" rx="6" fill="url(#polkaDots)" />
+              <g id="bowTieInner">
+                <path id="bowBackLeft" d="M -6 -6 L -48 -24 Q -56 -24 -56 -14 L -54 16 Q -52 24 -44 22 L -6 6 Z" fill="#991b1b" />
+                <path id="bowBackRight" d="M 6 -6 L 48 -24 Q 56 -24 56 -14 L 54 16 Q 52 24 44 22 L 6 6 Z" fill="#991b1b" />
+                <path id="tieLeftWing" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="#dc2626" />
+                <path id="tiePatternLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="url(#polkaDots)" />
+                <path id="tieRightWing" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="#dc2626" />
+                <path id="tiePatternRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="url(#polkaDots)" />
+                <rect id="tieKnot" x="-10" y="-11" width="20" height="22" rx="6" fill="#b91c1c" />
+                <rect id="tieKnotPattern" x="-10" y="-11" width="20" height="22" rx="6" fill="url(#polkaDots)" />
+              </g>
             </g>
 
             <!-- Patinha Pensativa no Queixo -->
@@ -1142,6 +1393,7 @@
         <button class="act-chip" onclick="playRaulMeow(true)">🗣️ "Rá-uuuuul!"</button>
         <button class="act-chip" onclick="toggleBlep()">👅 Blep</button>
         <button class="act-chip" onclick="giveTreat()">🐟 Sachê</button>
+        <button class="act-chip" onclick="toggleWinterOutfit()">🧥 Roupa de Frio</button>
         <button class="act-chip" onclick="togglePartyMode()">🎈 Festa "R"</button>
       </div>
     </section>
@@ -1182,7 +1434,7 @@
       <div class="drawer-grid">
         <button class="drawer-card-btn" id="installPwaBtn" onclick="installPWA()" style="display:flex; grid-column: span 2; background: var(--accent); color: #181522; font-weight: 800; justify-content: center;">📲 Instalar App no Celular</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('agendaModal');">📅 Conta & Agenda</button>
-        <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('memoriesModal');">🧠 Memórias</button>
+        <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('memoriesModal');">🧠 Perfil & Memória</button>
         <button class="drawer-card-btn" onclick="toggleSound()" id="soundToggleBtn">🔊 Som: Ligado</button>
         <button class="drawer-card-btn" onclick="toggleDarkMode()" id="themeToggleBtn">🌙 Tema Escuro</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('settingsModal');" style="grid-column: span 2;">⚙️ Chave Gemini & Nome</button>
@@ -1218,7 +1470,7 @@
       </div>
     </div>
 
-    <!-- MODAL: CONTA GOOGLE & AGENDA (1 CLIQUE) -->
+    <!-- MODAL: CONTA GOOGLE & AGENDA (BIDIRECIONAL) -->
     <div class="modal-overlay" id="agendaModal" onclick="closeModalOnBackdrop(event, 'agendaModal')">
       <div class="modal-box">
         <div class="modal-head">
@@ -1231,45 +1483,76 @@
             <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
             <span id="googleBtnText">Entrar com Google</span>
           </button>
+          <div class="google-sub-actions" id="googleSubActions">
+            <button type="button" class="mini-tool-btn" onclick="manualGoogleRefresh()">🔄 Sincronizar Agora</button>
+            <button type="button" class="mini-tool-btn" onclick="disconnectGoogleAccount()" style="color: var(--danger);">🚪 Sair / Trocar Conta</button>
+          </div>
           <p id="googleConnectedInfo" style="font-size:12px; color:var(--text-muted); margin:8px 0 0; text-align:center;">
-            Conecte para o R.A.U.L. ler sua Google Agenda, Gmail e salvar arquivos no seu Drive.
+            Conecte para o R.A.U.L. ler e criar eventos na Google Agenda, buscar no Gmail e salvar no Drive.
           </p>
         </div>
 
         <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
 
         <div class="field-group">
-          <label class="field-label">Adicionar Compromisso Rápido</label>
+          <label class="field-label" id="addEventLabel">Adicionar Compromisso (Local ou Google Agenda)</label>
           <div style="display:flex; gap:6px; margin-bottom:6px;">
             <input type="date" id="newEventDate" class="field-input" style="flex:1;" />
             <input type="time" id="newEventTime" class="field-input" style="width:110px;" />
           </div>
           <div style="display:flex; gap:6px;">
             <input type="text" id="newEventTitle" class="field-input" placeholder="Ex: Dentista, Reunião..." />
-            <button class="pill-btn accent" onclick="addManualEvent()" style="height:42px;">Salvar</button>
+            <button class="pill-btn accent" id="saveEventBtn" onclick="addManualEvent()" style="height:42px;">Salvar</button>
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label">Próximos Compromissos</label>
+          <label class="field-label">Próximos Compromissos (30 dias)</label>
           <div id="eventsListContainer"></div>
         </div>
       </div>
     </div>
 
-    <!-- MODAL: MEMÓRIAS DA DONA -->
+    <!-- MODAL: PERFIL DA DONA & MEMÓRIA INTELIGENTE -->
     <div class="modal-overlay" id="memoriesModal" onclick="closeModalOnBackdrop(event, 'memoriesModal')">
       <div class="modal-box">
         <div class="modal-head">
-          <h3>🧠 Memórias do R.A.U.L.</h3>
+          <h3>🧠 Perfil & Memória</h3>
           <button class="icon-btn" onclick="closeModal('memoriesModal')" style="width:32px; height:32px;">✕</button>
         </div>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-top:0;">
-          Fatos importantes sobre você que o R.A.U.L. sempre lembra em todas as conversas:
+        <p style="font-size:12.5px; color:var(--text-muted); margin-top:0; margin-bottom:12px;">
+          Preencha uma vez para o R.A.U.L. já saber quem você é, sua rotina e seus gostos em todas as conversas:
         </p>
-        <div style="display:flex; gap:6px; margin-bottom:12px;">
-          <input type="text" id="newMemoryInput" class="field-input" placeholder="Ex: Amo café sem açúcar..." />
-          <button class="pill-btn accent" onclick="addMemory()" style="height:42px;">Guardar</button>
+
+        <div class="field-group">
+          <label class="field-label">💼 O que faz / Trabalho & Rotina</label>
+          <textarea id="profileWorkInput" class="field-input" rows="2" placeholder="Ex: Advogada, trabalha das 9h às 18h, atende clientes..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">📚 O que estuda / Cursos & Metas</label>
+          <textarea id="profileStudyInput" class="field-input" rows="2" placeholder="Ex: Pós-graduação em..., estudando inglês, meta de ler 1 livro/mês..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">💛 Do que gosta / Preferências & Lazer</label>
+          <textarea id="profileLikesInput" class="field-input" rows="2" placeholder="Ex: Café sem açúcar, comida italiana, gatos, filmes de suspense..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">📌 Pessoas, Datas e Detalhes Importantes</label>
+          <textarea id="profileNotesInput" class="field-input" rows="2" placeholder="Ex: Noivo se chama..., aniversário em..., alergia a..."></textarea>
+        </div>
+        <button class="primary-btn" onclick="saveOwnerProfile()" style="margin-bottom: 14px;">Salvar Perfil</button>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;" />
+
+        <label class="toggle-row" style="cursor:pointer;">
+          <span>✨ Aprender automaticamente nas conversas</span>
+          <input type="checkbox" id="autoLearnToggle" onchange="toggleAutoLearn()" style="width:18px; height:18px; accent-color: var(--accent);" />
+        </label>
+
+        <label class="field-label">Fatos aprendidos / Notas rápidas</label>
+        <div style="display:flex; gap:6px; margin-bottom:10px;">
+          <input type="text" id="newMemoryInput" class="field-input" placeholder="Adicionar nota rápida..." onkeydown="if(event.key==='Enter'){event.preventDefault();addMemory();}" />
+          <button class="pill-btn accent" onclick="addMemory()" style="height:40px;">Guardar</button>
         </div>
         <div id="memoriesListContainer"></div>
       </div>
@@ -1313,10 +1596,10 @@
 
   <script>
     // VERSÃO DO APP E CLIENT ID DO GOOGLE OAUTH
-    const APP_BUILD_VERSION = "2026.11.16.v3-pwa-fiel";
+    const APP_BUILD_VERSION = "2026.11.16.v5-3.8flash-winter";
     const GOOGLE_CLIENT_ID = "537553462075-3addbhr7ue7ii7qch3ivtl9ghskho51e.apps.googleusercontent.com";
-    const GOOGLE_SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file";
-    const GEMINI_MODEL = "gemini-flash-latest";
+    const GOOGLE_SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email";
+    let GEMINI_MODELS = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.6-flash"];
 
     // AFINAÇÃO PERSONALIZADA DO MIADO "RÁ-UUUUUL!" DO R.A.U.L.
     const RAUL_VOICE_TUNING = {
@@ -1326,48 +1609,71 @@
       breath: 0.33
     };
 
-    // GRAVATAS DO R.A.U.L. (Com dobras sombreadas)
+    // GRAVATAS E ROUPAS REAIS DAS FOTOS DO R.A.U.L.
     const BOW_TIES = [
-      { name: "Vermelha de Bolinhas", main: "#dc2626", back: "#991b1b", knot: "#b91c1c", pattern: "url(#polkaDots)" },
-      { name: "Verde-Esmeralda de Bolinhas", main: "#059669", back: "#065f46", knot: "#047857", pattern: "url(#polkaDots)" },
-      { name: "Amarela Canário", main: "#facc15", back: "#ca8a04", knot: "#eab308", pattern: "url(#yellowWeave)" },
-      { name: "Verde-Floresta de Festa", main: "#14532d", back: "#052e16", knot: "#eab308", pattern: "url(#polkaDots)" },
-      { name: "Azul-Marinho", main: "#1d3557", back: "#0f172a", knot: "#112036", pattern: "url(#polkaDots)" },
-      { name: "Lilás Elegante", main: "#7b2cbf", back: "#4c1d95", knot: "#5a189a", pattern: "none" }
+      { name: "Vermelha de Bolinhas", icon: "🎀", main: "#dc2626", back: "#991b1b", knot: "#b91c1c", pattern: "url(#polkaDots)", knotPattern: "url(#polkaDots)", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Verde de Bolinhas", icon: "🎀", main: "#059669", back: "#065f46", knot: "#047857", pattern: "url(#polkaDots)", knotPattern: "url(#polkaDots)", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Amarela Canário", icon: "🎀", main: "#facc15", back: "#ca8a04", knot: "#eab308", pattern: "url(#yellowWeave)", knotPattern: "url(#yellowWeave)", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Azul-Turquesa (1 🐾🐾)", icon: "🎀", main: "#2ec4b6", back: "#0f766e", knot: "#14b8a6", pattern: "url(#ribbedTurquoise)", knotPattern: "url(#ribbedTurquoise)", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Verde-Floresta de Festa", icon: "🎀", main: "#14532d", back: "#052e16", knot: "#eab308", pattern: "url(#partyDots)", knotPattern: "none", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Preta de Halloween (Nó Laranja)", icon: "🎀", main: "#1f2937", back: "#09090b", knot: "#f97316", pattern: "url(#halloweenPattern)", knotPattern: "none", showCape: false, showWinterCoat: false, showWoolScarf: false },
+      { name: "Capa Estrelada com Sinhos", icon: "✨", main: "#18181f", back: "#09090b", knot: "#eab308", pattern: "url(#starCapePattern)", knotPattern: "none", showCape: true, showWinterCoat: false, showWoolScarf: false },
+      { name: "Roupinha de Frio (Casaco Felpudo)", icon: "🧥", main: "#cbd5e1", back: "#94a3b8", knot: "#f8fafc", pattern: "none", knotPattern: "none", showCape: false, showWinterCoat: true, showWoolScarf: false },
+      { name: "Cachecol de Lã Quentinho", icon: "🧣", main: "#f4f0e8", back: "#c7bfb0", knot: "#ebe6dc", pattern: "url(#boucleWool)", knotPattern: "none", showCape: false, showWinterCoat: false, showWoolScarf: true }
     ];
+
+    function safeJsonParse(raw, fallback) {
+      try {
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
 
     let state = {
       apiKey: localStorage.getItem("raul_api_key") || "",
       ownerName: localStorage.getItem("raul_owner_name") || "Gi",
+      ownerProfile: safeJsonParse(localStorage.getItem("raul_owner_profile"), {
+        work: "",
+        study: "",
+        likes: "",
+        notes: ""
+      }),
+      autoLearn: localStorage.getItem("raul_auto_learn") !== "false",
       darkMode: localStorage.getItem("raul_dark") === "true",
       soundOn: localStorage.getItem("raul_sound") !== "false",
       purrVolume: parseInt(localStorage.getItem("raul_purr_vol") || "85", 10),
       effortIndex: parseInt(localStorage.getItem("raul_effort") || "0", 10),
-      memories: JSON.parse(localStorage.getItem("raul_memories") || "[]"),
-      manualEvents: JSON.parse(localStorage.getItem("raul_events") || "[]"),
-      chats: JSON.parse(localStorage.getItem("raul_chats") || "[]"),
+      memories: safeJsonParse(localStorage.getItem("raul_memories"), []),
+      manualEvents: safeJsonParse(localStorage.getItem("raul_events"), []),
+      chats: safeJsonParse(localStorage.getItem("raul_chats"), []),
       activeChatId: localStorage.getItem("raul_active_chat") || null,
       tieIndex: 0,
       weatherSummary: "",
       locationName: "",
-      googleToken: sessionStorage.getItem("raul_google_token") || "",
+      googleToken: localStorage.getItem("raul_google_token") || sessionStorage.getItem("raul_google_token") || "",
+      googleTokenExp: parseInt(localStorage.getItem("raul_google_token_exp") || "0", 10),
+      googleEmail: localStorage.getItem("raul_google_email") || "",
+      lastGoogleSyncAt: 0,
       googleEventsCache: [],
       googleEmailsCache: [],
+      googleSearchSnippet: "",
       pendingAttachment: null,
       abortController: null,
       isGenerating: false
     };
 
     const EFFORT_MODES = [
-      { label: "⚡ Rápido", budget: 0 },
-      { label: "🐾 Médio", budget: 2048 },
-      { label: "🎩 Profundo", budget: 8192 }
+      { label: "⚡ Rápido", level: "LOW" },
+      { label: "🐾 Médio", level: "MEDIUM" },
+      { label: "🎩 Profundo", level: "HIGH" }
     ];
 
     let tokenClient = null;
     let sharedAudioCtx = null;
     let deferredInstallPrompt = null;
     let speakingInterval = null;
+    let googleBgSyncTimer = null;
 
     // GERA ÍCONES PNG DE ALTA DEFINIÇÃO E MANIFESTO PWA VÁLIDO PARA O CHROME ANDROID E SAFARI
     function setupDynamicPwaManifest() {
@@ -1379,11 +1685,9 @@
           const ctx = canvas.getContext("2d");
           const s = size / 100;
 
-          // Fundo escuro arredondado
           ctx.fillStyle = "#1e1b2e";
           ctx.fillRect(0, 0, size, size);
 
-          // Orelhas pretas
           ctx.fillStyle = "#141418";
           ctx.beginPath();
           ctx.moveTo(22 * s, 42 * s); ctx.lineTo(18 * s, 14 * s); ctx.lineTo(42 * s, 28 * s);
@@ -1393,12 +1697,10 @@
           ctx.moveTo(78 * s, 42 * s); ctx.lineTo(82 * s, 14 * s); ctx.lineTo(58 * s, 28 * s);
           ctx.closePath(); ctx.fill();
 
-          // Cabeça preta
           ctx.beginPath();
           ctx.ellipse(50 * s, 54 * s, 34 * s, 28 * s, 0, 0, Math.PI * 2);
           ctx.fill();
 
-          // Marcação branca do focinho
           ctx.fillStyle = "#ffffff";
           ctx.beginPath();
           ctx.moveTo(48 * s, 34 * s);
@@ -1412,7 +1714,6 @@
           ctx.closePath();
           ctx.fill();
 
-          // Meio-bigode e queixo preto
           ctx.fillStyle = "#141418";
           ctx.beginPath();
           ctx.ellipse(57 * s, 60 * s, 5 * s, 2.5 * s, 0.2, 0, Math.PI * 2);
@@ -1421,17 +1722,14 @@
           ctx.ellipse(50 * s, 68 * s, 8 * s, 4.5 * s, 0, 0, Math.PI * 2);
           ctx.fill();
 
-          // Olhos verdes
           ctx.fillStyle = "#74a842";
           ctx.beginPath(); ctx.ellipse(37 * s, 48 * s, 5.5 * s, 6.5 * s, 0, 0, Math.PI * 2); ctx.fill();
           ctx.beginPath(); ctx.ellipse(63 * s, 48 * s, 5.5 * s, 6.5 * s, 0, 0, Math.PI * 2); ctx.fill();
 
-          // Pupilas
           ctx.fillStyle = "#0d0d10";
           ctx.beginPath(); ctx.ellipse(37 * s, 48 * s, 2 * s, 5 * s, 0, 0, Math.PI * 2); ctx.fill();
           ctx.beginPath(); ctx.ellipse(63 * s, 48 * s, 2 * s, 5 * s, 0, 0, Math.PI * 2); ctx.fill();
 
-          // Gravata borboleta vermelha
           ctx.fillStyle = "#dc2626";
           ctx.beginPath(); ctx.moveTo(33 * s, 78 * s); ctx.lineTo(50 * s, 85 * s); ctx.lineTo(33 * s, 92 * s); ctx.closePath(); ctx.fill();
           ctx.beginPath(); ctx.moveTo(67 * s, 78 * s); ctx.lineTo(50 * s, 85 * s); ctx.lineTo(67 * s, 92 * s); ctx.closePath(); ctx.fill();
@@ -1522,7 +1820,6 @@
       localStorage.removeItem("raul_google_client_id");
       localStorage.removeItem("google_client_id");
 
-      // Se já estiver rodando como App Instalado (standalone), oculta o botão de instalar
       if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
         const btn = document.getElementById("installPwaBtn");
         if (btn) btn.style.display = "none";
@@ -1540,16 +1837,22 @@
         localStorage.setItem("raul_build_ver", APP_BUILD_VERSION);
       }
 
+      if (state.effortIndex < 0 || state.effortIndex >= EFFORT_MODES.length) {
+        state.effortIndex = 0;
+      }
+
       if (state.darkMode) document.body.classList.add("dark");
       updateThemeUI();
       updateSoundUI();
       updateEffortUI();
       pickRandomTieOnBoot();
+      setupEyeTracking();
 
       document.getElementById("ownerNameInput").value = state.ownerName;
       document.getElementById("apiKeyInput").value = state.apiKey;
       document.getElementById("purrVolumeRange").value = state.purrVolume;
       document.getElementById("volPercent").innerText = state.purrVolume + "%";
+      loadProfileInputs();
 
       if (!state.chats.length) {
         createNewChatObject();
@@ -1563,11 +1866,51 @@
       renderEventsList();
       detectWeather(false);
       initGoogleOAuth();
+      discoverNewestFlashModel();
 
-      if (state.googleToken) {
+      // Restaura sessão Google persistente se ainda válida
+      if (state.googleToken && (!state.googleTokenExp || Date.now() < state.googleTokenExp)) {
         onGoogleConnected(state.googleToken, true);
+      } else if (state.googleToken && state.googleTokenExp && Date.now() >= state.googleTokenExp) {
+        clearStoredGoogleToken(false);
+        updateGoogleDisconnectedUI(true);
       }
+
+      // Sincronização silenciosa periódica a cada 3 minutos
+      if (googleBgSyncTimer) clearInterval(googleBgSyncTimer);
+      googleBgSyncTimer = setInterval(() => {
+        if (state.googleToken && !state.isGenerating) {
+          syncGoogleData();
+        }
+      }, 180000);
     });
+
+    // DESCOBERTA SILENCIOSA DO MODELO FLASH MAIS RECENTE (>= 3.8)
+    async function discoverNewestFlashModel() {
+      if (!state.apiKey) return;
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(state.apiKey)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const candidates = (data.models || [])
+          .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes("generateContent"))
+          .map(m => String(m.name || "").replace("models/", ""))
+          .filter(name => /^gemini-(\d+(?:\.\d+)?)-flash$/.test(name));
+
+        candidates.sort((a, b) => {
+          const va = parseFloat((a.match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
+          const vb = parseFloat((b.match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
+          return vb - va;
+        });
+
+        if (candidates.length > 0) {
+          const topVer = parseFloat((candidates[0].match(/^gemini-(\d+(?:\.\d+)?)-flash$/) || [0, 0])[1]);
+          if (topVer >= 3.8) {
+            GEMINI_MODELS = Array.from(new Set([candidates[0], "gemini-3.8-flash", "gemini-flash-latest", "gemini-3.6-flash"]));
+          }
+        }
+      } catch (e) {}
+    }
 
     function getAudioCtx() {
       if (!sharedAudioCtx) {
@@ -1587,25 +1930,94 @@
       setTimeout(() => el.classList.remove("show"), 2600);
     }
 
+    // OLHOS QUE SEGUEM O TOQUE/MOUSE & PARTÍCULAS
+    function setupEyeTracking() {
+      const handleMove = (clientX, clientY) => {
+        if (state.isGenerating) return;
+        const svg = document.getElementById("raulSvg");
+        if (!svg) return;
+        const rect = svg.getBoundingClientRect();
+        if (!rect.width) return;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height * 0.42;
+
+        const dx = Math.max(-1, Math.min(1, (clientX - centerX) / (window.innerWidth * 0.35)));
+        const dy = Math.max(-1, Math.min(1, (clientY - centerY) / (window.innerHeight * 0.35)));
+
+        const moveX = (dx * 4.2).toFixed(2);
+        const moveY = (dy * 2.8).toFixed(2);
+
+        document.querySelectorAll(".raul-pupil").forEach(p => {
+          p.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+      };
+
+      window.addEventListener("mousemove", (e) => handleMove(e.clientX, e.clientY), { passive: true });
+      window.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches[0]) {
+          handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+    }
+
+    function spawnParticles(emojis, count = 4) {
+      const layer = document.getElementById("particlesLayer");
+      if (!layer) return;
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const span = document.createElement("span");
+          span.className = "floating-particle";
+          span.innerText = emojis[i % emojis.length];
+          span.style.left = (28 + Math.random() * 44) + "%";
+          span.style.top = (25 + Math.random() * 30) + "%";
+          layer.appendChild(span);
+          setTimeout(() => span.remove(), 1400);
+        }, i * 130);
+      }
+    }
+
     // GRAVATA SORTEADA A CADA ABERTURA
     function pickRandomTieOnBoot() {
       const last = parseInt(localStorage.getItem("raul_last_tie") || "-1", 10);
       let next = Math.floor(Math.random() * BOW_TIES.length);
       if (next === last) next = (next + 1) % BOW_TIES.length;
       localStorage.setItem("raul_last_tie", next);
-      applyTie(next);
+      applyTie(next, false);
     }
 
     function cycleBowTie() {
       const next = (state.tieIndex + 1) % BOW_TIES.length;
-      applyTie(next);
+      applyTie(next, true);
       playPurr(0.7);
-      showToast("🎀 Gravata: " + BOW_TIES[next].name);
+      const t = BOW_TIES[next];
+      showToast((t.icon || "🎀") + " " + t.name);
     }
 
-    function applyTie(idx) {
+    function toggleWinterOutfit() {
+      const coatIdx = BOW_TIES.findIndex(t => t.showWinterCoat);
+      const scarfIdx = BOW_TIES.findIndex(t => t.showWoolScarf);
+      const cur = BOW_TIES[state.tieIndex] || {};
+
+      if (cur.showWinterCoat && scarfIdx !== -1) {
+        applyTie(scarfIdx, true);
+        playPurr(0.9);
+        spawnParticles(["🧣", "❄️", "✨", "💖"], 4);
+        showToast("🧣 R.A.U.L. colocou o cachecol de lã!");
+      } else if (cur.showWoolScarf) {
+        applyTie(0, true);
+        playPurr(0.7);
+        showToast("🎀 Voltou para a gravata borboleta!");
+      } else if (coatIdx !== -1) {
+        applyTie(coatIdx, true);
+        playPurr(1.1);
+        spawnParticles(["🧥", "❄️", "💛", "🐾"], 4);
+        showToast("🧥 R.A.U.L. vestiu a roupinha de frio!");
+      }
+    }
+
+    function applyTie(idx, animate = false) {
       state.tieIndex = idx;
-      const t = BOW_TIES[idx];
+      const t = BOW_TIES[idx] || BOW_TIES[0];
       document.getElementById("tieLeftWing").setAttribute("fill", t.main);
       document.getElementById("tieRightWing").setAttribute("fill", t.main);
       document.getElementById("bowBackLeft").setAttribute("fill", t.back);
@@ -1613,8 +2025,28 @@
       document.getElementById("tieKnot").setAttribute("fill", t.knot);
       document.getElementById("tiePatternLeft").setAttribute("fill", t.pattern);
       document.getElementById("tiePatternRight").setAttribute("fill", t.pattern);
-      document.getElementById("tieKnotPattern").setAttribute("fill", t.pattern);
-      document.getElementById("tieLabelBtn").innerText = "🎀 " + t.name;
+      document.getElementById("tieKnotPattern").setAttribute("fill", t.knotPattern || "none");
+      document.getElementById("tieLabelBtn").innerText = (t.icon || "🎀") + " " + t.name;
+
+      const bowGroup = document.getElementById("bowTieGroup");
+      const cape = document.getElementById("starCapeAccessory");
+      const coat = document.getElementById("winterCoatAccessory");
+      const scarf = document.getElementById("woolScarfAccessory");
+
+      const hideBow = !!(t.showWinterCoat || t.showWoolScarf);
+      if (bowGroup) bowGroup.style.display = hideBow ? "none" : "inline";
+      if (cape) cape.style.display = t.showCape ? "inline" : "none";
+      if (coat) coat.style.display = t.showWinterCoat ? "inline" : "none";
+      if (scarf) scarf.style.display = t.showWoolScarf ? "inline" : "none";
+
+      if (animate && !hideBow) {
+        const inner = document.getElementById("bowTieInner");
+        if (inner) {
+          inner.classList.remove("bowtie-pop");
+          void inner.offsetWidth;
+          inner.classList.add("bowtie-pop");
+        }
+      }
     }
 
     // ARTICULAÇÃO DA BOCA E ESTADOS DO R.A.U.L.
@@ -1639,14 +2071,20 @@
       }
       if (mode === "speaking") {
         svg.classList.add("state-speaking");
+        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(0px, 0px)"));
         let openToggle = false;
         speakingInterval = setInterval(() => {
           openToggle = !openToggle;
           if (openToggle) setMouthShape(8.5, 5.2, 3.2);
           else setMouthShape(5.0, 1.8, 1.0);
         }, 150);
+      } else if (mode === "thinking") {
+        setMouthShape(9, 0, 0);
+        svg.classList.add("state-thinking");
+        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(3px, -4px)"));
       } else {
         setMouthShape(9, 0, 0);
+        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(0px, 0px)"));
         if (mode) svg.classList.add("state-" + mode);
       }
     }
@@ -1654,28 +2092,32 @@
     function petRaul() {
       setCatState("happy");
       playPurr(1.6);
+      spawnParticles(["❤️", "💖", "🐾", "✨"], 4);
       if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
       setTimeout(() => setCatState(state.isGenerating ? "thinking" : null), 1700);
     }
 
     function toggleBlep() {
       const svg = document.getElementById("raulSvg");
-      svg.classList.toggle("state-blep");
+      const active = svg.classList.toggle("state-blep");
+      if (active) spawnParticles(["👅", "🐾"], 2);
       playPurr(0.6);
     }
 
     function giveTreat() {
       setCatState("happy");
       playPurr(2.0);
+      spawnParticles(["🐟", "😋", "✨", "💛"], 4);
       showToast("🐟 R.A.U.L. devorou o sachê ronronando!");
-      setTimeout(() => setCatState(null), 2000);
+      setTimeout(() => setCatState(state.isGenerating ? "thinking" : null), 2000);
     }
 
     function togglePartyMode() {
       const svg = document.getElementById("raulSvg");
       const active = svg.classList.toggle("state-party");
       if (active) {
-        applyTie(3);
+        applyTie(4, true);
+        spawnParticles(["🎈", "💚", "✨", "🐾"], 5);
         showToast('🎈 Modo Festa "R" ativado!');
       }
     }
@@ -1903,7 +2345,7 @@
       });
     }
 
-    // GOOGLE OAUTH 2.0 DIRETO COM 1 CLIQUE
+    // GOOGLE OAUTH 2.0 PERSISTENTE + AGENDA BIDIRECIONAL + GMAIL + DRIVE
     function initGoogleOAuth() {
       if (window.google && google.accounts && google.accounts.oauth2) {
         tokenClient = google.accounts.oauth2.initTokenClient({
@@ -1911,6 +2353,12 @@
           scope: GOOGLE_SCOPES,
           callback: (resp) => {
             if (resp && resp.access_token) {
+              const expiresInSec = parseInt(resp.expires_in || "3600", 10);
+              const expMs = Date.now() + Math.max(60, expiresInSec - 60) * 1000;
+              state.googleToken = resp.access_token;
+              state.googleTokenExp = expMs;
+              localStorage.setItem("raul_google_token", resp.access_token);
+              localStorage.setItem("raul_google_token_exp", String(expMs));
               sessionStorage.setItem("raul_google_token", resp.access_token);
               onGoogleConnected(resp.access_token, false);
             }
@@ -1921,13 +2369,68 @@
       }
     }
 
-    function connectGoogleAccount() {
+    function clearStoredGoogleToken(clearEmail = false) {
+      state.googleToken = "";
+      state.googleTokenExp = 0;
+      localStorage.removeItem("raul_google_token");
+      localStorage.removeItem("raul_google_token_exp");
+      sessionStorage.removeItem("raul_google_token");
+      if (clearEmail) {
+        state.googleEmail = "";
+        state.googleEventsCache = [];
+        state.googleEmailsCache = [];
+        localStorage.removeItem("raul_google_email");
+      }
+    }
+
+    function updateGoogleDisconnectedUI(isExpired = false) {
+      document.getElementById("googleStatusDot").classList.remove("connected");
+      const btn = document.getElementById("googleConnectBtn");
+      if (btn) btn.classList.remove("connected");
+      const btnText = document.getElementById("googleBtnText");
+      if (btnText) {
+        btnText.innerText = isExpired ? "Reconectar Google (1 toque)" : "Entrar com Google";
+      }
+      const subActions = document.getElementById("googleSubActions");
+      if (subActions) subActions.classList.remove("show");
+      const info = document.getElementById("googleConnectedInfo");
+      if (info) {
+        info.innerText = isExpired && state.googleEmail
+          ? `Sessão expirada (${state.googleEmail}). Toque acima para renovar em 1 clique.`
+          : "Conecte para o R.A.U.L. ler e criar eventos na Google Agenda, buscar no Gmail e salvar no Drive.";
+      }
+      const addLbl = document.getElementById("addEventLabel");
+      if (addLbl) addLbl.innerText = "Adicionar Compromisso Local";
+    }
+
+    function connectGoogleAccount(silentAttempt = false) {
       if (!tokenClient) {
         initGoogleOAuth();
-        showToast("Carregando janela do Google...");
+        if (!silentAttempt) showToast("Carregando janela do Google...");
         return;
       }
-      tokenClient.requestAccessToken({ prompt: "select_account" });
+      const opts = {};
+      if (state.googleEmail) {
+        opts.login_hint = state.googleEmail;
+        opts.prompt = silentAttempt ? "" : "select_account";
+      } else {
+        opts.prompt = "select_account";
+      }
+      tokenClient.requestAccessToken(opts);
+    }
+
+    function disconnectGoogleAccount() {
+      clearStoredGoogleToken(true);
+      updateGoogleDisconnectedUI(false);
+      renderEventsList();
+      showToast("Conta Google desconectada.");
+    }
+
+    async function manualGoogleRefresh() {
+      if (!state.googleToken) return connectGoogleAccount(false);
+      showToast("Sincronizando Google Agenda e Gmail...");
+      await syncGoogleData(true);
+      showToast("✅ Agenda e Gmail atualizados!");
     }
 
     async function onGoogleConnected(token, silent) {
@@ -1935,90 +2438,318 @@
       document.getElementById("googleStatusDot").classList.add("connected");
       const btn = document.getElementById("googleConnectBtn");
       btn.classList.add("connected");
-      document.getElementById("googleBtnText").innerText = "Conta Google Conectada ✓";
-      document.getElementById("googleConnectedInfo").innerText = "Agenda, Gmail e Google Drive prontos para uso!";
+      document.getElementById("googleBtnText").innerText = state.googleEmail
+        ? `Conectado (${state.googleEmail}) ✓`
+        : "Conta Google Conectada ✓";
+      document.getElementById("googleSubActions").classList.add("show");
+      document.getElementById("googleConnectedInfo").innerText = "Agenda (leitura/escrita), Gmail e Google Docs prontos para uso!";
+      document.getElementById("addEventLabel").innerText = "Adicionar direto na Google Agenda";
       if (!silent) showToast("✅ Conta Google conectada ao R.A.U.L.!");
-      await syncGoogleData();
+      await fetchGoogleUserEmail();
+      await syncGoogleData(true);
     }
 
-    async function syncGoogleData() {
+    async function fetchGoogleUserEmail() {
       if (!state.googleToken) return;
       try {
-        const nowIso = new Date().toISOString();
-        const calRes = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(nowIso)}&maxResults=15&singleEvents=true&orderBy=startTime`, {
+        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
           headers: { Authorization: "Bearer " + state.googleToken }
         });
-        if (calRes.status === 401) {
-          state.googleToken = "";
-          sessionStorage.removeItem("raul_google_token");
-          document.getElementById("googleStatusDot").classList.remove("connected");
-          document.getElementById("googleConnectBtn").classList.remove("connected");
-          document.getElementById("googleBtnText").innerText = "Reconectar Google";
-          return;
+        if (res.ok) {
+          const data = await res.json();
+          if (data.email) {
+            state.googleEmail = data.email;
+            localStorage.setItem("raul_google_email", data.email);
+            document.getElementById("googleBtnText").innerText = `Conectado (${data.email}) ✓`;
+            return;
+          }
         }
-        const calData = await calRes.json();
-        state.googleEventsCache = (calData.items || []).map(ev => ({
-          title: ev.summary || "(Sem título)",
-          start: ev.start?.dateTime || ev.start?.date || "",
-          source: "Google Agenda"
-        }));
-        renderEventsList();
-
-        const mailListRes = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=5", {
+        const gRes = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/profile", {
           headers: { Authorization: "Bearer " + state.googleToken }
         });
-        const mailList = await mailListRes.json();
-        if (mailList.messages) {
-          const snippets = await Promise.all(mailList.messages.map(async m => {
-            const detail = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From`, {
-              headers: { Authorization: "Bearer " + state.googleToken }
-            }).then(r => r.json());
-            const headers = detail.payload?.headers || [];
-            const subj = headers.find(h => h.name === "Subject")?.value || "(Sem assunto)";
-            const from = headers.find(h => h.name === "From")?.value || "";
-            return `${from}: ${subj} — ${detail.snippet || ""}`;
-          }));
-          state.googleEmailsCache = snippets;
+        if (gRes.ok) {
+          const gData = await gRes.json();
+          if (gData.emailAddress) {
+            state.googleEmail = gData.emailAddress;
+            localStorage.setItem("raul_google_email", gData.emailAddress);
+            document.getElementById("googleBtnText").innerText = `Conectado (${gData.emailAddress}) ✓`;
+          }
         }
       } catch (e) {}
+    }
+
+    function formatEventDateBr(rawDateStr) {
+      if (!rawDateStr) return "Data indefinida";
+      try {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawDateStr)) {
+          const [y, m, d] = rawDateStr.split("-");
+          const dt = new Date(Number(y), Number(m) - 1, Number(d));
+          return dt.toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" }) + " (Dia todo)";
+        }
+        const dt = new Date(rawDateStr);
+        if (isNaN(dt.getTime())) return rawDateStr;
+        return dt.toLocaleString("pt-BR", {
+          weekday: "short",
+          day: "2-digit",
+          month: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).replace(",", " •");
+      } catch (e) {
+        return rawDateStr;
+      }
+    }
+
+    async function syncGoogleData(force = false) {
+      if (!state.googleToken) return;
+      if (!force && state.lastGoogleSyncAt && (Date.now() - state.lastGoogleSyncAt) < 90000) {
+        return;
+      }
+
+      try {
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+        const end30Days = new Date(startOfToday.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+        const calUrl = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(startOfToday.toISOString())}&timeMax=${encodeURIComponent(end30Days.toISOString())}&maxResults=40&singleEvents=true&orderBy=startTime`;
+        const calRes = await fetch(calUrl, {
+          headers: { Authorization: "Bearer " + state.googleToken }
+        });
+
+        if (calRes.status === 401) {
+          clearStoredGoogleToken(false);
+          updateGoogleDisconnectedUI(true);
+          return;
+        }
+
+        if (calRes.ok) {
+          const calData = await calRes.json();
+          state.googleEventsCache = (calData.items || []).map(ev => ({
+            id: ev.id,
+            title: ev.summary || "(Sem título)",
+            start: ev.start?.dateTime || ev.start?.date || "",
+            end: ev.end?.dateTime || ev.end?.date || "",
+            displayDate: formatEventDateBr(ev.start?.dateTime || ev.start?.date || ""),
+            htmlLink: ev.htmlLink || "",
+            source: "Google Agenda"
+          }));
+          renderEventsList();
+        }
+
+        const mailListRes = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=6", {
+          headers: { Authorization: "Bearer " + state.googleToken }
+        });
+        if (mailListRes.ok) {
+          const mailList = await mailListRes.json();
+          if (mailList.messages && mailList.messages.length) {
+            const snippets = await Promise.all(mailList.messages.map(async m => {
+              const detail = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=Date`, {
+                headers: { Authorization: "Bearer " + state.googleToken }
+              }).then(r => r.json());
+              const headers = detail.payload?.headers || [];
+              const subj = headers.find(h => h.name === "Subject")?.value || "(Sem assunto)";
+              const from = headers.find(h => h.name === "From")?.value || "";
+              return `${from}: ${subj} — ${detail.snippet || ""}`;
+            }));
+            state.googleEmailsCache = snippets;
+          }
+        }
+        state.lastGoogleSyncAt = Date.now();
+      } catch (e) {}
+    }
+
+    async function searchGmailMessages(queryText) {
+      if (!state.googleToken) return;
+      try {
+        const cleaned = queryText
+          .replace(/^(r\.?a\.?u\.?l\.?,?\s*)/i, "")
+          .replace(/\b(procure|procurar|busque|buscar|ache|achar|veja|verifique|meus|e-mails|emails|email|gmail|sobre|do|da|de|no|na|um|uma|por favor)\b/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 60);
+
+        if (!cleaned || cleaned.length < 2) {
+          await syncGoogleData(false);
+          return;
+        }
+
+        const listRes = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=5&q=${encodeURIComponent(cleaned)}`, {
+          headers: { Authorization: "Bearer " + state.googleToken }
+        });
+        if (!listRes.ok) return;
+        const listData = await listRes.json();
+        if (!listData.messages || !listData.messages.length) {
+          state.googleSearchSnippet = `Busca no Gmail por "${cleaned}" não retornou mensagens.`;
+          return;
+        }
+        const hits = await Promise.all(listData.messages.map(async m => {
+          const d = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=Date`, {
+            headers: { Authorization: "Bearer " + state.googleToken }
+          }).then(r => r.json());
+          const headers = d.payload?.headers || [];
+          const subj = headers.find(h => h.name === "Subject")?.value || "(Sem assunto)";
+          const from = headers.find(h => h.name === "From")?.value || "";
+          const dt = headers.find(h => h.name === "Date")?.value || "";
+          return `- [${dt}] De: ${from} | Assunto: ${subj} | Resumo: ${d.snippet || ""}`;
+        }));
+        state.googleSearchSnippet = `Resultados da busca no Gmail para "${cleaned}":\n${hits.join("\n")}`;
+      } catch (e) {}
+    }
+
+    async function createGoogleCalendarEvent({ title, startIso, endIso, description = "" }) {
+      const cleanTitle = (title || "Compromisso").trim();
+      let startObj = null;
+      let endObj = null;
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(startIso)) {
+        startObj = { date: startIso };
+        const d = new Date(startIso + "T12:00:00");
+        d.setDate(d.getDate() + 1);
+        endObj = { date: endIso && /^\d{4}-\d{2}-\d{2}$/.test(endIso) ? endIso : d.toISOString().slice(0, 10) };
+      } else {
+        const sDate = new Date(startIso);
+        if (isNaN(sDate.getTime())) {
+          return { ok: false, error: "Data inválida", localSaved: false };
+        }
+        let eDate = endIso ? new Date(endIso) : new Date(sDate.getTime() + 60 * 60 * 1000);
+        if (isNaN(eDate.getTime()) || eDate <= sDate) {
+          eDate = new Date(sDate.getTime() + 60 * 60 * 1000);
+        }
+        startObj = { dateTime: sDate.toISOString(), timeZone: tz };
+        endObj = { dateTime: eDate.toISOString(), timeZone: tz };
+      }
+
+      if (!state.googleToken) {
+        const fallbackDate = /^\d{4}-\d{2}-\d{2}/.test(startIso) ? startIso.slice(0, 10) : new Date().toISOString().slice(0, 10);
+        const fallbackTime = startIso.includes("T") ? startIso.split("T")[1].slice(0, 5) : "Dia todo";
+        state.manualEvents.push({ date: fallbackDate, time: fallbackTime, title: cleanTitle });
+        localStorage.setItem("raul_events", JSON.stringify(state.manualEvents));
+        renderEventsList();
+        return { ok: false, localSaved: true, displayDate: formatEventDateBr(startIso) };
+      }
+
+      try {
+        const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + state.googleToken,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            summary: cleanTitle,
+            description: description || "Agendado via R.A.U.L.",
+            start: startObj,
+            end: endObj
+          })
+        });
+
+        if (res.status === 401) {
+          clearStoredGoogleToken(false);
+          updateGoogleDisconnectedUI(true);
+          const fallbackDate = /^\d{4}-\d{2}-\d{2}/.test(startIso) ? startIso.slice(0, 10) : new Date().toISOString().slice(0, 10);
+          const fallbackTime = startIso.includes("T") ? startIso.split("T")[1].slice(0, 5) : "Dia todo";
+          state.manualEvents.push({ date: fallbackDate, time: fallbackTime, title: cleanTitle });
+          localStorage.setItem("raul_events", JSON.stringify(state.manualEvents));
+          renderEventsList();
+          return { ok: false, localSaved: true, displayDate: formatEventDateBr(startIso), error: "Sessão Google expirada" };
+        }
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          return { ok: false, localSaved: false, error: err.error?.message || "Erro na Google Agenda" };
+        }
+
+        const created = await res.json();
+        const evStart = created.start?.dateTime || created.start?.date || startIso;
+        const newCacheItem = {
+          id: created.id,
+          title: created.summary || cleanTitle,
+          start: evStart,
+          end: created.end?.dateTime || created.end?.date || "",
+          displayDate: formatEventDateBr(evStart),
+          htmlLink: created.htmlLink || "https://calendar.google.com",
+          source: "Google Agenda"
+        };
+        state.googleEventsCache.push(newCacheItem);
+        state.googleEventsCache.sort((a, b) => String(a.start).localeCompare(String(b.start)));
+        state.lastGoogleSyncAt = Date.now();
+        renderEventsList();
+        return { ok: true, event: newCacheItem };
+      } catch (e) {
+        return { ok: false, localSaved: false, error: e.message };
+      }
+    }
+
+    async function deleteGoogleCalendarEvent(eventId) {
+      if (!state.googleToken || !eventId) return;
+      try {
+        const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${encodeURIComponent(eventId)}`, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + state.googleToken }
+        });
+        if (res.ok || res.status === 204 || res.status === 404) {
+          state.googleEventsCache = state.googleEventsCache.filter(ev => ev.id !== eventId);
+          renderEventsList();
+          showToast("🗑️ Evento removido da Google Agenda!");
+        } else if (res.status === 401) {
+          clearStoredGoogleToken(false);
+          updateGoogleDisconnectedUI(true);
+          showToast("Sessão expirada. Reconecte o Google.");
+        } else {
+          showToast("Não foi possível excluir este evento.");
+        }
+      } catch (e) {
+        showToast("Erro ao excluir evento.");
+      }
     }
 
     async function saveTextToGoogleDrive(textContent, filename) {
       if (!state.googleToken) {
         showToast("Conecte sua conta Google em 📅 Agenda primeiro!");
         openModal("agendaModal");
-        return;
+        return null;
       }
-      showToast("Salvando no Google Drive...");
+      showToast("Criando Google Docs formatado...");
       try {
+        const renderedHtml = typeof marked !== "undefined" ? marked.parse(textContent || "") : `<pre>${escapeHtml(textContent || "")}</pre>`;
+        const htmlDocument = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(filename)}</title><style>body{font-family:Arial,sans-serif;line-height:1.55;color:#222;}h1,h2,h3{color:#1e1b2e;}ul,ol{padding-left:20px;}</style></head><body>${renderedHtml}</body></html>`;
+
         const metadata = {
           name: filename,
           mimeType: "application/vnd.google-apps.document"
         };
         const form = new FormData();
         form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
-        form.append("file", new Blob([textContent], { type: "text/plain" }));
+        form.append("file", new Blob([htmlDocument], { type: "text/html;charset=utf-8" }));
 
-        const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+        const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink", {
           method: "POST",
           headers: { Authorization: "Bearer " + state.googleToken },
           body: form
         });
         if (res.ok) {
-          showToast("✅ Salvo no seu Google Drive como Google Docs!");
-        } else {
+          const data = await res.json();
+          showToast("✅ Google Docs salvo no seu Drive!");
+          return data;
+        } else if (res.status === 401) {
+          clearStoredGoogleToken(false);
+          updateGoogleDisconnectedUI(true);
           showToast("Sessão expirada. Toque em Entrar com Google.");
           openModal("agendaModal");
+        } else {
+          showToast("Erro ao salvar no Drive.");
         }
       } catch (e) {
         showToast("Erro ao enviar para o Drive.");
       }
+      return null;
     }
 
     // GERENCIAMENTO DE CHATS E HISTÓRICO
     function createNewChatObject() {
       const id = "chat_" + Date.now();
-      const greeting = `Miau! ${state.ownerName} 🐾 Estou por aqui com a gravata impecável. Como posso te ajudar hoje?`;
+      const greeting = `Miau, ${state.ownerName}! 🐾 Como posso te ajudar agora?`;
       const chat = {
         id,
         title: "Nova conversa",
@@ -2032,6 +2763,7 @@
     }
 
     function startNewChat() {
+      if (state.isGenerating) return;
       createNewChatObject();
       renderActiveChat();
       renderHistoryList();
@@ -2049,6 +2781,7 @@
     }
 
     function switchChat(id) {
+      if (state.isGenerating) return;
       state.activeChatId = id;
       saveChats();
       renderActiveChat();
@@ -2093,12 +2826,20 @@
       const chat = getActiveChat();
       container.innerHTML = "";
       chat.messages.forEach((msg, idx) => {
-        appendMessageElement(msg.role, msg.text, msg.attachmentName, idx === 0);
+        appendMessageElement(msg.role, msg.text, msg.attachmentName, idx === 0, msg.actions || []);
       });
       container.scrollTop = container.scrollHeight;
     }
 
-    function appendMessageElement(role, text, attachmentName = "", isGreeting = false) {
+    function renderMarkdownSafe(text) {
+      const str = String(text || "");
+      if (typeof marked !== "undefined" && typeof marked.parse === "function") {
+        return marked.parse(str);
+      }
+      return escapeHtml(str).replace(/\n/g, "<br>");
+    }
+
+    function appendMessageElement(role, text, attachmentName = "", isGreeting = false, savedActions = []) {
       const container = document.getElementById("chatContainer");
       const row = document.createElement("div");
       row.className = "msg-row " + (role === "user" ? "user" : "bot");
@@ -2117,40 +2858,244 @@
       if (role === "user") {
         contentDiv.innerText = text;
       } else {
-        contentDiv.innerHTML = marked.parse(text || "");
+        contentDiv.innerHTML = renderMarkdownSafe(text);
       }
       bubble.appendChild(contentDiv);
       row.appendChild(bubble);
 
-      if (role === "model" && !isGreeting && text) {
-        const tools = document.createElement("div");
-        tools.className = "msg-tools";
-
-        const copyBtn = document.createElement("button");
-        copyBtn.className = "mini-tool-btn";
-        copyBtn.innerText = "📋 Copiar";
-        copyBtn.onclick = () => { navigator.clipboard.writeText(text); showToast("Copiado!"); };
-
-        const dlBtn = document.createElement("button");
-        dlBtn.className = "mini-tool-btn";
-        dlBtn.innerText = "⬇️ Baixar .txt";
-        dlBtn.onclick = () => downloadTextFile(text, "RAUL_nota.txt");
-
-        const driveBtn = document.createElement("button");
-        driveBtn.className = "mini-tool-btn";
-        driveBtn.innerText = "📄 Salvar no Drive";
-        driveBtn.onclick = () => saveTextToGoogleDrive(text, "R.A.U.L. - Anotação");
-
-        tools.append(copyBtn, dlBtn, driveBtn);
-        row.appendChild(tools);
+      const cardsWrap = document.createElement("div");
+      cardsWrap.className = "msg-action-cards";
+      if (savedActions && savedActions.length) {
+        savedActions.forEach(act => cardsWrap.appendChild(buildActionCardElement(act)));
+      } else {
+        cardsWrap.style.display = "none";
       }
+      row.appendChild(cardsWrap);
+
+      const tools = document.createElement("div");
+      tools.className = "msg-tools";
+      if (role === "model" && !isGreeting && text) {
+        populateBotTools(tools, text);
+      } else {
+        tools.style.display = "none";
+      }
+      row.appendChild(tools);
 
       container.appendChild(row);
       container.scrollTop = container.scrollHeight;
-      return contentDiv;
+      return { row, contentDiv, cardsWrap, tools };
     }
 
-    // ENVIO E STREAMING COM GEMINI FLASH LATEST
+    function populateBotTools(toolsEl, text) {
+      toolsEl.innerHTML = "";
+      toolsEl.style.display = "flex";
+
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "mini-tool-btn";
+      copyBtn.innerText = "📋 Copiar";
+      copyBtn.onclick = () => { navigator.clipboard.writeText(text); showToast("Copiado!"); };
+
+      const dlBtn = document.createElement("button");
+      dlBtn.className = "mini-tool-btn";
+      dlBtn.innerText = "⬇️ Baixar .txt";
+      dlBtn.onclick = () => downloadTextFile(text, "RAUL_nota.txt");
+
+      const driveBtn = document.createElement("button");
+      driveBtn.className = "mini-tool-btn";
+      driveBtn.innerText = "📄 Salvar no Docs";
+      driveBtn.onclick = async () => {
+        const doc = await saveTextToGoogleDrive(text, "R.A.U.L. - Anotação");
+        if (doc && doc.webViewLink) {
+          const openBtn = document.createElement("a");
+          openBtn.className = "mini-tool-btn";
+          openBtn.href = doc.webViewLink;
+          openBtn.target = "_blank";
+          openBtn.style.color = "var(--success)";
+          openBtn.innerText = "🔗 Abrir Doc";
+          toolsEl.appendChild(openBtn);
+        }
+      };
+
+      toolsEl.append(copyBtn, dlBtn, driveBtn);
+    }
+
+    function buildActionCardElement(act) {
+      const card = document.createElement("div");
+
+      if (act.type === "event") {
+        card.className = "action-card calendar";
+        const info = document.createElement("div");
+        info.className = "action-card-info";
+        const titleEl = document.createElement("div");
+        titleEl.className = "action-card-title";
+        titleEl.innerText = "📅 " + (act.title || "Compromisso");
+        const subEl = document.createElement("div");
+        subEl.className = "action-card-sub";
+        subEl.innerText = `${act.displayDate || act.startIso || ""}${act.synced ? " • ✅ Salvo na Google Agenda" : " • 📌 Salvo na agenda local"}`;
+        info.append(titleEl, subEl);
+
+        const btns = document.createElement("div");
+        btns.className = "action-card-btns";
+        const link = document.createElement("a");
+        link.className = "action-link-btn";
+        link.href = act.htmlLink || `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(act.title || "")}`;
+        link.target = "_blank";
+        link.innerText = "Abrir Agenda ↗";
+        btns.appendChild(link);
+        card.append(info, btns);
+      } else if (act.type === "email") {
+        card.className = "action-card email";
+        const info = document.createElement("div");
+        info.className = "action-card-info";
+        const titleEl = document.createElement("div");
+        titleEl.className = "action-card-title";
+        titleEl.innerText = "📧 " + (act.subject || "Rascunho de E-mail");
+        const subEl = document.createElement("div");
+        subEl.className = "action-card-sub";
+        subEl.innerText = act.to ? `Para: ${act.to}` : "Pronto para enviar";
+        info.append(titleEl, subEl);
+
+        const btns = document.createElement("div");
+        btns.className = "action-card-btns";
+
+        const gmailA = document.createElement("a");
+        gmailA.className = "action-link-btn";
+        gmailA.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(act.to || "")}&su=${encodeURIComponent(act.subject || "")}&body=${encodeURIComponent(act.body || "")}`;
+        gmailA.target = "_blank";
+        gmailA.innerText = "Abrir no Gmail ↗";
+
+        const mailtoA = document.createElement("a");
+        mailtoA.className = "action-link-btn secondary";
+        mailtoA.href = `mailto:${encodeURIComponent(act.to || "")}?subject=${encodeURIComponent(act.subject || "")}&body=${encodeURIComponent(act.body || "")}`;
+        mailtoA.innerText = "App E-mail";
+
+        btns.append(gmailA, mailtoA);
+        card.append(info, btns);
+      } else if (act.type === "doc") {
+        card.className = "action-card doc";
+        const info = document.createElement("div");
+        info.className = "action-card-info";
+        const titleEl = document.createElement("div");
+        titleEl.className = "action-card-title";
+        titleEl.innerText = "📄 " + (act.title || "Documento R.A.U.L.");
+        const subEl = document.createElement("div");
+        subEl.className = "action-card-sub";
+        subEl.innerText = "Documento estruturado pronto";
+        info.append(titleEl, subEl);
+
+        const btns = document.createElement("div");
+        btns.className = "action-card-btns";
+
+        const saveDocsBtn = document.createElement("button");
+        saveDocsBtn.className = "action-link-btn";
+        saveDocsBtn.innerText = "Salvar no Google Docs";
+        saveDocsBtn.onclick = async () => {
+          const doc = await saveTextToGoogleDrive(act.content || "", act.title || "Documento R.A.U.L.");
+          if (doc && doc.webViewLink) {
+            saveDocsBtn.outerHTML = `<a class="action-link-btn" href="${escapeHtml(doc.webViewLink)}" target="_blank">Abrir Google Doc ↗</a>`;
+          }
+        };
+
+        const dlTxtBtn = document.createElement("button");
+        dlTxtBtn.className = "action-link-btn secondary";
+        dlTxtBtn.innerText = "Baixar .txt";
+        dlTxtBtn.onclick = () => downloadTextFile(act.content || "", (act.title || "documento").replace(/[^\w\s-]/g, "") + ".txt");
+
+        btns.append(saveDocsBtn, dlTxtBtn);
+        card.append(info, btns);
+      }
+      return card;
+    }
+
+    // LIMPEZA DE TAGS EM TEMPO REAL E PROCESSAMENTO DE AÇÕES DO MODELO
+    function stripActionTagsForDisplay(rawText) {
+      let text = String(rawText || "");
+      text = text.replace(/\[MEMORIA_AUTO:\s*[^\]]*\]/gi, "");
+      text = text.replace(/\[CRIAR_EVENTO:\s*[^\]]*\]/gi, "");
+      text = text.replace(/\[EMAIL:\s*[^\]]*\]/gi, "");
+      text = text.replace(/\[DOCUMENTO:\s*([^|\]]+)\|([\s\S]*?)\]/gi, "$2");
+      // Oculta tag ainda incompleta sendo digitada no final do stream
+      text = text.replace(/\n?\[(?:MEMORIA_AUTO|CRIAR_EVENTO|EMAIL|DOCUMENTO)[^\]]*$/i, "");
+      return text.trim();
+    }
+
+    async function processModelActions(rawText) {
+      let clean = String(rawText || "");
+      const actions = [];
+      let learnedCount = 0;
+
+      // 1. Aprendizado automático de memórias
+      clean = clean.replace(/\[MEMORIA_AUTO:\s*([^\]]+)\]/gi, (_, fact) => {
+        const trimmed = fact.trim();
+        if (trimmed && state.autoLearn) {
+          const exists = state.memories.some(m => {
+            const txt = typeof m === "string" ? m : m.text;
+            return txt.toLowerCase() === trimmed.toLowerCase();
+          });
+          if (!exists) {
+            state.memories.unshift({ text: trimmed, auto: true });
+            learnedCount++;
+          }
+        }
+        return "";
+      });
+
+      if (learnedCount > 0) {
+        localStorage.setItem("raul_memories", JSON.stringify(state.memories.slice(0, 60)));
+        renderMemories();
+        showToast("🧠 R.A.U.L. guardou na memória!");
+      }
+
+      // 2. Criação real de evento na Google Agenda
+      const eventMatches = [...clean.matchAll(/\[CRIAR_EVENTO:\s*([^\]]+)\]/gi)];
+      clean = clean.replace(/\[CRIAR_EVENTO:\s*[^\]]+\]/gi, "");
+      for (const m of eventMatches) {
+        const parts = m[1].split("|").map(s => s.trim());
+        const evTitle = parts[0] || "Compromisso";
+        const startIso = parts[1] || "";
+        const endIso = parts[2] || "";
+        const desc = parts[3] || "";
+        const res = await createGoogleCalendarEvent({ title: evTitle, startIso, endIso, description: desc });
+        actions.push({
+          type: "event",
+          title: evTitle,
+          startIso,
+          displayDate: res.event?.displayDate || res.displayDate || formatEventDateBr(startIso),
+          htmlLink: res.event?.htmlLink || "",
+          synced: !!res.ok
+        });
+        if (res.ok) {
+          showToast("📅 Agendado na Google Agenda!");
+        }
+      }
+
+      // 3. Cartão interativo de E-mail
+      clean = clean.replace(/\[EMAIL:\s*([^\]]+)\]/gi, (_, inner) => {
+        const parts = inner.split("|").map(s => s.trim());
+        actions.push({
+          type: "email",
+          to: parts[0] || "",
+          subject: parts[1] || "Mensagem",
+          body: parts.slice(2).join(" | ") || ""
+        });
+        return "";
+      });
+
+      // 4. Documento formatado para Google Docs
+      clean = clean.replace(/\[DOCUMENTO:\s*([^|\]]+)\|([\s\S]*?)\]/gi, (_, docTitle, docBody) => {
+        const cleanDocBody = docBody.trim();
+        actions.push({
+          type: "doc",
+          title: docTitle.trim() || "Documento R.A.U.L.",
+          content: cleanDocBody
+        });
+        return cleanDocBody;
+      });
+
+      return { cleanText: clean.trim(), actions };
+    }
+
+    // ENVIO E STREAMING ULTRA-RÁPIDO (SEM BLOQUEIO E SEM THINKING PESADO)
     function handleKeyDown(e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -2164,6 +3109,7 @@
     }
 
     function sendQuickPrompt(text) {
+      if (state.isGenerating) return;
       document.getElementById("userInput").value = text;
       handleSendOrStop();
     }
@@ -2177,6 +3123,23 @@
       sendMessage();
     }
 
+    function buildPayloadForModel(modelName, systemPrompt, contents, effortMode, useThinkingConfig = true) {
+      const payload = {
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents,
+        generationConfig: {
+          temperature: 0.7
+        }
+      };
+
+      if (useThinkingConfig) {
+        payload.generationConfig.thinkingConfig = {
+          thinkingLevel: effortMode.level || "LOW"
+        };
+      }
+      return payload;
+    }
+
     async function sendMessage() {
       const input = document.getElementById("userInput");
       const text = input.value.trim();
@@ -2186,6 +3149,11 @@
         showToast("Configure sua chave gratuita do Gemini primeiro!");
         openModal("settingsModal");
         return;
+      }
+
+      // Destrava o AudioContext sincronamente dentro do evento de clique
+      if (state.soundOn) {
+        try { getAudioCtx(); } catch (e) {}
       }
 
       const chat = getActiveChat();
@@ -2208,10 +3176,6 @@
       renderHistoryList();
       appendMessageElement("user", text || "Analise este arquivo anexo.", attachment ? attachment.name : "");
 
-      if (state.googleToken && /agenda|compromisso|horário|segunda|terça|quarta|quinta|sexta|sábado|domingo|hoje|amanhã|semana|email|e-mail|gmail/i.test(text)) {
-        await syncGoogleData();
-      }
-
       state.isGenerating = true;
       state.abortController = new AbortController();
       const sendBtn = document.getElementById("sendBtn");
@@ -2219,12 +3183,42 @@
       sendBtn.classList.add("stop-mode");
       setCatState("thinking");
 
-      const botContentDiv = appendMessageElement("model", "", "", true);
+      const { contentDiv: botContentDiv, cardsWrap: botCardsWrap, tools: botToolsEl } = appendMessageElement("model", "", "", true);
+      botContentDiv.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">Pensando...</span>`;
+
+      // Sincronia Google rápida sem travar: usa cache recente ou limite máximo de 2.5s
+      state.googleSearchSnippet = "";
+      if (state.googleToken && /agenda|compromisso|horário|segunda|terça|quarta|quinta|sexta|sábado|domingo|hoje|amanhã|semana|email|e-mail|gmail|procure|busque/i.test(text)) {
+        const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2500));
+        const needsSearch = /procure|procurar|busque|buscar|ache|achar|sobre/i.test(text) && /email|e-mail|gmail|mensagem/i.test(text);
+        if (needsSearch) {
+          await Promise.race([searchGmailMessages(text), timeoutPromise]);
+        } else if (!state.lastGoogleSyncAt || (Date.now() - state.lastGoogleSyncAt) > 90000) {
+          await Promise.race([syncGoogleData(true), timeoutPromise]);
+        }
+      }
+
       let fullReply = "";
+      let rafScheduled = false;
+      let startedSpeaking = false;
+
+      const scheduleRender = () => {
+        if (rafScheduled) return;
+        rafScheduled = true;
+        requestAnimationFrame(() => {
+          rafScheduled = false;
+          const visible = stripActionTagsForDisplay(fullReply);
+          if (visible) {
+            botContentDiv.innerHTML = renderMarkdownSafe(visible);
+            const container = document.getElementById("chatContainer");
+            container.scrollTop = container.scrollHeight;
+          }
+        });
+      };
 
       try {
         const systemPrompt = buildSystemInstruction();
-        const contents = chat.messages.slice(-14).map((m, i, arr) => {
+        const contents = chat.messages.slice(-12).map((m, i, arr) => {
           const parts = [{ text: m.text }];
           if (i === arr.length - 1 && attachment) {
             parts.push({
@@ -2240,81 +3234,112 @@
           };
         });
 
-        const payload = {
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents,
-          generationConfig: {
-            temperature: 0.7,
-            thinkingConfig: { thinkingBudget: EFFORT_MODES[state.effortIndex].budget }
-          }
-        };
+        const effortMode = EFFORT_MODES[state.effortIndex] || EFFORT_MODES[0];
+        let lastErrorMsg = "Erro na API do Gemini";
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${encodeURIComponent(state.apiKey)}`;
-        let response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          signal: state.abortController.signal
-        });
+        for (const modelName of GEMINI_MODELS) {
+          if (state.abortController?.signal.aborted) break;
 
-        if (!response.ok && response.status === 400 && payload.generationConfig?.thinkingConfig) {
-          delete payload.generationConfig.thinkingConfig;
-          response = await fetch(url, {
+          const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${encodeURIComponent(state.apiKey)}`;
+          let payload = buildPayloadForModel(modelName, systemPrompt, contents, effortMode, true);
+
+          let response = await fetch(streamUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
             signal: state.abortController.signal
           });
-        }
 
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.error?.message || "Erro na API do Gemini");
-        }
+          // Fallback caso algum endpoint/alias futuro rejeite thinkingConfig
+          if (!response.ok && response.status === 400 && payload.generationConfig?.thinkingConfig) {
+            payload = buildPayloadForModel(modelName, systemPrompt, contents, effortMode, false);
+            response = await fetch(streamUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+              signal: state.abortController.signal
+            });
+          }
 
-        setCatState("speaking");
-        playRaulMeow(false);
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-        let buffer = "";
+          if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            lastErrorMsg = errData.error?.message || `HTTP ${response.status}`;
+            if (response.status === 400 && /API key/i.test(lastErrorMsg)) {
+              throw new Error(lastErrorMsg);
+            }
+            continue;
+          }
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop();
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder("utf-8");
+          let buffer = "";
 
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const jsonStr = line.slice(6).trim();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed.startsWith("data:")) continue;
+              const jsonStr = trimmed.slice(5).trim();
               if (!jsonStr || jsonStr === "[DONE]") continue;
               try {
                 const chunk = JSON.parse(jsonStr);
-                const partText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                if (partText) {
-                  fullReply += partText;
-                  botContentDiv.innerHTML = marked.parse(fullReply);
-                  const container = document.getElementById("chatContainer");
-                  container.scrollTop = container.scrollHeight;
+                const parts = chunk.candidates?.[0]?.content?.parts || [];
+                for (const part of parts) {
+                  if (part.thought) continue;
+                  if (part.text) {
+                    if (!startedSpeaking) {
+                      startedSpeaking = true;
+                      setCatState("speaking");
+                      playRaulMeow(false);
+                    }
+                    fullReply += part.text;
+                    scheduleRender();
+                  }
                 }
               } catch (e) {}
             }
           }
+
+          if (fullReply.trim()) break;
+        }
+
+        if (!fullReply.trim() && !state.abortController?.signal.aborted) {
+          throw new Error(lastErrorMsg);
         }
 
         if (fullReply) {
-          chat.messages.push({ role: "model", text: fullReply });
+          const { cleanText, actions } = await processModelActions(fullReply);
+          botContentDiv.innerHTML = renderMarkdownSafe(cleanText || fullReply);
+
+          if (actions.length > 0) {
+            botCardsWrap.innerHTML = "";
+            botCardsWrap.style.display = "flex";
+            actions.forEach(act => botCardsWrap.appendChild(buildActionCardElement(act)));
+          }
+          populateBotTools(botToolsEl, cleanText || fullReply);
+
+          chat.messages.push({ role: "model", text: cleanText || fullReply, actions });
           chat.updatedAt = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
           saveChats();
-          renderActiveChat();
+
+          const container = document.getElementById("chatContainer");
+          container.scrollTop = container.scrollHeight;
         }
       } catch (err) {
         if (err.name === "AbortError") {
           if (fullReply) {
-            chat.messages.push({ role: "model", text: fullReply + " *(interrompido)*" });
+            const cleanPartial = stripActionTagsForDisplay(fullReply) + " *(interrompido)*";
+            botContentDiv.innerHTML = renderMarkdownSafe(cleanPartial);
+            populateBotTools(botToolsEl, cleanPartial);
+            chat.messages.push({ role: "model", text: cleanPartial });
             saveChats();
-            renderActiveChat();
+          } else {
+            botContentDiv.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">*(interrompido)*</span>`;
           }
         } else {
           botContentDiv.innerHTML = `<span style="color:var(--danger);">Miau! Tive um probleminha técnico: ${escapeHtml(err.message)}</span>`;
@@ -2339,32 +3364,63 @@
       const timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
       const allEvents = [
-        ...state.googleEventsCache.map(e => `- [Google Agenda] ${e.start}: ${e.title}`),
-        ...state.manualEvents.map(e => `- [Agenda] ${e.date} ${e.time}: ${e.title}`)
+        ...state.googleEventsCache.map(e => `- [Google Agenda] ${e.displayDate || e.start} (${e.start}): ${e.title}`),
+        ...state.manualEvents.map(e => `- [Agenda Local] ${e.date} ${e.time}: ${e.title}`)
       ].join("\n") || "Nenhum compromisso registrado no momento.";
 
+      const p = state.ownerProfile || {};
+      const profileLines = [];
+      if (p.work) profileLines.push(`- Trabalho/Rotina: ${p.work}`);
+      if (p.study) profileLines.push(`- Estudos/Metas: ${p.study}`);
+      if (p.likes) profileLines.push(`- Gostos/Preferências: ${p.likes}`);
+      if (p.notes) profileLines.push(`- Pessoas/Datas/Notas: ${p.notes}`);
+      const profileStr = profileLines.length ? profileLines.join("\n") : "Perfil ainda não preenchido.";
+
       const memStr = state.memories.length
-        ? state.memories.map(m => `- ${m}`).join("\n")
-        : "Nenhuma memória extra cadastrada.";
+        ? state.memories.map(m => `- ${typeof m === "string" ? m : m.text}`).join("\n")
+        : "Nenhuma nota extra cadastrada.";
 
-      const mailStr = state.googleEmailsCache.length
-        ? state.googleEmailsCache.join("\n")
-        : "Gmail não conectado ou sem mensagens recentes.";
+      const mailStr = [
+        state.googleEmailsCache.length ? state.googleEmailsCache.join("\n") : "Gmail não conectado ou sem mensagens recentes.",
+        state.googleSearchSnippet ? "\n" + state.googleSearchSnippet : ""
+      ].filter(Boolean).join("\n");
 
-      return `Você é o R.A.U.L. (Ronronante Assistente Ultra Leal), um gato frajola (preto e branco) de olhos verdes, meio-bigode preto e gravata borboleta elegante.
-Você é o assistente pessoal carinhoso, inteligente, prestativo e levemente bem-humorado de ${state.ownerName}.
-REGRAS DE COMPORTAMENTO:
-1. Vá direto ao ponto na resposta (nunca comece com textos de status ou narrações entre asteriscos antes de responder).
-2. Use uma linguagem natural, acolhedora e charmosa, como um gato mordomo muito competente.
-3. Data e hora atual: ${dateStr}, às ${timeStr}.
-4. Clima e localização atual: ${state.weatherSummary || "Não informado"}.
-5. Memórias sobre ${state.ownerName}:
+      const autoLearnRule = state.autoLearn
+        ? `\n3. MEMÓRIA AUTOMÁTICA: Se ${state.ownerName} revelar um fato novo e útil sobre quem ela é, trabalho, estudos, rotina ou gostos que ainda não está no perfil/memórias acima, adicione no final da resposta (ela não verá a tag):\n[MEMORIA_AUTO: Fato curto e objetivo]`
+        : "";
+
+      return `Você é o R.A.U.L., assistente pessoal de ${state.ownerName}.
+
+REGRA DE OURO DE ESTILO E CONCISÃO:
+- Inicie suas respostas apenas com "Miau!" (ou "Miau, ${state.ownerName}!") e vá DIRETO ao assunto.
+- Seja sucinto, objetivo, claro e prático.
+- PROIBIDO FINGIR AÇÕES FÍSICAS DE GATO: Nunca use narrações entre asteriscos (como *arruma a gravata*, *ronrona*, *lambe a pata*) e nunca escreva parágrafos falando sobre sua gravata borboleta, pelos, sachê, bigodes ou vida de gato, a menos que ela pergunte especificamente sobre você.
+
+CONTEXTO ATUAL:
+- Data e hora atual: ${dateStr}, às ${timeStr}.
+- Clima e localização: ${state.weatherSummary || "Não informado"}.
+
+PERFIL DE ${state.ownerName.toUpperCase()}:
+${profileStr}
+
+MEMÓRIAS APRENDIDAS SOBRE ${state.ownerName.toUpperCase()}:
 ${memStr}
-6. Agenda de ${state.ownerName}:
+
+AGENDA DE ${state.ownerName.toUpperCase()}:
 ${allEvents}
-7. Últimos e-mails (Gmail):
+
+ÚLTIMOS E-MAILS (GMAIL):
 ${mailStr}
-Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Agenda/Gmail que não está na lista acima, avise gentilmente para ela tocar no botão "📅 Agenda" no topo e clicar em "Entrar com Google".`;
+
+AÇÕES AUTOMÁTICAS (use no final apenas quando aplicável; o app executa silenciosamente):
+1. AGENDAR COMPROMISSO: Quando ela pedir para agendar, marcar ou lembrar de um compromisso com data/hora, adicione no final (use formato ISO local YYYY-MM-DDTHH:MM:00 ou YYYY-MM-DD para dia todo):
+[CRIAR_EVENTO: Título | YYYY-MM-DDTHH:MM:00 | YYYY-MM-DDTHH:MM:00 | Descrição curta]
+2. RASCUNHO DE E-MAIL: Quando ela pedir para escrever um e-mail, inclua no final:
+[EMAIL: destinatario@email.com | Assunto | Corpo completo do e-mail]${autoLearnRule}
+4. DOCUMENTO LONGO: Se ela pedir especificamente para criar um documento ou resumo para salvar no Google Docs, envolva o conteúdo em:
+[DOCUMENTO: Título do Documento | Conteúdo completo em Markdown]
+
+Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Agenda/Gmail que não está acima, avise em 1 frase curta para ela tocar em "📅 Agenda" no topo e clicar em "Entrar com Google".`;
     }
 
     // ANEXOS E DOWNLOADS
@@ -2401,17 +3457,31 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       URL.revokeObjectURL(url);
     }
 
-    // AGENDA MANUAL, MEMÓRIAS E CONFIGURAÇÕES
-    function addManualEvent() {
+    // AGENDA, PERFIL, MEMÓRIAS E CONFIGURAÇÕES
+    async function addManualEvent() {
       const date = document.getElementById("newEventDate").value;
-      const time = document.getElementById("newEventTime").value || "Dia todo";
+      const time = document.getElementById("newEventTime").value;
       const title = document.getElementById("newEventTitle").value.trim();
       if (!date || !title) return showToast("Preencha data e título!");
-      state.manualEvents.push({ date, time, title });
+
+      if (state.googleToken) {
+        const btn = document.getElementById("saveEventBtn");
+        btn.disabled = true;
+        const startIso = time ? `${date}T${time}:00` : date;
+        const res = await createGoogleCalendarEvent({ title, startIso, endIso: "" });
+        btn.disabled = false;
+        if (res.ok) {
+          document.getElementById("newEventTitle").value = "";
+          showToast("✅ Compromisso criado na Google Agenda!");
+          return;
+        }
+      }
+
+      state.manualEvents.push({ date, time: time || "Dia todo", title });
       localStorage.setItem("raul_events", JSON.stringify(state.manualEvents));
       document.getElementById("newEventTitle").value = "";
       renderEventsList();
-      showToast("📅 Compromisso salvo!");
+      showToast("📅 Compromisso salvo localmente!");
     }
 
     function removeManualEvent(idx) {
@@ -2423,16 +3493,44 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
     function renderEventsList() {
       const box = document.getElementById("eventsListContainer");
       box.innerHTML = "";
-      state.googleEventsCache.slice(0, 6).forEach(ev => {
+      state.googleEventsCache.slice(0, 12).forEach(ev => {
         const div = document.createElement("div");
         div.className = "event-card";
-        div.innerHTML = `<span><strong>${escapeHtml(ev.title)}</strong><br><small style="color:var(--text-muted)">${ev.start} • Google</small></span>`;
+        const info = document.createElement("span");
+        info.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><small style="color:var(--text-muted)">${escapeHtml(ev.displayDate || formatEventDateBr(ev.start))} • Google Agenda</small>`;
+
+        const actionsDiv = document.createElement("div");
+        actionsDiv.style.display = "flex";
+        actionsDiv.style.alignItems = "center";
+        actionsDiv.style.gap = "8px";
+
+        if (ev.htmlLink) {
+          const a = document.createElement("a");
+          a.href = ev.htmlLink;
+          a.target = "_blank";
+          a.innerText = "↗";
+          a.title = "Abrir na Google Agenda";
+          a.style.textDecoration = "none";
+          a.style.color = "var(--text-muted)";
+          actionsDiv.appendChild(a);
+        }
+
+        if (ev.id) {
+          const delBtn = document.createElement("button");
+          delBtn.innerText = "✕";
+          delBtn.title = "Excluir da Google Agenda";
+          delBtn.style.cssText = "border:none; background:none; color:var(--danger); cursor:pointer;";
+          delBtn.onclick = () => deleteGoogleCalendarEvent(ev.id);
+          actionsDiv.appendChild(delBtn);
+        }
+
+        div.append(info, actionsDiv);
         box.appendChild(div);
       });
       state.manualEvents.forEach((ev, idx) => {
         const div = document.createElement("div");
         div.className = "event-card";
-        div.innerHTML = `<span><strong>${escapeHtml(ev.title)}</strong><br><small style="color:var(--text-muted)">${ev.date} às ${ev.time}</small></span><button onclick="removeManualEvent(${idx})" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>`;
+        div.innerHTML = `<span><strong>${escapeHtml(ev.title)}</strong><br><small style="color:var(--text-muted)">${escapeHtml(ev.date)} às ${escapeHtml(ev.time)} • Local</small></span><button onclick="removeManualEvent(${idx})" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>`;
         box.appendChild(div);
       });
       if (!box.innerHTML) {
@@ -2440,15 +3538,41 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       }
     }
 
+    function loadProfileInputs() {
+      const p = state.ownerProfile || {};
+      document.getElementById("profileWorkInput").value = p.work || "";
+      document.getElementById("profileStudyInput").value = p.study || "";
+      document.getElementById("profileLikesInput").value = p.likes || "";
+      document.getElementById("profileNotesInput").value = p.notes || "";
+      document.getElementById("autoLearnToggle").checked = !!state.autoLearn;
+    }
+
+    function saveOwnerProfile() {
+      state.ownerProfile = {
+        work: document.getElementById("profileWorkInput").value.trim(),
+        study: document.getElementById("profileStudyInput").value.trim(),
+        likes: document.getElementById("profileLikesInput").value.trim(),
+        notes: document.getElementById("profileNotesInput").value.trim()
+      };
+      localStorage.setItem("raul_owner_profile", JSON.stringify(state.ownerProfile));
+      showToast("✅ Perfil salvo na memória do R.A.U.L.!");
+    }
+
+    function toggleAutoLearn() {
+      state.autoLearn = document.getElementById("autoLearnToggle").checked;
+      localStorage.setItem("raul_auto_learn", String(state.autoLearn));
+      showToast(state.autoLearn ? "✨ Aprendizado automático ligado" : "Aprendizado automático pausado");
+    }
+
     function addMemory() {
       const inp = document.getElementById("newMemoryInput");
       const val = inp.value.trim();
       if (!val) return;
-      state.memories.push(val);
+      state.memories.unshift({ text: val, auto: false });
       localStorage.setItem("raul_memories", JSON.stringify(state.memories));
       inp.value = "";
       renderMemories();
-      showToast("🧠 Memória salva!");
+      showToast("🧠 Nota salva!");
     }
 
     function removeMemory(idx) {
@@ -2460,10 +3584,16 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
     function renderMemories() {
       const box = document.getElementById("memoriesListContainer");
       box.innerHTML = "";
+      if (!state.memories.length) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin:4px 0;">Nenhuma nota aprendida ainda.</p>`;
+        return;
+      }
       state.memories.forEach((m, i) => {
+        const text = typeof m === "string" ? m : m.text;
+        const isAuto = typeof m === "object" && m.auto;
         const div = document.createElement("div");
         div.className = "event-card";
-        div.innerHTML = `<span>${escapeHtml(m)}</span><button onclick="removeMemory(${i})" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>`;
+        div.innerHTML = `<span>${isAuto ? '<span class="auto-badge">Auto</span>' : ''}${escapeHtml(text)}</span><button onclick="removeMemory(${i})" style="border:none; background:none; color:var(--danger); cursor:pointer;">✕</button>`;
         box.appendChild(div);
       });
     }
@@ -2475,6 +3605,7 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       localStorage.setItem("raul_owner_name", state.ownerName);
       localStorage.setItem("raul_api_key", state.apiKey);
       localStorage.setItem("raul_purr_vol", state.purrVolume);
+      discoverNewestFlashModel();
       closeModal("settingsModal");
       showToast("✅ Configurações salvas!");
     }
