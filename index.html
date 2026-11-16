@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#1e1b2e" id="metaThemeColor" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -1145,6 +1148,7 @@
         <button class="drawer-card-btn" onclick="toggleSound()" id="soundToggleBtn">🔊 Som: Ligado</button>
         <button class="drawer-card-btn" onclick="toggleDarkMode()" id="themeToggleBtn">🌙 Tema Escuro</button>
         <button class="drawer-card-btn" onclick="toggleDrawer(); openModal('settingsModal');" style="grid-column: span 2;">⚙️ Chave Gemini & Nome</button>
+        <button class="drawer-card-btn" onclick="forceCleanReload()" style="grid-column: span 2;">🔄 Limpar Cache e Atualizar App</button>
       </div>
 
       <div class="drawer-section-title">Histórico de Conversas</div>
@@ -1246,7 +1250,8 @@
   </div>
 
   <script>
-    // CLIENT ID CORRIGIDO E COMPLETO (COM A LETRA "l" APÓS "3ivt")
+    // VERSÃO DO APP E CLIENT ID DO GOOGLE OAUTH
+    const APP_BUILD_VERSION = "2026.11.16.final";
     const GOOGLE_CLIENT_ID = "537553462075-3addbhr7ue7ii7qch3ivtl9ghskho51e.apps.googleusercontent.com";
     const GOOGLE_SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file";
     const GEMINI_MODEL = "gemini-flash-latest";
@@ -1322,13 +1327,44 @@
       deferredInstallPrompt = null;
     }
 
+    // LIMPEZA AUTOMÁTICA DE CACHE PARA GARANTIR APENAS 1 ENDEREÇO SEMPRE ATUALIZADO
+    async function clearOldBrowserCaches() {
+      try {
+        if ("serviceWorker" in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const reg of regs) await reg.unregister();
+        }
+        if ("caches" in window) {
+          const keys = await caches.keys();
+          for (const key of keys) await caches.delete(key);
+        }
+      } catch (e) {}
+    }
+
+    async function forceCleanReload() {
+      showToast("Limpando cache antigo...");
+      await clearOldBrowserCaches();
+      const cleanUrl = window.location.origin + window.location.pathname;
+      const res = await fetch(cleanUrl, { cache: "reload" }).catch(() => null);
+      window.location.replace(cleanUrl);
+    }
+
     // INICIALIZAÇÃO
-    window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", async () => {
       localStorage.removeItem("raul_google_client_id");
       localStorage.removeItem("google_client_id");
 
+      // Se abrir com qualquer ?v= na URL, limpa o cache da URL principal e unifica no endereço limpo
       if (window.location.search) {
+        const cleanUrl = window.location.origin + window.location.pathname;
+        await clearOldBrowserCaches();
+        await fetch(cleanUrl, { cache: "reload" }).catch(() => null);
         window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      if (localStorage.getItem("raul_build_ver") !== APP_BUILD_VERSION) {
+        await clearOldBrowserCaches();
+        localStorage.setItem("raul_build_ver", APP_BUILD_VERSION);
       }
 
       if (state.darkMode) document.body.classList.add("dark");
