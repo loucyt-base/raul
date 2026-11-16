@@ -1,28 +1,27 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1e1b2e" />
+  <meta name="theme-color" content="#181622" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="R.A.U.L." />
   <title>R.A.U.L. — Ronronante Assistente Ultra Leal</title>
 
   <!-- Tailwind CSS -->
-
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Plus Jakarta Sans & Fredoka -->
-
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Phosphor Icons -->
-
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Google Identity Services (Optional OAuth for Direct Google Drive Upload) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <script>
     tailwind.config = {
@@ -51,7 +50,6 @@
   </script>
 
   <style>
-    /* Animações customizadas do R.A.U.L. */
     @keyframes breathe {
       0%, 100% { transform: scale(1) translateY(0px); }
       50% { transform: scale(1.022, 1.03) translateY(-2px); }
@@ -60,15 +58,27 @@
       0%, 100% { transform: rotate(-8deg); }
       50% { transform: rotate(12deg); }
     }
+    @keyframes tailFast {
+      0%, 100% { transform: rotate(-16deg); }
+      50% { transform: rotate(20deg); }
+    }
     @keyframes earLeftTwitch {
       0%, 86%, 100% { transform: rotate(0deg); }
-      90% { transform: rotate(-7deg); }
-      94% { transform: rotate(3deg); }
+      90% { transform: rotate(-8deg); }
+      94% { transform: rotate(4deg); }
     }
     @keyframes earRightTwitch {
       0%, 75%, 100% { transform: rotate(0deg); }
-      80% { transform: rotate(8deg); }
-      84% { transform: rotate(-2deg); }
+      80% { transform: rotate(9deg); }
+      84% { transform: rotate(-3deg); }
+    }
+    @keyframes headTiltThink {
+      0%, 100% { transform: rotate(-4deg) translateY(-1px); }
+      50% { transform: rotate(4deg) translateY(1px); }
+    }
+    @keyframes headCurious {
+      0%, 100% { transform: rotate(0deg); }
+      40%, 60% { transform: rotate(7deg) translateY(-2px); }
     }
     @keyframes floatHeart {
       0% { opacity: 0; transform: translateY(10px) scale(0.5) rotate(-10deg); }
@@ -77,9 +87,9 @@
     }
     @keyframes purrVibrate {
       0%, 100% { transform: translate(0, 0); }
-      25% { transform: translate(-1.2px, 0.8px); }
-      50% { transform: translate(1.2px, -0.8px); }
-      75% { transform: translate(-1px, -0.8px); }
+      25% { transform: translate(-1.8px, 1.2px); }
+      50% { transform: translate(1.8px, -1.2px); }
+      75% { transform: translate(-1.4px, -1.2px); }
     }
     @keyframes bowtiePop {
       0% { transform: scale(1) rotate(0deg); }
@@ -89,536 +99,563 @@
     }
     @keyframes jawTalk {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(3.8px); }
+      50% { transform: translateY(4.2px); }
     }
-    @keyframes pawThink {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(-6deg); }
+    @keyframes pawToChin {
+      0%, 100% { transform: translate(-22px, -78px) rotate(-25deg); }
+      50% { transform: translate(-22px, -83px) rotate(-18deg); }
+    }
+    @keyframes thoughtCloudPulse {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.96; }
+      50% { transform: translateY(-5px) scale(1.06); opacity: 1; }
+    }
+    @keyframes gearSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     @keyframes balloonFloat {
       0%, 100% { transform: translateY(0px) rotate(-2deg); }
       50% { transform: translateY(-7px) rotate(2deg); }
     }
-
-
-    .raul-breathe {
-      animation: breathe 4.2s ease-in-out infinite;
-      transform-origin: center bottom;
-    }
-    .raul-tail {
-      animation: tailSway 3.6s ease-in-out infinite;
-      transform-origin: 185px 250px;
-    }
-    .raul-ear-left {
-      animation: earLeftTwitch 7s ease-in-out infinite;
-      transform-origin: 105px 105px;
-    }
-    .raul-ear-right {
-      animation: earRightTwitch 8.5s ease-in-out infinite;
-      transform-origin: 195px 105px;
-    }
-    .raul-purring {
-      animation: purrVibrate 0.12s linear infinite;
-    }
-    .bowtie-animate {
-      animation: bowtiePop 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .raul-talking-jaw {
-      animation: jawTalk 0.24s ease-in-out infinite;
-    }
-    .raul-thinking-paw {
-      animation: pawThink 0.9s ease-in-out infinite;
-    }
-    .balloon-float {
-      animation: balloonFloat 4s ease-in-out infinite;
-    }
-    .heart-particle {
-      animation: floatHeart 1.6s ease-out forwards;
-      pointer-events: none;
+    @keyframes exclaimBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.12); }
     }
 
+    .raul-breathe { animation: breathe 4.2s ease-in-out infinite; transform-origin: center bottom; }
+    .raul-tail { animation: tailSway 3.6s ease-in-out infinite; transform-origin: 185px 250px; }
+    .raul-tail-excited { animation: tailFast 0.9s ease-in-out infinite; transform-origin: 185px 250px; }
+    .raul-ear-left { animation: earLeftTwitch 7s ease-in-out infinite; transform-origin: 105px 105px; }
+    .raul-ear-right { animation: earRightTwitch 8.5s ease-in-out infinite; transform-origin: 195px 105px; }
+    .raul-head-thinking { animation: headTiltThink 2.2s ease-in-out infinite; transform-origin: 150px 140px; }
+    .raul-head-curious { animation: headCurious 1.8s ease-in-out infinite; transform-origin: 150px 140px; }
+    .raul-purring { animation: purrVibrate 0.09s linear infinite; }
+    .bowtie-animate { animation: bowtiePop 0.48s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .raul-talking-jaw { animation: jawTalk 0.22s ease-in-out infinite; }
+    .raul-thinking-paw { animation: pawToChin 1.2s ease-in-out infinite; transform-origin: 195px 272px; }
+    .thought-cloud-anim { animation: thoughtCloudPulse 1.8s ease-in-out infinite; transform-origin: center; }
+    .gear-spin-anim { animation: gearSpin 4s linear infinite; transform-origin: 232px 44px; }
+    .balloon-float { animation: balloonFloat 4s ease-in-out infinite; }
+    .exclaim-anim { animation: exclaimBounce 0.7s ease-in-out infinite; }
+    .heart-particle { animation: floatHeart 1.6s ease-out forwards; pointer-events: none; }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(156, 163, 175, 0.35);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(156, 163, 175, 0.55);
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.35); border-radius: 9999px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-
-    /* Markdown formatting inside bubbles */
     .prose-raul p { margin-bottom: 0.55rem; }
     .prose-raul p:last-child { margin-bottom: 0; }
     .prose-raul ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.55rem; }
     .prose-raul ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.55rem; }
     .prose-raul li { margin-bottom: 0.2rem; }
     .prose-raul strong { font-weight: 700; }
-    .prose-raul code {
-      background: rgba(0,0,0,0.08);
-      padding: 0.1rem 0.35rem;
-      border-radius: 0.35rem;
-      font-size: 0.88em;
-    }
-    .dark .prose-raul code {
-      background: rgba(255,255,255,0.12);
-    }
-    .prose-raul pre {
-      background: #181622;
-      color: #f8fafc;
-      padding: 0.75rem;
-      border-radius: 0.75rem;
-      overflow-x: auto;
-      margin: 0.5rem 0;
-      font-size: 0.85rem;
-    }
+    .prose-raul code { background: rgba(0,0,0,0.08); padding: 0.1rem 0.35rem; border-radius: 0.35rem; font-size: 0.88em; }
+    .dark .prose-raul code { background: rgba(255,255,255,0.12); }
+    .prose-raul pre { background: #181622; color: #f8fafc; padding: 0.75rem; border-radius: 0.75rem; overflow-x: auto; margin: 0.5rem 0; font-size: 0.85rem; }
   </style>
-
 </head>
 
 <body class="bg-raul-cream dark:bg-raul-dark text-slate-800 dark:text-slate-100 font-sans h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto transition-colors duration-300">
 
   <!-- TOP NAVIGATION BAR -->
+  <header class="w-full max-w-4xl mx-auto px-2.5 sm:px-6 pt-2 pb-1.5 flex items-center justify-between shrink-0 z-20 gap-1">
+    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+      <!-- Chat History Drawer Button -->
+      <button onclick="openModal('historyModal')" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/90 dark:bg-raul-card hover:bg-amber-50 dark:hover:bg-slate-800 flex items-center justify-center shadow-sm border border-slate-200/80 dark:border-slate-700/60 cursor-pointer shrink-0 transition" title="Histórico de Conversas do R.A.U.L.">
+        <i class="ph-bold ph-chats-circle text-lg sm:text-xl text-slate-800 dark:text-amber-400"></i>
+        <span id="historyCountBadge" class="absolute -top-1 -right-1 px-1 min-w-[16px] h-4 rounded-full bg-amber-500 text-slate-950 text-[9px] font-bold flex items-center justify-center">1</span>
+      </button>
 
-  <header class="w-full max-w-4xl mx-auto px-3 sm:px-6 pt-2.5 pb-2 flex items-center justify-between shrink-0 z-20">
-    <div class="flex items-center gap-2.5">
-      <div class="relative w-10 h-10 rounded-2xl bg-slate-900 dark:bg-slate-800 flex items-center justify-center shadow-md border border-slate-700/40 cursor-pointer" onclick="triggerPetting()" title="Clique para fazer carinho no R.A.U.L.">
-        <span class="text-xl">🐾</span>
-        <span id="headerTieDot" class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white dark:border-slate-900 bg-rose-600 transition-colors"></span>
-      </div>
-      <div>
+      <!-- New Chat Button -->
+      <button onclick="startNewConversation()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 flex items-center justify-center shadow-sm shrink-0 transition active:scale-95" title="Nova Conversa com o R.A.U.L.">
+        <i class="ph-bold ph-plus text-base sm:text-lg"></i>
+      </button>
+
+      <div class="min-w-0 pl-0.5">
         <div class="flex items-center gap-1.5">
-          <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white leading-none">
+          <h1 class="font-display font-bold text-base sm:text-xl tracking-tight text-slate-900 dark:text-white leading-none truncate">
             R.A.U.L.
           </h1>
-          <span id="connectionBadge" class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-700/50">
-            Online
-          </span>
+          <span id="headerTieDot" class="w-3 h-3 rounded-full border border-white dark:border-slate-900 bg-rose-600 shrink-0" title="Cor da gravata atual"></span>
+          <button onclick="requestUserLocation(true)" id="locationBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-300/50 dark:border-sky-700/50 flex items-center gap-1 truncate max-w-[125px] sm:max-w-none hover:opacity-80 transition" title="Detectar localização e clima em tempo real">
+            <i class="ph-fill ph-map-pin text-sky-500"></i>
+            <span id="locationBadgeText">Clima/Local</span>
+          </button>
         </div>
-        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
-          Ronronante Assistente Ultra Leal
-        </p>
       </div>
     </div>
 
-<!-- Right Action Buttons -->
-<div class="flex items-center gap-1.5 sm:gap-2">
-  <!-- Sound Toggle -->
-  <button id="btnSound" onclick="toggleSound()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Som de Ronronado / Miado">
-    <i id="iconSound" class="ph-fill ph-speaker-high text-lg text-amber-600 dark:text-amber-400"></i>
-  </button>
+    <!-- Right Action Buttons -->
+    <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+      <!-- Thinking Effort Selector Button ("Esforço de Pensamento do Gato") -->
+      <button id="btnThinkingEffort" onclick="cycleThinkingEffort()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 border border-amber-500/30 transition flex items-center gap-1 text-xs font-semibold active:scale-95" title="Escolher o Esforço de Pensamento do R.A.U.L.">
+        <span id="thinkingEffortIcon">⚡</span>
+        <span id="thinkingEffortLabel" class="hidden sm:inline">Rápido</span>
+      </button>
 
-  <!-- Memories Modal Button -->
-  <button onclick="openModal('memoriesModal')" class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition flex items-center gap-1.5 text-xs font-semibold" title="Memórias sobre a Dona">
-    <i class="ph-fill ph-notebook text-base text-rose-500"></i>
-    <span class="hidden sm:inline">Memórias</span>
-  </button>
+      <!-- Toggle Corner Cat / Expanded Chat Mode -->
+      <button id="btnCornerMode" onclick="toggleCornerMode()" class="px-2 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300 border border-indigo-500/30 transition flex items-center gap-1 text-xs font-semibold" title="Alternar entre Palco Completo e Gato no Canto (Chat Maior)">
+        <i id="iconCornerMode" class="ph-fill ph-picture-in-picture text-base"></i>
+        <span id="textCornerMode" class="hidden md:inline">Canto</span>
+      </button>
 
-  <!-- Install PWA Guide -->
-  <button onclick="openModal('pwaModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Instalar no Celular / PC">
-    <i class="ph ph-device-mobile-speaker text-lg"></i>
-  </button>
+      <!-- Google Workspace Hub Button -->
+      <button onclick="openModal('googleModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Google Agenda, Gmail, Drive e Docs">
+        <i class="ph-fill ph-google-logo text-base sm:text-lg text-rose-500"></i>
+      </button>
 
-  <!-- Dark Mode Toggle -->
-  <button onclick="toggleTheme()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Alternar Tema Claro/Escuro">
-    <i id="iconTheme" class="ph ph-moon text-lg"></i>
-  </button>
+      <!-- Sound Toggle -->
+      <button id="btnSound" onclick="toggleSound()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Som de Ronronado / Miado">
+        <i id="iconSound" class="ph-fill ph-speaker-high text-base sm:text-lg text-amber-600 dark:text-amber-400"></i>
+      </button>
 
-  <!-- Settings Modal Button -->
-  <button onclick="openModal('settingsModal')" class="p-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 transition relative" title="Configurações e Chave da API Gemini">
-    <i class="ph-fill ph-gear-six text-lg"></i>
-    <span id="apiKeyAlertDot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-  </button>
-</div>
+      <!-- Memories Modal Button -->
+      <button onclick="openModal('memoriesModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Memórias sobre a Dona">
+        <i class="ph-fill ph-notebook text-base sm:text-lg text-rose-500"></i>
+      </button>
+
+      <!-- Dark Mode Toggle -->
+      <button onclick="toggleTheme()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Alternar Tema Claro/Escuro">
+        <i id="iconTheme" class="ph ph-moon text-base sm:text-lg"></i>
+      </button>
+
+      <!-- Settings Modal Button -->
+      <button onclick="openModal('settingsModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700/60 transition relative" title="Configurações, Volume do Ronronado e Chave da API">
+        <i class="ph-fill ph-gear-six text-base sm:text-lg"></i>
+        <span id="apiKeyAlertDot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+      </button>
+    </div>
   </header>
 
-  <!-- MAIN CONTENT AREA (R.A.U.L. STAGE + CHAT) -->
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 w-full max-w-4xl mx-auto px-2.5 sm:px-6 pb-2.5 flex flex-col min-h-0 gap-2 relative">
 
-  <main class="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-6 pb-3 flex flex-col min-h-0 gap-2.5">
-
-<!-- 1. INTERACTIVE R.A.U.L. STAGE CARD -->
-<section id="raulStageCard" class="relative w-full rounded-3xl bg-gradient-to-b from-amber-50/90 via-orange-50/60 to-white dark:from-slate-900 dark:to-raul-card border border-amber-200/60 dark:border-slate-700/70 shadow-sm overflow-hidden shrink-0 transition-all duration-300">
-  
-  <!-- Cozy Window / Room Background Decor -->
-  <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-60 dark:opacity-35">
-    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="windowNet" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <path d="M 0 0 L 38 0 L 38 38" fill="none" stroke="currentColor" stroke-width="0.7" class="text-amber-700/15 dark:text-slate-400/15" />
-          <circle cx="38" cy="0" r="1.2" fill="currentColor" class="text-amber-700/20 dark:text-slate-400/20" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#windowNet)" />
-    </svg>
-  </div>
-
-  <!-- PARTY MODE BALLOONS -->
-  <div id="partyBalloons" class="hidden absolute inset-x-0 top-1 pointer-events-none z-0 flex justify-between px-6 sm:px-16 opacity-95">
-    <svg class="w-20 h-24 balloon-float" viewBox="0 0 100 120">
-      <ellipse cx="35" cy="40" rx="18" ry="23" transform="rotate(-20 35 40)" fill="#059669" />
-      <ellipse cx="68" cy="48" rx="20" ry="16" transform="rotate(10 68 48)" fill="#10b981" />
-      <ellipse cx="38" cy="76" rx="17" ry="22" transform="rotate(15 38 76)" fill="#047857" />
-      <circle cx="30" cy="33" r="4" fill="#6ee7b7" opacity="0.6" />
-    </svg>
-    <svg class="w-16 h-20 balloon-float -mt-1" style="animation-delay: -1.5s" viewBox="0 0 80 100">
-      <defs>
-        <linearGradient id="goldBalloon" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#fef08a" />
-          <stop offset="45%" stop-color="#eab308" />
-          <stop offset="100%" stop-color="#a16207" />
-        </linearGradient>
-      </defs>
-      <path d="M20 15 H48 C58 15 64 22 64 32 C64 40 58 46 50 48 L64 78 H48 L36 50 H32 V78 H20 Z M32 26 V39 H45 C49 39 51 36 51 32.5 C51 29 49 26 45 26 Z"
-            fill="url(#goldBalloon)" stroke="#854d0e" stroke-width="2.5" stroke-linejoin="round" />
-    </svg>
-    <svg class="w-20 h-24 balloon-float" style="animation-delay: -2.5s" viewBox="0 0 100 120">
-      <ellipse cx="52" cy="32" rx="17" ry="22" fill="#059669" />
-      <ellipse cx="32" cy="65" rx="17" ry="22" transform="rotate(25 32 65)" fill="#10b981" />
-      <ellipse cx="72" cy="55" rx="21" ry="17" transform="rotate(-10 72 55)" fill="#047857" />
-      <circle cx="48" cy="24" r="4" fill="#6ee7b7" opacity="0.6" />
-    </svg>
-  </div>
-
-  <!-- Floating Hearts & Particles Container -->
-  <div id="particlesContainer" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
-
-  <!-- Status Pill Top-Left inside Stage -->
-  <div class="relative z-10 px-3.5 pt-2.5 flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-1.5">
-      <span id="raulMoodBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/60 dark:border-slate-700">
-        <span id="raulMoodIndicator" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span id="raulMoodText">Ronronando e atento</span>
-      </span>
-    </div>
-
-    <!-- Bow Tie Badge -->
-    <button onclick="cycleBowTie(true)" class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/90 dark:bg-slate-800/90 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/60 dark:border-slate-700 transition cursor-pointer" title="Clique para trocar a gravata borboleta do R.A.U.L.!">
-      <span class="text-sm group-hover:rotate-12 transition-transform">🎀</span>
-      <span id="bowTieLabelText">Gravata: Carregando...</span>
-      <i class="ph ph-arrows-clockwise text-xs opacity-60 group-hover:opacity-100"></i>
-    </button>
-  </div>
-
-  <!-- CENTER ILLUSTRATION: R.A.U.L. THE TUXEDO CAT -->
-  <div class="relative z-10 flex flex-col items-center justify-center -mt-2 sm:-mt-3">
-    <div id="raulSvgWrapper" class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center select-none">
+    <!-- 1. FULL STAGE CARD (Hidden when "Gato no Canto" mode is active) -->
+    <section id="raulStageCard" class="relative w-full rounded-3xl bg-gradient-to-b from-amber-50/90 via-orange-50/60 to-white dark:from-slate-900 dark:to-raul-card border border-amber-200/60 dark:border-slate-700/70 shadow-sm overflow-hidden shrink-0 transition-all duration-300">
       
-      <!-- R.A.U.L. Master SVG -->
-      <svg id="raulSvg" viewBox="0 0 300 290" class="w-full h-full drop-shadow-md overflow-visible">
-        <defs>
-          <pattern id="polkaDots" width="10" height="10" patternUnits="userSpaceOnUse">
-            <circle cx="3" cy="3" r="1.5" fill="#ffffff" opacity="0.92" />
-            <circle cx="8" cy="8" r="1.5" fill="#ffffff" opacity="0.92" />
-          </pattern>
+      <!-- Window Safety Net Pattern -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-60 dark:opacity-35">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="windowNet" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <path d="M 0 0 L 38 0 L 38 38" fill="none" stroke="currentColor" stroke-width="0.7" class="text-amber-700/15 dark:text-slate-400/15" />
+              <circle cx="38" cy="0" r="1.2" fill="currentColor" class="text-amber-700/20 dark:text-slate-400/20" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#windowNet)" />
+        </svg>
+      </div>
 
-          <pattern id="partyDots" width="14" height="14" patternUnits="userSpaceOnUse">
-            <circle cx="4" cy="4" r="1.1" fill="#fef08a" opacity="0.85" />
-            <circle cx="11" cy="10" r="1.1" fill="#ffffff" opacity="0.8" />
-          </pattern>
+      <!-- PARTY MODE BALLOONS -->
+      <div id="partyBalloons" class="hidden absolute inset-x-0 top-1 pointer-events-none z-0 flex justify-between px-6 sm:px-16 opacity-95">
+        <svg class="w-16 h-20 sm:w-20 sm:h-24 balloon-float" viewBox="0 0 100 120">
+          <ellipse cx="35" cy="40" rx="18" ry="23" transform="rotate(-20 35 40)" fill="#059669" />
+          <ellipse cx="68" cy="48" rx="20" ry="16" transform="rotate(10 68 48)" fill="#10b981" />
+          <ellipse cx="38" cy="76" rx="17" ry="22" transform="rotate(15 38 76)" fill="#047857" />
+          <circle cx="30" cy="33" r="4" fill="#6ee7b7" opacity="0.6" />
+        </svg>
+        <svg class="w-14 h-16 sm:w-16 sm:h-20 balloon-float -mt-1" style="animation-delay: -1.5s" viewBox="0 0 80 100">
+          <defs>
+            <linearGradient id="goldBalloon" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fef08a" />
+              <stop offset="45%" stop-color="#eab308" />
+              <stop offset="100%" stop-color="#a16207" />
+            </linearGradient>
+          </defs>
+          <path d="M20 15 H48 C58 15 64 22 64 32 C64 40 58 46 50 48 L64 78 H48 L36 50 H32 V78 H20 Z M32 26 V39 H45 C49 39 51 36 51 32.5 C51 29 49 26 45 26 Z"
+                fill="url(#goldBalloon)" stroke="#854d0e" stroke-width="2.5" stroke-linejoin="round" />
+        </svg>
+        <svg class="w-16 h-20 sm:w-20 sm:h-24 balloon-float" style="animation-delay: -2.5s" viewBox="0 0 100 120">
+          <ellipse cx="52" cy="32" rx="17" ry="22" fill="#059669" />
+          <ellipse cx="32" cy="65" rx="17" ry="22" transform="rotate(25 32 65)" fill="#10b981" />
+          <ellipse cx="72" cy="55" rx="21" ry="17" transform="rotate(-10 72 55)" fill="#047857" />
+          <circle cx="48" cy="24" r="4" fill="#6ee7b7" opacity="0.6" />
+        </svg>
+      </div>
 
-          <pattern id="linenTexture" width="8" height="8" patternUnits="userSpaceOnUse">
-            <path d="M 0 4 H 8 M 4 0 V 8" stroke="#ca8a04" stroke-width="0.6" opacity="0.28" />
-          </pattern>
+      <!-- Particles Container -->
+      <div id="particlesContainer" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
 
-          <radialGradient id="raulEyeGrad" cx="50%" cy="45%" r="50%">
-            <stop offset="0%" stop-color="#c3d96b" />
-            <stop offset="55%" stop-color="#84a94c" />
-            <stop offset="90%" stop-color="#4d6b2b" />
-            <stop offset="100%" stop-color="#2d4017" />
-          </radialGradient>
+      <!-- Subtle Top Controls inside Stage (No written mood text!) -->
+      <div class="relative z-10 px-3 pt-2 flex items-center justify-between gap-1.5">
+        <button onclick="cycleBowTie(true)" class="group inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/90 dark:bg-slate-800/90 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/60 dark:border-slate-700 transition cursor-pointer" title="Trocar a gravata borboleta do R.A.U.L.">
+          <span class="text-xs group-hover:rotate-12 transition-transform">🎀</span>
+          <i class="ph ph-arrows-clockwise text-[11px] opacity-70 group-hover:opacity-100"></i>
+        </button>
 
-          <filter id="bowShadow" x="-15%" y="-15%" width="130%" height="135%">
-            <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.28" />
-          </filter>
-        </defs>
+        <button onclick="toggleCornerMode()" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/25 transition" title="Recolher opções e manter apenas o R.A.U.L. no canto">
+          <i class="ph ph-corners-in"></i>
+          <span>Gato no Canto</span>
+        </button>
+      </div>
 
-        <!-- 1. FLUFFY BLACK TAIL -->
-        <g class="raul-tail">
-          <path d="M 190 250 Q 255 245 262 195 Q 266 170 245 168 Q 228 168 225 195 Q 220 225 185 235 Z"
-                fill="#141418" stroke="#0a0a0d" stroke-width="2" />
-          <path d="M 255 180 L 266 176 L 258 188 M 260 205 L 270 206 L 258 214" fill="#141418" />
-        </g>
+      <!-- CENTER ILLUSTRATION HOLDER -->
+      <div class="relative z-10 flex flex-col items-center justify-center -mt-3">
+        <div id="raulStageSvgHolder" class="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center select-none">
+          
+          <!-- R.A.U.L. MASTER SVG WITH VISUAL REACTIONS & THOUGHT BUBBLES -->
+          <svg id="raulSvg" viewBox="0 0 300 290" class="w-full h-full drop-shadow-md overflow-visible">
+            <defs>
+              <pattern id="polkaDots" width="10" height="10" patternUnits="userSpaceOnUse">
+                <circle cx="3" cy="3" r="1.5" fill="#ffffff" opacity="0.92" />
+                <circle cx="8" cy="8" r="1.5" fill="#ffffff" opacity="0.92" />
+              </pattern>
+              <pattern id="partyDots" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="4" cy="4" r="1.1" fill="#fef08a" opacity="0.85" />
+                <circle cx="11" cy="10" r="1.1" fill="#ffffff" opacity="0.8" />
+              </pattern>
+              <pattern id="linenTexture" width="8" height="8" patternUnits="userSpaceOnUse">
+                <path d="M 0 4 H 8 M 4 0 V 8" stroke="#ca8a04" stroke-width="0.6" opacity="0.28" />
+              </pattern>
+              <radialGradient id="raulEyeGrad" cx="50%" cy="45%" r="50%">
+                <stop offset="0%" stop-color="#c3d96b" />
+                <stop offset="55%" stop-color="#84a94c" />
+                <stop offset="90%" stop-color="#4d6b2b" />
+                <stop offset="100%" stop-color="#2d4017" />
+              </radialGradient>
+              <filter id="bowShadow" x="-15%" y="-15%" width="130%" height="135%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.28" />
+              </filter>
+            </defs>
 
-        <!-- MAIN BREATHING BODY GROUP -->
-        <g id="raulBodyGroup" class="raul-breathe">
-
-          <!-- 2. BLACK BACK / SHOULDERS -->
-          <path d="M 68 182 Q 52 225 58 272 L 242 272 Q 248 225 232 182 Q 205 152 150 152 Q 95 152 68 182 Z"
-                fill="#15151a" />
-          <path d="M 65 190 L 52 195 L 62 204 L 49 214 L 60 222
-                   M 235 190 L 248 195 L 238 204 L 251 214 L 240 222"
-                fill="#15151a" />
-
-          <!-- 3. VOLUMINOUS WHITE CHEST RUFF & FRONT PAWS -->
-          <path d="M 75 165
-                   L 60 175 L 70 185 L 56 198 L 70 208 L 62 226 L 74 235
-                   L 76 274 L 224 274
-                   L 226 235 L 238 226 L 230 208 L 244 198 L 230 185 L 240 175 L 225 165
-                   Q 150 145 75 165 Z"
-                fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" stroke-linejoin="round" />
-
-          <path d="M 102 228 Q 115 240 110 256 M 198 228 Q 185 240 190 256 M 138 238 Q 150 248 162 238"
-                fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
-
-          <g id="raulLeftPaw">
-            <ellipse cx="105" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-            <path d="M 97 268 V 278 M 105 267 V 279 M 113 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
-          </g>
-          <g id="raulRightPaw">
-            <ellipse cx="195" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-            <path d="M 187 268 V 278 M 195 267 V 279 M 203 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
-          </g>
-
-          <!-- 4. HEAD & EARS -->
-          <g id="raulHeadGroup" class="cursor-pointer" onclick="triggerPetting()">
-            
-            <!-- Left Ear -->
-            <g class="raul-ear-left">
-              <path d="M 76 112 L 56 32 Q 55 24 63 28 L 122 72 Z" fill="#15151a" />
-              <path d="M 78 102 L 66 44 L 110 74 Z" fill="#272730" />
-              <path d="M 78 96 Q 68 75 72 68 M 84 92 Q 76 72 82 64 M 90 88 Q 84 74 90 68"
-                    fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+            <!-- Tail -->
+            <g id="raulTailGroup" class="raul-tail">
+              <path d="M 190 250 Q 255 245 262 195 Q 266 170 245 168 Q 228 168 225 195 Q 220 225 185 235 Z" fill="#141418" stroke="#0a0a0d" stroke-width="2" />
+              <path d="M 255 180 L 266 176 L 258 188 M 260 205 L 270 206 L 258 214" fill="#141418" />
             </g>
 
-            <!-- Right Ear -->
-            <g class="raul-ear-right">
-              <path d="M 224 112 L 244 32 Q 245 24 237 28 L 178 72 Z" fill="#15151a" />
-              <path d="M 222 102 L 234 44 L 190 74 Z" fill="#272730" />
-              <path d="M 222 96 Q 232 75 228 68 M 216 92 Q 224 72 218 64 M 210 88 Q 216 74 210 68"
-                    fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
-            </g>
+            <!-- Breathing Body -->
+            <g id="raulBodyGroup" class="raul-breathe">
+              <!-- Tuxedo Shoulders -->
+              <path d="M 68 182 Q 52 225 58 272 L 242 272 Q 248 225 232 182 Q 205 152 150 152 Q 95 152 68 182 Z" fill="#15151a" />
+              <path d="M 65 190 L 52 195 L 62 204 L 49 214 L 60 222 M 235 190 L 248 195 L 238 204 L 251 214 L 240 222" fill="#15151a" />
 
-            <!-- Main Fluffy Black Head Base -->
-            <path d="M 72 108
-                     Q 95 62 150 62
-                     Q 205 62 228 108
-                     L 242 122 L 232 130 L 246 144 L 230 154 L 236 166
-                     Q 195 186 150 186
-                     Q 105 186 64 166
-                     L 70 154 L 54 144 L 68 130 L 58 122 Z"
-                  fill="#15151a" />
+              <!-- Fluffy White Chest Ruff -->
+              <path d="M 75 165 L 60 175 L 70 185 L 56 198 L 70 208 L 62 226 L 74 235 L 76 274 L 224 274 L 226 235 L 238 226 L 230 208 L 244 198 L 230 185 L 240 175 L 225 165 Q 150 145 75 165 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M 102 228 Q 115 240 110 256 M 198 228 Q 185 240 190 256 M 138 238 Q 150 248 162 238" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
 
-            <!-- 5. UNIQUE FACIAL MARKINGS -->
-            <path d="M 147 82
-                     L 140 112
-                     Q 132 132 105 142
-                     L 74 152 L 84 160 L 72 168 L 95 178
-                     Q 150 192 205 178
-                     L 228 168 L 216 160 L 226 152
-                     L 195 142
-                     Q 166 132 156 112 Z"
-                  fill="#ffffff" />
+              <!-- Left Paw -->
+              <g id="raulLeftPaw">
+                <ellipse cx="105" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                <path d="M 97 268 V 278 M 105 267 V 279 M 113 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
+              </g>
 
-            <path d="M 82 146 L 64 152 L 78 160 L 66 170 L 92 175
-                     M 218 146 L 236 152 L 222 160 L 234 170 L 208 175"
-                  fill="#ffffff" />
+              <!-- Head & Ears -->
+              <g id="raulHeadGroup" class="cursor-pointer" onclick="triggerPetting()">
+                <g class="raul-ear-left">
+                  <path d="M 76 112 L 56 32 Q 55 24 63 28 L 122 72 Z" fill="#15151a" />
+                  <path d="M 78 102 L 66 44 L 110 74 Z" fill="#272730" />
+                  <path d="M 78 96 Q 68 75 72 68 M 84 92 Q 76 72 82 64 M 90 88 Q 84 74 90 68" fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+                </g>
+                <g class="raul-ear-right">
+                  <path d="M 224 112 L 244 32 Q 245 24 237 28 L 178 72 Z" fill="#15151a" />
+                  <path d="M 222 102 L 234 44 L 190 74 Z" fill="#272730" />
+                  <path d="M 222 96 Q 232 75 228 68 M 216 92 Q 224 72 218 64 M 210 88 Q 216 74 210 68" fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+                </g>
 
-            <!-- MOVING JAW / CHIN GROUP -->
-            <g id="raulJawGroup">
-              <path d="M 126 165
-                       Q 150 158 173 165
-                       Q 176 184 150 187
-                       Q 124 184 126 165 Z"
-                    fill="#15151a" />
-              <path d="M 132 182 L 136 190 L 144 185 L 150 192 L 156 185 L 164 190 L 168 182"
-                    fill="#15151a" />
+                <path d="M 72 108 Q 95 62 150 62 Q 205 62 228 108 L 242 122 L 232 130 L 246 144 L 230 154 L 236 166 Q 195 186 150 186 Q 105 186 64 166 L 70 154 L 54 144 L 68 130 L 58 122 Z" fill="#15151a" />
+                <path d="M 147 82 L 140 112 Q 132 132 105 142 L 74 152 L 84 160 L 72 168 L 95 178 Q 150 192 205 178 L 228 168 L 216 160 L 226 152 L 195 142 Q 166 132 156 112 Z" fill="#ffffff" />
+                <path d="M 82 146 L 64 152 L 78 160 L 66 170 L 92 175 M 218 146 L 236 152 L 222 160 L 234 170 L 208 175" fill="#ffffff" />
 
-              <!-- THE BLEP -->
-              <g id="raulBlep" class="transition-transform duration-300" style="transform: scaleY(0); transform-origin: 147px 163px;">
-                <path d="M 137 162 Q 147 175 157 162 Z" fill="#fb7185" stroke="#e11d48" stroke-width="1" />
-                <line x1="147" y1="162" x2="147" y2="169" stroke="#e11d48" stroke-width="1" stroke-linecap="round" />
+                <!-- Moving Chin / Goatee & Tongue -->
+                <g id="raulJawGroup">
+                  <path d="M 126 165 Q 150 158 173 165 Q 176 184 150 187 Q 124 184 126 165 Z" fill="#15151a" />
+                  <path d="M 132 182 L 136 190 L 144 185 L 150 192 L 156 185 L 164 190 L 168 182" fill="#15151a" />
+                  <g id="raulBlep" class="transition-transform duration-300" style="transform: scaleY(0); transform-origin: 147px 163px;">
+                    <path d="M 137 162 Q 147 175 157 162 Z" fill="#fb7185" stroke="#e11d48" stroke-width="1" />
+                    <line x1="147" y1="162" x2="147" y2="169" stroke="#e11d48" stroke-width="1" stroke-linecap="round" />
+                  </g>
+                </g>
+
+                <!-- Asymmetrical Right Half-Mustache & Black Nose -->
+                <path d="M 148 151 Q 166 148 179 156 Q 182 161 175 164 Q 160 166 146 161 Z" fill="#15151a" />
+                <ellipse cx="143" cy="136" rx="4.5" ry="3" fill="#fda4af" opacity="0.45" />
+                <path d="M 137 139 Q 149 135 161 139 Q 162 146 149 153 Q 136 146 137 139 Z" fill="#111115" />
+                <ellipse cx="146" cy="141" rx="4" ry="1.8" fill="#475569" opacity="0.55" />
+                <path d="M 148 152 Q 137 161 124 157" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+
+                <!-- Eyes -->
+                <g id="raulEyeLeft" transform="translate(110, 118)">
+                  <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
+                  <g class="raul-pupil">
+                    <ellipse id="leftPupilEllipse" cx="1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
+                    <circle cx="-3" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
+                    <circle cx="4" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  </g>
+                  <path class="raul-eyelid transition-transform duration-150" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top;" />
+                  <path class="raul-happy-eye hidden" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" />
+                </g>
+
+                <g id="raulEyeRight" transform="translate(188, 118)">
+                  <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
+                  <g class="raul-pupil">
+                    <ellipse id="rightPupilEllipse" cx="-1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
+                    <circle cx="-4" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
+                    <circle cx="3" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
+                  </g>
+                  <path class="raul-eyelid transition-transform duration-150" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top;" />
+                  <path class="raul-happy-eye hidden" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" />
+                </g>
+
+                <!-- INTELLECTUAL GLASSES (Shown during Deep Thinking or File Analysis!) -->
+                <g id="raulSmartGlasses" class="hidden">
+                  <circle cx="110" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
+                  <circle cx="188" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
+                  <path d="M 131 116 Q 149 110 167 116" fill="none" stroke="#eab308" stroke-width="3" />
+                  <line x1="89" y1="114" x2="72" y2="108" stroke="#eab308" stroke-width="2.5" />
+                  <line x1="209" y1="114" x2="226" y2="108" stroke="#eab308" stroke-width="2.5" />
+                </g>
+
+                <!-- Whiskers -->
+                <g fill="none" stroke="#f8fafc" stroke-width="1.3" stroke-linecap="round" opacity="0.88">
+                  <path d="M 122 98 Q 102 68 74 62 M 128 96 Q 114 70 92 58 M 176 98 Q 196 68 226 62 M 170 96 Q 184 70 208 58" />
+                </g>
+                <g fill="none" stroke="#f1f5f9" stroke-width="1.4" stroke-linecap="round" opacity="0.92">
+                  <path d="M 112 154 Q 70 150 32 162 M 114 160 Q 72 162 36 178 M 118 165 Q 80 174 48 194" />
+                  <path d="M 186 154 Q 230 150 268 162 M 184 160 Q 228 162 264 178 M 180 165 Q 220 174 252 194" />
+                </g>
+              </g>
+
+              <!-- Bow Tie -->
+              <g id="raulBowTieGroup" transform="translate(150, 206)" filter="url(#bowShadow)" class="cursor-pointer" onclick="cycleBowTie(true)">
+                <g id="raulBowTieInner">
+                  <path id="bowBackLeft" d="M -6 -6 L -48 -24 Q -56 -24 -56 -14 L -54 16 Q -52 24 -44 22 L -6 6 Z" fill="#9f1239" />
+                  <path id="bowBackRight" d="M 6 -6 L 48 -24 Q 56 -24 56 -14 L 54 16 Q 52 24 44 22 L 6 6 Z" fill="#9f1239" />
+                  <path id="bowMainLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="#e11d48" />
+                  <path id="bowPatternLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="url(#polkaDots)" />
+                  <path id="bowMainRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="#e11d48" />
+                  <path id="bowPatternRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="url(#polkaDots)" />
+                  <path d="M -11 -4 Q -26 -8 -36 -5 M -11 4 Q -26 8 -36 5 M 11 -4 Q 26 -8 36 -5 M 11 4 Q 26 8 36 5" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" opacity="0.22" />
+                  <rect id="bowKnot" x="-10" y="-11" width="20" height="22" rx="6" fill="#be123c" />
+                  <rect id="bowKnotPattern" x="-10" y="-11" width="20" height="22" rx="6" fill="url(#polkaDots)" />
+                </g>
+              </g>
+
+              <!-- Right Paw (Placed on top so it can touch R.A.U.L.'s chin while thinking!) -->
+              <g id="raulRightPaw">
+                <ellipse cx="195" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                <path d="M 187 268 V 278 M 195 267 V 279 M 203 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
+              </g>
+
+              <!-- VISUAL REACTION 1: ANIMATED COMIC THOUGHT CLOUD (Shown when thinking!) -->
+              <g id="raulThoughtBubble" class="hidden thought-cloud-anim">
+                <circle cx="202" cy="78" r="4.5" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                <circle cx="214" cy="64" r="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                <path d="M 205 42
+                         C 205 28, 224 22, 235 28
+                         C 245 20, 266 24, 268 38
+                         C 278 44, 274 60, 260 62
+                         C 252 68, 232 68, 224 60
+                         C 210 62, 202 52, 205 42 Z"
+                      fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+                <!-- Animated spinning gear / lightbulb inside the thought cloud -->
+                <circle cx="238" cy="44" r="8" fill="#fef08a" stroke="#eab308" stroke-width="1.8" />
+                <path d="M 235 54 H 241 M 238 30 V 33 M 224 44 H 227 M 249 44 H 252" stroke="#eab308" stroke-width="2" stroke-linecap="round" />
+              </g>
+
+              <!-- VISUAL REACTION 2: CURIOUS / IDEA / SURPRISE SYMBOLS (No words, pure visual comic reactions!) -->
+              <g id="raulReactionIdea" class="hidden exclaim-anim">
+                <circle cx="62" cy="54" r="16" fill="#fef9c3" stroke="#facc15" stroke-width="2" />
+                <path d="M 62 43 V 55 M 62 61 V 62" stroke="#ca8a04" stroke-width="3.5" stroke-linecap="round" />
+              </g>
+
+              <g id="raulReactionCurious" class="hidden exclaim-anim">
+                <circle cx="62" cy="54" r="16" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2" />
+                <path d="M 57 47 C 57 42, 67 42, 67 48 C 67 52, 62 53, 62 56 M 62 62 V 63" fill="none" stroke="#0284c7" stroke-width="3" stroke-linecap="round" />
               </g>
             </g>
+          </svg>
 
-            <!-- SIGNATURE BLACK HALF-MUSTACHE -->
-            <path d="M 148 151
-                     Q 166 148 179 156
-                     Q 182 161 175 164
-                     Q 160 166 146 161 Z"
-                  fill="#15151a" />
+        </div>
 
-            <ellipse cx="143" cy="136" rx="4.5" ry="3" fill="#fda4af" opacity="0.45" />
+        <!-- INTERACTIVE ACTION BAR BELOW R.A.U.L. -->
+        <div class="w-full px-3 pb-2 flex flex-wrap items-center justify-center gap-1.5">
+          <button onclick="triggerPetting()" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-500/25 transition flex items-center gap-1 active:scale-95">
+            <span>🤚</span> Carinho
+          </button>
+          <button onclick="toggleBlepManual()" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-pink-500/10 hover:bg-pink-500/20 text-pink-700 dark:text-pink-300 border border-pink-500/25 transition flex items-center gap-1 active:scale-95">
+            <span>👅</span> Blep
+          </button>
+          <button onclick="giveTreat()" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 transition flex items-center gap-1 active:scale-95">
+            <span>🐟</span> Sachê
+          </button>
+          <button onclick="triggerCuriousReaction()" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 hover:bg-sky-500/20 text-sky-800 dark:text-sky-300 border border-sky-500/25 transition flex items-center gap-1 active:scale-95">
+            <span>🐾</span> Reagir
+          </button>
+          <button id="btnPartyMode" onclick="togglePartyMode()" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25 transition flex items-center gap-1 active:scale-95">
+            <span>🎈</span> Festa "R"
+          </button>
+        </div>
+      </div>
+    </section>
 
-            <!-- BLACK NOSE -->
-            <path d="M 137 139
-                     Q 149 135 161 139
-                     Q 162 146 149 153
-                     Q 136 146 137 139 Z"
-                  fill="#111115" />
-            <ellipse cx="146" cy="141" rx="4" ry="1.8" fill="#475569" opacity="0.55" />
+    <!-- 2. CHAT MESSAGES & FILE/WORKSPACE SECTION -->
+    <section class="relative flex-1 flex flex-col min-h-0 bg-white/85 dark:bg-raul-card/90 backdrop-blur-md rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
 
-            <path d="M 148 152 Q 137 161 124 157" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+      <!-- FLOATING CORNER CAT DOCK (Visible when "Gato no Canto" mode is active!) -->
+      <div id="raulCornerDock" class="hidden absolute top-2.5 right-2.5 z-30 flex-col items-end pointer-events-none">
+        <div class="pointer-events-auto relative group rounded-2xl bg-gradient-to-b from-amber-50/95 to-white/95 dark:from-slate-800/95 dark:to-slate-900/95 border border-amber-300/70 dark:border-slate-700 shadow-xl p-1.5 flex flex-col items-center">
+          <div class="w-full flex items-center justify-between px-1 mb-0.5 gap-1">
+            <button onclick="cycleBowTie(true)" class="text-[10px] hover:scale-110 transition" title="Trocar gravata">🎀</button>
+            <button onclick="toggleCornerMode()" class="text-slate-500 hover:text-indigo-500 text-xs" title="Voltar ao Palco Completo">
+              <i class="ph-bold ph-arrows-out-simple"></i>
+            </button>
+          </div>
+          <!-- Corner SVG Holder -->
+          <div id="raulCornerSvgHolder" class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center"></div>
+        </div>
+      </div>
 
-            <!-- 6. EXPRESSIVE GREEN EYES -->
-            <g id="raulEyeLeft" transform="translate(110, 118)">
-              <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-              <g class="raul-pupil">
-                <ellipse cx="1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                <circle cx="-3" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                <circle cx="4" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
-              </g>
-              <path class="raul-eyelid transition-transform duration-150" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top;" />
-              <path class="raul-happy-eye hidden" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" />
-            </g>
+      <!-- Messages Scroll Container -->
+      <div id="chatContainer" class="flex-1 overflow-y-auto px-3 sm:px-5 py-3.5 space-y-3">
+        <!-- Populated via JS -->
+      </div>
 
-            <g id="raulEyeRight" transform="translate(188, 118)">
-              <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-              <g class="raul-pupil">
-                <ellipse cx="-1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                <circle cx="-4" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                <circle cx="3" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
-              </g>
-              <path class="raul-eyelid transition-transform duration-150" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top;" />
-              <path class="raul-happy-eye hidden" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" />
-            </g>
+      <!-- Quick Suggestions Strip -->
+      <div id="quickPromptsStrip" class="px-3 py-1.5 border-t border-slate-100 dark:border-slate-800/70 bg-slate-50/60 dark:bg-slate-900/40 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+        <button onclick="sendQuickPrompt('Qual é a previsão do tempo para hoje e para os próximos dias aqui na minha localização?')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
+          <span>🌦️</span> Previsão do Tempo
+        </button>
+        <button onclick="sendQuickPrompt('Crie um compromisso na minha Google Agenda para amanhã às 14h e me dê o botão para salvar!')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
+          <span>📅</span> Agendar Compromisso
+        </button>
+        <button onclick="sendQuickPrompt('Gere um arquivo de documento (.doc) bem organizado com um planejamento semanal para eu baixar ou salvar no Google Drive.')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
+          <span>📄</span> Gerar Doc / Drive
+        </button>
+        <button onclick="sendQuickPrompt('Preciso redigir um e-mail profissional e educado. Crie uma sugestão com botão para abrir direto no meu Gmail!')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
+          <span>✉️</span> Escrever Gmail
+        </button>
+      </div>
 
-            <!-- 7. LONG WHITE EYEBROW WHISKERS & CHEEK WHISKERS -->
-            <g fill="none" stroke="#f8fafc" stroke-width="1.3" stroke-linecap="round" opacity="0.88">
-              <path d="M 122 98 Q 102 68 74 62" />
-              <path d="M 128 96 Q 114 70 92 58" />
-              <path d="M 176 98 Q 196 68 226 62" />
-              <path d="M 170 96 Q 184 70 208 58" />
-            </g>
-            <g fill="none" stroke="#f1f5f9" stroke-width="1.4" stroke-linecap="round" opacity="0.92">
-              <path d="M 112 154 Q 70 150 32 162" />
-              <path d="M 114 160 Q 72 162 36 178" />
-              <path d="M 118 165 Q 80 174 48 194" />
-              <path d="M 186 154 Q 230 150 268 162" />
-              <path d="M 184 160 Q 228 162 264 178" />
-              <path d="M 180 165 Q 220 174 252 194" />
-            </g>
-          </g>
+      <!-- Pending Attachments Preview Bar -->
+      <div id="attachmentsPreviewBar" class="hidden px-3 py-2 bg-amber-50/90 dark:bg-slate-900/90 border-t border-amber-200/60 dark:border-slate-800 flex flex-wrap items-center gap-2 shrink-0"></div>
 
-          <!-- 8. SIGNATURE BOW TIE -->
-          <g id="raulBowTieGroup" transform="translate(150, 206)" filter="url(#bowShadow)" class="cursor-pointer" onclick="cycleBowTie(true)">
-            <g id="raulBowTieInner">
-              <path id="bowBackLeft" d="M -6 -6 L -48 -24 Q -56 -24 -56 -14 L -54 16 Q -52 24 -44 22 L -6 6 Z" fill="#9f1239" />
-              <path id="bowBackRight" d="M 6 -6 L 48 -24 Q 56 -24 56 -14 L 54 16 Q 52 24 44 22 L 6 6 Z" fill="#9f1239" />
+      <!-- Input Form with File Upload + Send / Cancel Button -->
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2 sm:p-3 bg-white dark:bg-raul-card border-t border-slate-200/80 dark:border-slate-800 flex items-end gap-1.5 sm:gap-2 shrink-0">
+        <input
+          id="fileUploadInput"
+          type="file"
+          multiple
+          accept="image/*,application/pdf,audio/*,.txt,.csv,.md,.json,.html,.doc,.docx"
+          class="hidden"
+          onchange="handleFilesSelected(event)"
+        />
 
-              <path id="bowMainLeft" d="M -5 -7
-                                       C -22 -22, -45 -26, -54 -18
-                                       C -60 -10, -60 12, -52 20
-                                       C -42 28, -20 20, -5 7 Z"
-                    fill="#e11d48" />
-              <path id="bowPatternLeft" d="M -5 -7
-                                          C -22 -22, -45 -26, -54 -18
-                                          C -60 -10, -60 12, -52 20
-                                          C -42 28, -20 20, -5 7 Z"
-                    fill="url(#polkaDots)" />
+        <!-- Attach File Button -->
+        <button
+          type="button"
+          onclick="document.getElementById('fileUploadInput').click()"
+          class="h-10 w-10 rounded-2xl bg-slate-100 hover:bg-amber-500/15 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center shrink-0 transition border border-slate-200/70 dark:border-slate-700"
+          title="Anexar arquivo, PDF, foto ou documento"
+        >
+          <i class="ph-bold ph-paperclip text-lg"></i>
+        </button>
 
-              <path id="bowMainRight" d="M 5 -7
-                                        C 22 -22, 45 -26, 54 -18
-                                        C 60 -10, 60 12, 52 20
-                                        C 42 28, 20 20, 5 7 Z"
-                    fill="#e11d48" />
-              <path id="bowPatternRight" d="M 5 -7
-                                           C 22 -22, 45 -26, 54 -18
-                                           C 60 -10, 60 12, 52 20
-                                           C 42 28, 20 20, 5 7 Z"
-                    fill="url(#polkaDots)" />
+        <div class="flex-1 relative">
+          <textarea
+            id="userInput"
+            rows="1"
+            placeholder="Mande uma mensagem para o R.A.U.L..."
+            class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-100/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none max-h-28 overflow-y-auto border border-transparent focus:border-amber-500/40 transition"
+            onkeydown="handleInputKeydown(event)"
+            oninput="autoResizeTextarea(this)"
+          ></textarea>
+        </div>
 
-              <path d="M -11 -4 Q -26 -8 -36 -5 M -11 4 Q -26 8 -36 5
-                       M 11 -4 Q 26 -8 36 -5 M 11 4 Q 26 8 36 5"
-                    fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" opacity="0.22" />
+        <!-- Send Button -->
+        <button
+          id="sendBtn"
+          type="submit"
+          class="h-10 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 font-semibold text-sm shadow-sm transition flex items-center justify-center gap-1.5 shrink-0 active:scale-95"
+        >
+          <span>Miar</span>
+          <i class="ph-fill ph-paper-plane-right"></i>
+        </button>
 
-              <rect id="bowKnot" x="-10" y="-11" width="20" height="22" rx="6" fill="#be123c" />
-              <rect id="bowKnotPattern" x="-10" y="-11" width="20" height="22" rx="6" fill="url(#polkaDots)" />
-            </g>
-          </g>
+        <!-- Cancel / Stop Generation Button -->
+        <button
+          id="cancelBtn"
+          type="button"
+          onclick="cancelCurrentGeneration()"
+          class="hidden h-10 px-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs sm:text-sm shadow-sm transition items-center justify-center gap-1.5 shrink-0 active:scale-95 animate-pulse"
+          title="Cancelar resposta em andamento"
+        >
+          <i class="ph-fill ph-stop-circle text-lg"></i>
+          <span>Parar</span>
+        </button>
+      </form>
+    </section>
 
-        </g>
-      </svg>
-
-    </div>
-
-    <!-- INTERACTIVE ACTION BAR BELOW R.A.U.L. -->
-    <div class="w-full px-3 pb-2.5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-      <button onclick="triggerPetting()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-500/25 transition flex items-center gap-1.5 active:scale-95">
-        <span>🤚</span> Fazer Carinho
-      </button>
-      <button onclick="toggleBlepManual()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-pink-500/10 hover:bg-pink-500/20 text-pink-700 dark:text-pink-300 border border-pink-500/25 transition flex items-center gap-1.5 active:scale-95">
-        <span>👅</span> Linguinha (Blep)
-      </button>
-      <button onclick="giveTreat()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/25 transition flex items-center gap-1.5 active:scale-95">
-        <span>🐟</span> Dar Sachê
-      </button>
-      <button id="btnPartyMode" onclick="togglePartyMode()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25 transition flex items-center gap-1.5 active:scale-95">
-        <span>🎈</span> Modo Festa "R"
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- 2. CHAT MESSAGES & QUICK PROMPTS SECTION -->
-<section class="flex-1 flex flex-col min-h-0 bg-white/85 dark:bg-raul-card/90 backdrop-blur-md rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
-  
-  <!-- Chat Header -->
-  <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 shrink-0">
-    <span id="chatWithLabel" class="font-medium flex items-center gap-1.5">
-      <i class="ph-fill ph-sparkle text-amber-500"></i>
-      Conversando com o cavalheiro R.A.U.L.
-    </span>
-    <button onclick="confirmClearChat()" class="hover:text-rose-500 transition flex items-center gap-1 font-medium" title="Limpar histórico de conversa">
-      <i class="ph ph-broom"></i> Limpar chat
-    </button>
-  </div>
-
-  <!-- Messages Scroll Container -->
-  <div id="chatContainer" class="flex-1 overflow-y-auto px-3.5 sm:px-5 py-3.5 space-y-3.5"></div>
-
-  <!-- Quick Suggestions Strip -->
-  <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800/70 bg-slate-50/60 dark:bg-slate-900/40 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-    <button onclick="sendQuickPrompt('R.A.U.L., me ajude a organizar meu dia com prioridades leves e práticas!')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5">
-      <span>📅</span> Organizar meu dia
-    </button>
-    <button onclick="sendQuickPrompt('Que gravata borboleta linda você escolheu hoje! Por que escolheu essa cor?')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5">
-      <span>🎀</span> Elogiar sua gravata
-    </button>
-    <button onclick="sendQuickPrompt('Me dê 3 ideias de jantar gostoso, rápido e aconchegante para hoje à noite.')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5">
-      <span>🍝</span> Ideia de jantar
-    </button>
-    <button onclick="sendQuickPrompt('Preciso escrever uma mensagem educada e profissional, mas com carinho. Pode me ajudar?')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5">
-      <span>✍️</span> Escrever mensagem
-    </button>
-    <button onclick="sendQuickPrompt('R.A.U.L., estou um pouquinho cansada hoje. Me dê um conselho felino aconchegante!')" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5">
-      <span>☀️</span> Conselho aconchegante
-    </button>
-  </div>
-
-  <!-- Input Form -->
-  <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2.5 sm:p-3 bg-white dark:bg-raul-card border-t border-slate-200/80 dark:border-slate-800 flex items-end gap-2 shrink-0">
-    <div class="flex-1 relative">
-      <textarea
-        id="userInput"
-        rows="1"
-        placeholder="Converse com o R.A.U.L. (Ex: me lembre de... ou peça ajuda)..."
-        class="w-full px-4 py-2.5 rounded-2xl bg-slate-100/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none max-h-28 overflow-y-auto border border-transparent focus:border-amber-500/40 transition"
-        onkeydown="handleInputKeydown(event)"
-        oninput="autoResizeTextarea(this)"
-      ></textarea>
-    </div>
-    <button
-      id="sendBtn"
-      type="submit"
-      class="h-10 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 font-semibold text-sm shadow-sm transition flex items-center justify-center gap-1.5 shrink-0 active:scale-95 disabled:opacity-50"
-    >
-      <span>Miar</span>
-      <i class="ph-fill ph-paper-plane-right"></i>
-    </button>
-  </form>
-</section>
   </main>
 
-  <!-- MODAL 1: SETTINGS & GEMINI API KEY -->
+  <!-- ========================================================= -->
+  <!-- MODAL 0: MULTI-CONVERSATION HISTORY DRAWER ("HISTÓRICO")  -->
+  <!-- ========================================================= -->
+  <div id="historyModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🗂️</span>
+          <div>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Histórico de Conversas</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Todas as conversas salvas no aplicativo do R.A.U.L.</p>
+          </div>
+        </div>
+        <button onclick="closeModal('historyModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
 
+      <div class="p-5 overflow-y-auto space-y-3 flex-1">
+        <!-- Top Actions: New Chat + Export/Import Backup -->
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <button onclick="startNewConversation(); closeModal('historyModal');" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-sm hover:opacity-90">
+            <i class="ph-bold ph-plus"></i> Nova Conversa
+          </button>
+
+          <div class="flex items-center gap-1.5">
+            <button onclick="exportHistoryBackup()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold flex items-center gap-1" title="Exportar backup de todas as conversas e memórias">
+              <i class="ph-bold ph-download-simple"></i> Exportar
+            </button>
+            <label class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold flex items-center gap-1 cursor-pointer" title="Importar arquivo de backup">
+              <i class="ph-bold ph-upload-simple"></i> Importar
+              <input type="file" accept=".json" class="hidden" onchange="importHistoryBackup(event)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Search input -->
+        <div class="relative">
+          <i class="ph ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input
+            id="historySearchInput"
+            type="text"
+            placeholder="Buscar nas conversas com o R.A.U.L..."
+            class="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"
+            oninput="renderConversationsList()"
+          />
+        </div>
+
+        <!-- Conversations List -->
+        <div id="conversationsListContainer" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+      </div>
+
+      <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
+        <button onclick="confirmClearChat()" class="text-xs text-rose-600 dark:text-rose-400 hover:underline font-semibold flex items-center gap-1">
+          <i class="ph ph-trash"></i> Limpar conversa atual
+        </button>
+        <button onclick="closeModal('historyModal')" class="px-5 py-2 rounded-xl text-xs font-semibold bg-slate-900 dark:bg-slate-700 text-white">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: SETTINGS, VOLUME & GEMINI API     -->
+  <!-- ========================================== -->
   <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
     <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -626,7 +663,7 @@
           <span class="text-2xl">🎩</span>
           <div>
             <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Configurações do R.A.U.L.</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Conexão gratuita com Gemini & Personalidade</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Modelo Auto-Atualizável, Esforço, Volume & Chave</p>
           </div>
         </div>
         <button onclick="closeModal('settingsModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
@@ -634,79 +671,172 @@
         </button>
       </div>
 
-  <div class="p-6 overflow-y-auto space-y-5 text-sm">
-    <div>
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-        Como o R.A.U.L. deve chamar sua dona?
-      </label>
-      <input
-        id="inputOwnerName"
-        type="text"
-        placeholder="Ex: Meu amor, Doutora, Chefia, ou o nome dela..."
-        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
-      />
-    </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-sm">
+        <!-- Owner Name -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+            Nome da Dona (Para a saudação "Miau! Nome")
+          </label>
+          <input
+            id="inputOwnerName"
+            type="text"
+            placeholder="Ex: Gi"
+            class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
 
-    <div class="p-4 rounded-2xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 space-y-3">
-      <div class="flex items-center justify-between">
-        <span class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-          <i class="ph-fill ph-key"></i> Chave da API do Gemini (Plano Gratuito)
-        </span>
-        <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-semibold">
-          100% Grátis no AI Studio
-        </span>
+        <!-- Purr Volume Boost Slider -->
+        <div class="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/70 dark:border-rose-800/40 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-rose-900 dark:text-rose-300 flex items-center gap-1.5">
+              <i class="ph-fill ph-speaker-high"></i> Volume e Ressonância do Ronronado
+            </label>
+            <button type="button" onclick="playPurrSound()" class="px-2.5 py-1 rounded-lg bg-rose-600 text-white text-xs font-semibold hover:bg-rose-500">
+              Testar Ronronado 🐾
+            </button>
+          </div>
+          <input
+            id="inputPurrVolume"
+            type="range"
+            min="50"
+            max="300"
+            step="10"
+            value="240"
+            class="w-full accent-rose-600 cursor-pointer"
+          />
+        </div>
+
+        <!-- Thinking Effort Selector ("Esforço de Pensamento") -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+            Esforço de Pensamento do Gato (Modelo Gemini Flash)
+          </label>
+          <select id="inputSpeedMode" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+            <option value="fast">⚡ Rápido (Instantâneo — Sem espera de raciocínio)</option>
+            <option value="medium">🐾 Equilibrado (Pensamento Médio — Com balão de pensamento)</option>
+            <option value="deep">🎩 Profundo (Gênio Felino — Raciocínio máximo com óculos)</option>
+          </select>
+        </div>
+
+        <!-- Google AI Studio Free API Key -->
+        <div class="p-4 rounded-2xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5 text-xs">
+              <i class="ph-fill ph-key"></i> Chave da API do Gemini (Google AI Studio)
+            </span>
+            <span id="detectedModelBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-semibold">
+              Auto-Flash Latest
+            </span>
+          </div>
+
+          <input
+            id="inputApiKey"
+            type="password"
+            placeholder="Cole aqui a chave AIzaSy..."
+            class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700/60 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs"
+          />
+          <p class="text-[11px] text-amber-800/80 dark:text-amber-200/80">
+            🔄 O código detecta e usa automaticamente o <strong>último modelo Gemini Flash</strong> disponível na sua chave (`gemini-flash-latest` + busca dinâmica de modelos da Google).
+          </p>
+        </div>
+
+        <!-- Custom System Prompt -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Temperamento e Instruções do R.A.U.L.
+            </label>
+            <button onclick="resetDefaultPrompt()" class="text-xs text-amber-600 dark:text-amber-400 hover:underline font-medium">
+              Restaurar padrão
+            </button>
+          </div>
+          <textarea
+            id="inputCustomPrompt"
+            rows="3"
+            class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs leading-relaxed"
+          ></textarea>
+        </div>
       </div>
 
-      <input
-        id="inputApiKey"
-        type="password"
-        placeholder="Cole aqui a chave AIzaSy..."
-        class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700/60 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs"
-      />
-
-      <div class="text-xs text-amber-900/80 dark:text-amber-200/80 space-y-1 leading-relaxed">
-        <p class="font-semibold">Como gerar a chave gratuita em 30 segundos:</p>
-        <ol class="list-decimal pl-4 space-y-0.5">
-          <li>Acesse <strong>aistudio.google.com/apikey</strong> com a conta Google.</li>
-          <li>Clique em <strong>"Create API Key"</strong> (não pede cartão de crédito).</li>
-          <li>Copie o código que começa com <code>AIza...</code> e cole no campo acima!</li>
-        </ol>
-        <p class="text-[11px] opacity-80 pt-1">
-          🔒 A chave fica salva <strong>exclusivamente no navegador do aparelho dela</strong> (`localStorage`).
-        </p>
-      </div>
-    </div>
-
-    <div>
-      <div class="flex items-center justify-between mb-1.5">
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Temperamento e Instruções do R.A.U.L.
-        </label>
-        <button onclick="resetDefaultPrompt()" class="text-xs text-amber-600 dark:text-amber-400 hover:underline font-medium">
-          Restaurar padrão
+      <div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-2">
+        <button onclick="closeModal('settingsModal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800">
+          Cancelar
+        </button>
+        <button onclick="saveSettings()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 shadow-sm">
+          Salvar Configurações
         </button>
       </div>
-      <textarea
-        id="inputCustomPrompt"
-        rows="4"
-        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs leading-relaxed"
-      ></textarea>
     </div>
   </div>
 
-  <div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-2">
-    <button onclick="closeModal('settingsModal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800">
-      Cancelar
-    </button>
-    <button onclick="saveSettings()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 shadow-sm">
-      Salvar Configurações
-    </button>
-  </div>
-</div>
+  <!-- ========================================== -->
+  <!-- MODAL 2: GOOGLE WORKSPACE APPS INTEGRATION -->
+  <!-- ========================================== -->
+  <div id="googleModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🔗</span>
+          <div>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Conexão com Apps Google</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Agenda, Gmail, Google Drive & Google Docs</p>
+          </div>
+        </div>
+        <button onclick="closeModal('googleModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <a href="https://calendar.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-calendar-check text-2xl text-blue-500"></i>
+            <span class="font-semibold text-xs">Google Agenda</span>
+          </a>
+          <a href="https://mail.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-envelope-simple text-2xl text-rose-500"></i>
+            <span class="font-semibold text-xs">Abrir Gmail</span>
+          </a>
+          <a href="https://drive.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-google-drive-logo text-2xl text-emerald-500"></i>
+            <span class="font-semibold text-xs">Google Drive</span>
+          </a>
+          <a href="https://docs.new" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-file-doc text-2xl text-indigo-500"></i>
+            <span class="font-semibold text-xs">Novo Doc</span>
+          </a>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-2">
+          <p class="font-bold text-xs text-slate-700 dark:text-slate-200 flex items-center justify-between">
+            <span>Upload Direto via API do Google Drive (Opcional)</span>
+            <span id="oauthStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Modo Nativo Celular</span>
+          </p>
+          <div class="flex gap-2">
+            <input
+              id="inputGoogleClientId"
+              type="text"
+              placeholder="Opcional: Client ID OAuth Google"
+              class="flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-mono"
+            />
+            <button onclick="connectGoogleOAuth()" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shrink-0">
+              Conectar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+        <button onclick="closeModal('googleModal')" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950">
+          Fechar
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- MODAL 2: MEMORIES ABOUT HER -->
-
+  <!-- ========================================== -->
+  <!-- MODAL 3: MEMORIES ABOUT HER                -->
+  <!-- ========================================== -->
   <div id="memoriesModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
     <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
       <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -714,7 +844,7 @@
           <span class="text-2xl">💝</span>
           <div>
             <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Memórias Leais do R.A.U.L.</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Fatos importantes sobre ela que o R.A.U.L. nunca esquece</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Fatos sobre ela que o R.A.U.L. guarda com carinho</p>
           </div>
         </div>
         <button onclick="closeModal('memoriesModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
@@ -722,234 +852,592 @@
         </button>
       </div>
 
-  <div class="p-6 overflow-y-auto space-y-4 text-sm">
-    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-      Anote aqui horários, comidas favoritas, metas, datas especiais ou lembretes. O R.A.U.L. consulta este caderninho em todas as respostas!
-    </p>
-
-    <div class="flex gap-2">
-      <input
-        id="newMemoryInput"
-        type="text"
-        placeholder="Ex: Gosta de café sem açúcar, trabalha com..."
-        class="flex-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();addMemoryItem();}"
-      />
-      <button onclick="addMemoryItem()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shrink-0">
-        + Guardar
-      </button>
-    </div>
-
-    <ul id="memoriesList" class="space-y-2 max-h-60 overflow-y-auto"></ul>
-  </div>
-
-  <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
-    <button onclick="closeModal('memoriesModal')" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-slate-700 text-white">
-      Pronto
-    </button>
-  </div>
-</div>
-  </div>
-
-  <!-- MODAL 3: PWA INSTALL GUIDE -->
-
-  <div id="pwaModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-    <div class="w-full max-w-md rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col">
-      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <span class="text-2xl">📱</span>
-          <div>
-            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Instalar o App do R.A.U.L.</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Deixe o R.A.U.L. na tela inicial do celular ou PC</p>
-          </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-sm">
+        <div class="flex gap-2">
+          <input
+            id="newMemoryInput"
+            type="text"
+            placeholder="Ex: Gosta de café sem açúcar, trabalha com..."
+            class="flex-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();addMemoryItem();}"
+          />
+          <button onclick="addMemoryItem()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shrink-0">
+            + Guardar
+          </button>
         </div>
-        <button onclick="closeModal('pwaModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
-          <i class="ph ph-x text-xl"></i>
-        </button>
+        <ul id="memoriesList" class="space-y-2 max-h-60 overflow-y-auto"></ul>
       </div>
 
-  <div class="p-6 space-y-4 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-    <div class="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900/90 space-y-1.5">
-      <p class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-        <i class="ph-fill ph-apple-logo text-base"></i> No iPhone (Safari):
-      </p>
-      <p>Toque no botão <strong>Compartilhar</strong> (quadrado com seta para cima) e escolha <strong>"Adicionar à Tela de Início"</strong>.</p>
-    </div>
-
-    <div class="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900/90 space-y-1.5">
-      <p class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-        <i class="ph-fill ph-android-logo text-base text-emerald-500"></i> No Android (Chrome):
-      </p>
-      <p>Toque nos <strong>3 pontinhos</strong> no canto superior direito e selecione <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong>.</p>
-    </div>
-
-    <div class="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900/90 space-y-1.5">
-      <p class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-        <i class="ph-fill ph-desktop text-base text-amber-500"></i> No Computador (Chrome / Edge):
-      </p>
-      <p>Clique no ícone de <strong>Instalar R.A.U.L.</strong> que aparece no canto direito da barra de endereços para abrir como janela independente.</p>
+      <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+        <button onclick="closeModal('memoriesModal')" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-slate-700 text-white">
+          Pronto
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
-    <button onclick="closeModal('pwaModal')" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950">
-      Entendi, Miau!
-    </button>
-  </div>
-</div>
-  </div>
-
-  <!-- MODAL 4: CUSTOM CONFIRM DIALOG -->
-
+  <!-- ========================================== -->
+  <!-- MODAL 4: CONFIRM CLEAR CHAT                -->
+  <!-- ========================================== -->
   <div id="confirmClearModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
     <div class="w-full max-w-sm rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 p-6 shadow-2xl space-y-4 text-center">
-      <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center mx-auto text-2xl">
-        🐾
-      </div>
-      <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Limpar conversa atual?</h3>
+      <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center mx-auto text-2xl">🐾</div>
+      <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Limpar esta conversa?</h3>
       <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-        O histórico de mensagens será reiniciado, mas as <strong>Memórias da Dona</strong> e a gravata borboleta do R.A.U.L. continuarão salvas!
+        As mensagens desta conversa serão reiniciadas, mas suas outras conversas salvas e as <strong>Memórias da Dona</strong> continuarão intactas!
       </p>
       <div class="flex gap-2 justify-center pt-2">
-        <button onclick="closeModal('confirmClearModal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-          Cancelar
-        </button>
-        <button onclick="executeClearChat()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-500">
-          Sim, limpar chat
-        </button>
+        <button onclick="closeModal('confirmClearModal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cancelar</button>
+        <button onclick="executeClearChat()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-500">Sim, limpar</button>
       </div>
     </div>
   </div>
 
   <!-- Toast Notification -->
-
   <div id="toastBanner" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2 rounded-2xl bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 text-xs font-semibold shadow-xl border border-slate-700/40 items-center gap-2 transition-all">
     <span id="toastIcon">🐾</span>
-    <span id="toastText">Configurações salvas!</span>
+    <span id="toastText">Salvo!</span>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
-
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC                           -->
+  <!-- ========================================== -->
   <script>
+    /*************************************************************
+     * 1. R.A.U.L.'S BOW TIES
+     *************************************************************/
     const BOW_TIES = [
       {
         id: 'red-polka',
         name: 'Vermelha de Bolinhas',
         description: 'gravata borboleta vermelha clássica de bolinhas brancas (poá)',
-        mainColor: '#dc2626',
-        backColor: '#991b1b',
-        knotColor: '#b91c1c',
-        pattern: 'url(#polkaDots)',
-        knotPattern: 'url(#polkaDots)',
-        badgeColor: '#dc2626'
+        mainColor: '#dc2626', backColor: '#991b1b', knotColor: '#b91c1c',
+        pattern: 'url(#polkaDots)', knotPattern: 'url(#polkaDots)', badgeColor: '#dc2626'
       },
       {
         id: 'emerald-polka',
         name: 'Verde-Esmeralda de Bolinhas',
         description: 'gravata borboleta verde-esmeralda vibrante de bolinhas brancas',
-        mainColor: '#059669',
-        backColor: '#065f46',
-        knotColor: '#047857',
-        pattern: 'url(#polkaDots)',
-        knotPattern: 'url(#polkaDots)',
-        badgeColor: '#059669'
+        mainColor: '#059669', backColor: '#065f46', knotColor: '#047857',
+        pattern: 'url(#polkaDots)', knotPattern: 'url(#polkaDots)', badgeColor: '#059669'
       },
       {
         id: 'canary-yellow',
         name: 'Amarela Canário Texturizada',
         description: 'gravata borboleta amarela canário vibrante em tecido texturizado',
-        mainColor: '#facc15',
-        backColor: '#ca8a04',
-        knotColor: '#eab308',
-        pattern: 'url(#linenTexture)',
-        knotPattern: 'url(#linenTexture)',
-        badgeColor: '#eab308'
+        mainColor: '#facc15', backColor: '#ca8a04', knotColor: '#eab308',
+        pattern: 'url(#linenTexture)', knotPattern: 'url(#linenTexture)', badgeColor: '#eab308'
       },
       {
         id: 'party-forest-gold',
         name: 'Verde-Floresta de Festa (Nó Dourado)',
         description: 'gravata borboleta verde-floresta escura de festa com pontinhos claros e nó central dourado',
-        mainColor: '#14532d',
-        backColor: '#052e16',
-        knotColor: '#eab308',
-        pattern: 'url(#partyDots)',
-        knotPattern: 'none',
-        badgeColor: '#15803d'
+        mainColor: '#14532d', backColor: '#052e16', knotColor: '#eab308',
+        pattern: 'url(#partyDots)', knotPattern: 'none', badgeColor: '#15803d'
       },
       {
         id: 'navy-polka',
         name: 'Azul-Marinho de Bolinhas',
         description: 'gravata borboleta azul-marinho diplomática de bolinhas brancas',
-        mainColor: '#1d4ed8',
-        backColor: '#1e3a8a',
-        knotColor: '#1e40af',
-        pattern: 'url(#polkaDots)',
-        knotPattern: 'url(#polkaDots)',
-        badgeColor: '#2563eb'
+        mainColor: '#1d4ed8', backColor: '#1e3a8a', knotColor: '#1e40af',
+        pattern: 'url(#polkaDots)', knotPattern: 'url(#polkaDots)', badgeColor: '#2563eb'
       },
       {
         id: 'lavender-silk',
         name: 'Lilás Lavanda Elegante',
         description: 'gravata borboleta lilás lavanda acetinada super charmosa',
-        mainColor: '#9333ea',
-        backColor: '#581c87',
-        knotColor: '#7e22ce',
-        pattern: 'url(#linenTexture)',
-        knotPattern: 'url(#linenTexture)',
-        badgeColor: '#9333ea'
+        mainColor: '#9333ea', backColor: '#581c87', knotColor: '#7e22ce',
+        pattern: 'url(#linenTexture)', knotPattern: 'url(#linenTexture)', badgeColor: '#9333ea'
       }
     ];
 
-
+    /*************************************************************
+     * 2. STATE & STORAGE KEYS
+     *************************************************************/
     const STORAGE_KEYS = {
       LAST_TIE: 'raul_last_bowtie_id',
-      CHAT_HISTORY: 'raul_chat_history_v1',
+      CONVERSATIONS: 'raul_conversations_v1',
+      ACTIVE_CONV_ID: 'raul_active_conv_id',
+      LEGACY_CHAT: 'raul_chat_history_v2',
       USER_API_KEY: 'raul_gemini_api_key',
       OWNER_NAME: 'raul_owner_name',
       CUSTOM_PROMPT: 'raul_custom_prompt',
       MEMORIES: 'raul_owner_memories',
       SOUND_ENABLED: 'raul_sound_enabled',
+      PURR_VOLUME: 'raul_purr_volume',
+      THINKING_EFFORT: 'raul_thinking_effort',
+      CORNER_MODE: 'raul_corner_mode',
       THEME: 'raul_theme',
-      PARTY_MODE: 'raul_party_mode'
+      PARTY_MODE: 'raul_party_mode',
+      GOOGLE_CLIENT_ID: 'raul_google_client_id',
+      CACHED_FLASH_MODEL: 'raul_latest_flash_model'
     };
 
+    const THINKING_EFFORT_LEVELS = [
+      { id: 'fast', label: 'Rápido', icon: '⚡', budget: 0, desc: 'Esforço Rápido (Instantâneo)' },
+      { id: 'medium', label: 'Médio', icon: '🐾', budget: 2048, desc: 'Esforço Equilibrado (Pensamento Médio)' },
+      { id: 'deep', label: 'Profundo', icon: '🎩', budget: 8192, desc: 'Esforço Profundo (Gênio Felino)' }
+    ];
 
     const DEFAULT_PERSONALITY = `Você é o R.A.U.L. (Ronronante Assistente Ultra Leal), o gato frajola peludo (preto e branco) de olhos verdes, cavanhaque preto, meio-bigode charmoso de um lado só e gravata borboleta impecável.
-Você é o assistente pessoal exclusivo, leal, carinhoso e muito inteligente da sua humana favorita.
-Diretrizes de comportamento:
-1. Seja sempre prestativo, claro, organizado e resolva qualquer pedido dela (organizar agenda/tarefas, dar ideias de refeições, revisar textos, explicar conceitos difíceis ou acolhê-la num dia corrido).
-2. Mantenha um toque felino elegante e afetuoso: ocasionalmente faça breves referências charmosas à sua gravata borboleta do dia, ao seu ronronado, a um raio de sol na janela ou a um sachê gourmet, sem jamais atrapalhar a qualidade e utilidade prática da resposta.
-3. Responda sempre em português do Brasil, usando formatação limpa (tópicos e negrito quando ajudar na leitura).`;
-
+Você é o assistente pessoal exclusivo, leal, carinhoso e muito eficiente da sua humana favorita.
+Diretrizes:
+1. Quando cumprimentar no início de uma conversa, use sempre a saudação "Miau! (Nome da pessoa)".
+2. Seja objetivo, claro, carinhoso e resolva qualquer pedido (agenda, clima, análise de arquivos/PDFs/fotos, criação de documentos, e-mails e ideias).
+3. Mantenha um toque felino elegante (menções sutis à sua gravata borboleta do dia ou a um ronronado), sem enrolar e sem colocar prefixos escritos antes da resposta.
+4. Responda sempre em português do Brasil.`;
 
     let currentBowTie = BOW_TIES[0];
+    let conversations = []; // [{ id, title, updatedAt, messages: [] }]
+    let activeConversationId = null;
     let chatHistory = [];
     let ownerMemories = [];
+    let pendingAttachments = [];
+    let generatedFilesStore = {};
     let soundEnabled = true;
     let isBlepActive = false;
     let isPartyMode = false;
+    let isCornerMode = false;
     let isGenerating = false;
+    let currentAbortController = null;
     let audioCtx = null;
+    let userLocationContext = null;
+    let googleAccessToken = null;
+    let dynamicLatestFlashModel = localStorage.getItem(STORAGE_KEYS.CACHED_FLASH_MODEL) || 'gemini-flash-latest';
 
-
+    /*************************************************************
+     * 3. INITIALIZATION
+     *************************************************************/
     window.onload = function () {
       initTheme();
       initSoundSetting();
       pickNewBowTieOnOpen();
       loadMemories();
       loadSettingsIntoInputs();
-      loadChatHistory();
+      updateThinkingEffortUI();
+      initConversationsSystem();
       setupEyeTracking();
       startIdleLifeLoop();
       injectDynamicPWA();
 
-
       if (localStorage.getItem(STORAGE_KEYS.PARTY_MODE) === 'true') {
         togglePartyMode(true);
       }
+      if (localStorage.getItem(STORAGE_KEYS.CORNER_MODE) === 'true') {
+        toggleCornerMode(true);
+      }
+
+      // Auto-discover the latest Gemini Flash model from Google's API
+      discoverLatestGeminiFlashModel();
+
+      // Silent location & weather detection
+      requestUserLocation(false);
     };
 
+    /*************************************************************
+     * 4. AUTO-DISCOVER LATEST GEMINI FLASH MODEL
+     *************************************************************/
+    async function discoverLatestGeminiFlashModel() {
+      const userKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
+      if (!userKey) return;
 
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${userKey}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const models = data.models || [];
+
+        // Filter all models that support generateContent and are Flash models (excluding live/tts/image-only)
+        const flashCandidates = models
+          .map(m => m.name.replace('models/', ''))
+          .filter(name =>
+            name.includes('gemini') &&
+            name.includes('flash') &&
+            !name.includes('lite') &&
+            !name.includes('tts') &&
+            !name.includes('image') &&
+            !name.includes('audio') &&
+            !name.includes('8b')
+          );
+
+        // Sort descending by version number so e.g. gemini-3.8-flash > gemini-3.0-flash > gemini-2.5-flash
+        flashCandidates.sort((a, b) => {
+          const verA = parseFloat((a.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
+          const verB = parseFloat((b.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
+          if (verB !== verA) return verB - verA;
+          return b.localeCompare(a);
+        });
+
+        if (flashCandidates.length > 0) {
+          dynamicLatestFlashModel = flashCandidates[0];
+          localStorage.setItem(STORAGE_KEYS.CACHED_FLASH_MODEL, dynamicLatestFlashModel);
+          const badge = document.getElementById('detectedModelBadge');
+          if (badge) badge.textContent = `Auto: ${dynamicLatestFlashModel}`;
+        }
+      } catch (e) {}
+    }
+
+    /*************************************************************
+     * 5. THINKING EFFORT BUTTON ("ESFORÇO DE PENSAMENTO")
+     *************************************************************/
+    function getThinkingEffortObj() {
+      const savedId = localStorage.getItem(STORAGE_KEYS.THINKING_EFFORT) || 'fast';
+      return THINKING_EFFORT_LEVELS.find(l => l.id === savedId) || THINKING_EFFORT_LEVELS[0];
+    }
+
+    function cycleThinkingEffort() {
+      const current = getThinkingEffortObj();
+      const idx = THINKING_EFFORT_LEVELS.findIndex(l => l.id === current.id);
+      const next = THINKING_EFFORT_LEVELS[(idx + 1) % THINKING_EFFORT_LEVELS.length];
+
+      localStorage.setItem(STORAGE_KEYS.THINKING_EFFORT, next.id);
+      const selectEl = document.getElementById('inputSpeedMode');
+      if (selectEl) selectEl.value = next.id;
+
+      updateThinkingEffortUI();
+
+      // Visual reaction on R.A.U.L. when switching effort!
+      if (next.id === 'deep') {
+        document.getElementById('raulSmartGlasses').classList.remove('hidden');
+        setTimeout(() => { if (!isGenerating) document.getElementById('raulSmartGlasses').classList.add('hidden'); }, 1800);
+      } else if (next.id === 'medium') {
+        triggerCuriousReaction();
+      } else {
+        spawnParticle('⚡');
+      }
+      showToast(next.desc, next.icon);
+    }
+
+    function updateThinkingEffortUI() {
+      const effort = getThinkingEffortObj();
+      const iconEl = document.getElementById('thinkingEffortIcon');
+      const labelEl = document.getElementById('thinkingEffortLabel');
+      if (iconEl) iconEl.textContent = effort.icon;
+      if (labelEl) labelEl.textContent = effort.label;
+    }
+
+    /*************************************************************
+     * 6. MULTI-CONVERSATION HISTORY MANAGER (LOCAL + BACKUP)
+     *************************************************************/
+    function initConversationsSystem() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.CONVERSATIONS);
+        conversations = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        conversations = [];
+      }
+
+      // Migrate legacy single chat history if present
+      if (conversations.length === 0) {
+        try {
+          const legacy = localStorage.getItem(STORAGE_KEYS.LEGACY_CHAT);
+          if (legacy) {
+            const parsedLegacy = JSON.parse(legacy);
+            if (Array.isArray(parsedLegacy) && parsedLegacy.length > 0) {
+              const firstUserMsg = parsedLegacy.find(m => m.role === 'user');
+              conversations.push({
+                id: 'conv_' + Date.now(),
+                title: firstUserMsg ? firstUserMsg.text.slice(0, 42) : 'Conversa com R.A.U.L.',
+                updatedAt: Date.now(),
+                messages: parsedLegacy
+              });
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Ensure at least one active conversation exists
+      const savedActiveId = localStorage.getItem(STORAGE_KEYS.ACTIVE_CONV_ID);
+      const existing = conversations.find(c => c.id === savedActiveId);
+
+      if (existing) {
+        activeConversationId = existing.id;
+        chatHistory = existing.messages || [];
+      } else if (conversations.length > 0) {
+        activeConversationId = conversations[0].id;
+        chatHistory = conversations[0].messages || [];
+      } else {
+        createNewConversationObject();
+      }
+
+      saveConversationsState();
+      renderChatMessages();
+    }
+
+    function createNewConversationObject() {
+      const newConv = {
+        id: 'conv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        title: 'Nova conversa',
+        updatedAt: Date.now(),
+        messages: []
+      };
+      conversations.unshift(newConv);
+      activeConversationId = newConv.id;
+      chatHistory = newConv.messages;
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_CONV_ID, activeConversationId);
+    }
+
+    function startNewConversation() {
+      if (isGenerating) cancelCurrentGeneration();
+
+      // If current conversation is already empty, just refresh greeting
+      const currentConv = conversations.find(c => c.id === activeConversationId);
+      if (currentConv && currentConv.messages.length === 0) {
+        renderChatMessages();
+        triggerCuriousReaction();
+        return;
+      }
+
+      createNewConversationObject();
+      saveConversationsState();
+      renderChatMessages();
+      triggerCuriousReaction();
+      showToast('Nova conversa iniciada!', '🐾');
+    }
+
+    function switchConversation(convId) {
+      if (isGenerating) cancelCurrentGeneration();
+      const target = conversations.find(c => c.id === convId);
+      if (!target) return;
+
+      activeConversationId = target.id;
+      chatHistory = target.messages || [];
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_CONV_ID, activeConversationId);
+      closeModal('historyModal');
+      renderChatMessages();
+      renderConversationsList();
+    }
+
+    function deleteConversation(convId, event) {
+      if (event) event.stopPropagation();
+      conversations = conversations.filter(c => c.id !== convId);
+
+      if (activeConversationId === convId) {
+        if (conversations.length > 0) {
+          activeConversationId = conversations[0].id;
+          chatHistory = conversations[0].messages || [];
+        } else {
+          createNewConversationObject();
+        }
+      }
+      saveConversationsState();
+      renderChatMessages();
+      renderConversationsList();
+    }
+
+    function saveConversationsState() {
+      const currentConv = conversations.find(c => c.id === activeConversationId);
+      if (currentConv) {
+        currentConv.messages = chatHistory.slice(-50);
+        currentConv.updatedAt = Date.now();
+        // Auto-generate title from first user message
+        const firstUser = currentConv.messages.find(m => m.role === 'user');
+        if (firstUser && (!currentConv.title || currentConv.title === 'Nova conversa')) {
+          currentConv.title = firstUser.text.replace(/\s+/g, ' ').trim().slice(0, 45);
+        }
+      }
+
+      // Sort most recent first
+      conversations.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.CONVERSATIONS, JSON.stringify(conversations.slice(0, 40)));
+        localStorage.setItem(STORAGE_KEYS.ACTIVE_CONV_ID, activeConversationId);
+      } catch (e) {}
+
+      const badge = document.getElementById('historyCountBadge');
+      if (badge) badge.textContent = conversations.length;
+      renderConversationsList();
+    }
+
+    function renderConversationsList() {
+      const container = document.getElementById('conversationsListContainer');
+      if (!container) return;
+
+      const query = (document.getElementById('historySearchInput')?.value || '').toLowerCase().trim();
+      const filtered = conversations.filter(c => {
+        if (!query) return true;
+        const inTitle = (c.title || '').toLowerCase().includes(query);
+        const inMsgs = (c.messages || []).some(m => (m.text || '').toLowerCase().includes(query));
+        return inTitle || inMsgs;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic py-4 text-center">Nenhuma conversa encontrada.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(conv => {
+        const isActive = conv.id === activeConversationId;
+        const msgCount = (conv.messages || []).length;
+        const dateStr = new Date(conv.updatedAt || Date.now()).toLocaleDateString('pt-BR', {
+          day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+        });
+
+        return `
+          <div onclick="switchConversation('${conv.id}')" class="group flex items-center justify-between gap-2 p-3 rounded-2xl cursor-pointer transition border ${isActive ? 'bg-amber-500/15 border-amber-500/50 dark:bg-amber-500/15' : 'bg-slate-50 dark:bg-slate-900/70 border-slate-200/70 dark:border-slate-800 hover:bg-amber-50/50 dark:hover:bg-slate-800'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="text-lg shrink-0">${isActive ? '🐱' : '🐾'}</span>
+              <div class="min-w-0">
+                <p class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(conv.title || 'Nova conversa')}</p>
+                <p class="text-[10px] text-slate-400">${msgCount} mensagem(ns) • ${dateStr}</p>
+              </div>
+            </div>
+            <button onclick="deleteConversation('${conv.id}', event)" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition shrink-0" title="Excluir conversa">
+              <i class="ph ph-trash text-sm"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function exportHistoryBackup() {
+      const backup = {
+        exportedAt: new Date().toISOString(),
+        ownerName: localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '',
+        memories: ownerMemories,
+        conversations
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `historico_raul_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup do histórico exportado!', '📦');
+    }
+
+    function importHistoryBackup(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(String(reader.result || '{}'));
+          if (Array.isArray(data.conversations)) {
+            conversations = data.conversations;
+            if (conversations.length > 0) {
+              activeConversationId = conversations[0].id;
+              chatHistory = conversations[0].messages || [];
+            }
+          }
+          if (Array.isArray(data.memories)) {
+            ownerMemories = data.memories;
+            saveMemories();
+          }
+          saveConversationsState();
+          renderChatMessages();
+          showToast('Histórico importado com sucesso!', '🎉');
+        } catch (e) {
+          showToast('Arquivo de backup inválido.', '⚠️');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    /*************************************************************
+     * 7. CORNER CAT MODE ("GATO NO CANTO" / EXPANDED CHAT)
+     *************************************************************/
+    function toggleCornerMode(forceState) {
+      isCornerMode = typeof forceState === 'boolean' ? forceState : !isCornerMode;
+      localStorage.setItem(STORAGE_KEYS.CORNER_MODE, isCornerMode ? 'true' : 'false');
+
+      const stageCard = document.getElementById('raulStageCard');
+      const cornerDock = document.getElementById('raulCornerDock');
+      const stageHolder = document.getElementById('raulStageSvgHolder');
+      const cornerHolder = document.getElementById('raulCornerSvgHolder');
+      const raulSvg = document.getElementById('raulSvg');
+      const textBtn = document.getElementById('textCornerMode');
+
+      if (isCornerMode) {
+        stageCard.classList.add('hidden');
+        cornerDock.classList.remove('hidden');
+        cornerDock.classList.add('flex');
+        cornerHolder.appendChild(raulSvg);
+        if (textBtn) textBtn.textContent = 'Palco';
+      } else {
+        cornerDock.classList.add('hidden');
+        cornerDock.classList.remove('flex');
+        stageCard.classList.remove('hidden');
+        stageHolder.appendChild(raulSvg);
+        if (textBtn) textBtn.textContent = 'Canto';
+      }
+      scrollToBottom();
+    }
+
+    /*************************************************************
+     * 8. GEOLOCATION & LIVE WEATHER FORECAST
+     *************************************************************/
+    async function requestUserLocation(manualClick = false) {
+      const badgeText = document.getElementById('locationBadgeText');
+      if (!navigator.geolocation) return;
+
+      if (manualClick) badgeText.textContent = '...';
+
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const lat = pos.coords.latitude.toFixed(4);
+          const lon = pos.coords.longitude.toFixed(4);
+          try {
+            const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=pt`);
+            const geoData = await geoRes.json();
+            const city = geoData.city || geoData.locality || geoData.principalSubdivision || 'Local';
+
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=4`;
+            const wRes = await fetch(weatherUrl);
+            const wData = await wRes.json();
+
+            const currentTemp = Math.round(wData?.current?.temperature_2m ?? 22);
+            const feelsLike = Math.round(wData?.current?.apparent_temperature ?? currentTemp);
+            const weatherDesc = decodeWMOWeatherCode(wData?.current?.weather_code);
+
+            let dailySummary = '';
+            if (wData?.daily?.time) {
+              dailySummary = wData.daily.time.map((dateStr, idx) => {
+                const maxT = Math.round(wData.daily.temperature_2m_max[idx]);
+                const minT = Math.round(wData.daily.temperature_2m_min[idx]);
+                const rainProb = wData.daily.precipitation_probability_max[idx] ?? 0;
+                const desc = decodeWMOWeatherCode(wData.daily.weather_code[idx]);
+                return `${dateStr}: ${desc}, Mín ${minT}°C / Máx ${maxT}°C (Chuva: ${rainProb}%)`;
+              }).join(' | ');
+            }
+
+            userLocationContext = {
+              city, lat, lon, currentTemp, feelsLike, weatherDesc, dailySummary,
+              updatedAt: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            badgeText.textContent = `${city} • ${currentTemp}°C`;
+            if (manualClick) triggerCuriousReaction();
+          } catch (err) {
+            userLocationContext = { city: `Lat ${lat}, Lon ${lon}`, lat, lon };
+            badgeText.textContent = `Local Ativo`;
+          }
+        },
+        () => {
+          if (manualClick) showToast('Permita o acesso à localização no navegador!', '📍');
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
+      );
+    }
+
+    function decodeWMOWeatherCode(code) {
+      const map = {
+        0: 'Céu limpo e ensolarado', 1: 'Predominantemente limpo', 2: 'Parcialmente nublado', 3: 'Nublado',
+        45: 'Nevoeiro', 48: 'Nevoeiro úmido', 51: 'Garoa leve', 53: 'Garoa moderada', 55: 'Garoa intensa',
+        61: 'Chuva fraca', 63: 'Chuva moderada', 65: 'Chuva forte', 80: 'Pancadas de chuva leves',
+        81: 'Pancadas de chuva moderadas', 82: 'Pancadas de chuva fortes', 95: 'Tempestade com trovoadas'
+      };
+      return map[code] || 'Tempo variável';
+    }
+
+    /*************************************************************
+     * 9. BOW TIE & PURE VISUAL CAT ANIMATIONS (NO WRITTEN STATUS)
+     *************************************************************/
     function pickNewBowTieOnOpen() {
       const lastTieId = localStorage.getItem(STORAGE_KEYS.LAST_TIE);
       const candidates = BOW_TIES.filter(t => t.id !== lastTieId);
@@ -957,27 +1445,20 @@ Diretrizes de comportamento:
       applyBowTie(randomTie, false);
     }
 
-
     function applyBowTie(tie, animate = true) {
       currentBowTie = tie;
       localStorage.setItem(STORAGE_KEYS.LAST_TIE, tie.id);
-
 
       document.getElementById('bowMainLeft').setAttribute('fill', tie.mainColor);
       document.getElementById('bowMainRight').setAttribute('fill', tie.mainColor);
       document.getElementById('bowBackLeft').setAttribute('fill', tie.backColor);
       document.getElementById('bowBackRight').setAttribute('fill', tie.backColor);
       document.getElementById('bowKnot').setAttribute('fill', tie.knotColor);
-
-
       document.getElementById('bowPatternLeft').setAttribute('fill', tie.pattern);
       document.getElementById('bowPatternRight').setAttribute('fill', tie.pattern);
       document.getElementById('bowKnotPattern').setAttribute('fill', tie.knotPattern);
 
-
-      document.getElementById('bowTieLabelText').textContent = `Gravata: ${tie.name}`;
       document.getElementById('headerTieDot').style.backgroundColor = tie.badgeColor;
-
 
       if (animate) {
         const bowInner = document.getElementById('raulBowTieInner');
@@ -986,17 +1467,14 @@ Diretrizes de comportamento:
         bowInner.classList.add('bowtie-animate');
         playMeowSound(620, 780, 0.14);
         spawnParticle('✨');
-        showToast(`R.A.U.L. colocou a gravata: ${tie.name}!`, '🎀');
       }
     }
-
 
     function cycleBowTie(manual = true) {
       const currentIndex = BOW_TIES.findIndex(t => t.id === currentBowTie.id);
       const nextIndex = (currentIndex + 1) % BOW_TIES.length;
       applyBowTie(BOW_TIES[nextIndex], manual);
     }
-
 
     function setupEyeTracking() {
       const handleMove = (clientX, clientY) => {
@@ -1007,138 +1485,122 @@ Diretrizes de comportamento:
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height * 0.42;
 
-
         const dx = Math.max(-1, Math.min(1, (clientX - centerX) / (window.innerWidth * 0.35)));
         const dy = Math.max(-1, Math.min(1, (clientY - centerY) / (window.innerHeight * 0.35)));
 
-
-        const moveX = dx * 5.2;
-        const moveY = dy * 3.6;
-
-
         const pupils = document.querySelectorAll('.raul-pupil');
         pupils.forEach(p => {
-          p.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          p.style.transform = `translate(${dx * 5.2}px, ${dy * 3.6}px)`;
         });
       };
 
-
       window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches[0]) {
-          handleMove(e.touches[0].clientX, e.touches[0].clientY);
-        }
+        if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
       }, { passive: true });
     }
 
-
     function startIdleLifeLoop() {
       setInterval(() => {
-        if (Math.random() < 0.75) {
-          blinkEyes();
-        }
-      }, 3800);
-
+        if (Math.random() < 0.75) blinkEyes();
+      }, 3600);
 
       setInterval(() => {
-        if (!isBlepActive && Math.random() < 0.25) {
+        if (!isGenerating && !isBlepActive && Math.random() < 0.25) {
           setBlepState(true);
-          setTimeout(() => {
-            if (isBlepActive) setBlepState(false);
-          }, 3200);
+          setTimeout(() => { if (isBlepActive) setBlepState(false); }, 3000);
         }
-      }, 11000);
+      }, 10500);
     }
-
 
     function blinkEyes() {
       const eyelids = document.querySelectorAll('.raul-eyelid');
       eyelids.forEach(el => (el.style.transform = 'scaleY(1)'));
-      setTimeout(() => {
-        eyelids.forEach(el => (el.style.transform = 'scaleY(0)'));
-      }, 150);
+      setTimeout(() => { eyelids.forEach(el => (el.style.transform = 'scaleY(0)')); }, 150);
     }
-
 
     function setBlepState(active) {
       isBlepActive = active;
       const blep = document.getElementById('raulBlep');
-      if (blep) {
-        blep.style.transform = active ? 'scaleY(1)' : 'scaleY(0)';
-      }
+      if (blep) blep.style.transform = active ? 'scaleY(1)' : 'scaleY(0)';
     }
-
 
     function toggleBlepManual() {
       setBlepState(!isBlepActive);
       if (isBlepActive) {
-        playMeowSound(540, 660, 0.12);
+        playMeowSound(540, 660, 0.14);
         spawnParticle('👅');
-        setMoodStatus('Mostrando a linguinha (Blep!)', 'bg-pink-500');
-      } else {
-        setMoodStatus('Ronronando e atento', 'bg-emerald-500');
       }
     }
 
+    function triggerCuriousReaction() {
+      const head = document.getElementById('raulHeadGroup');
+      const curiousBubble = document.getElementById('raulReactionCurious');
+      const leftPupil = document.getElementById('leftPupilEllipse');
+      const rightPupil = document.getElementById('rightPupilEllipse');
+
+      head.classList.add('raul-head-curious');
+      curiousBubble.classList.remove('hidden');
+      // Dilate pupils with curiosity!
+      if (leftPupil) leftPupil.setAttribute('rx', '7.5');
+      if (rightPupil) rightPupil.setAttribute('rx', '7.5');
+      playMeowSound(580, 760, 0.14);
+
+      setTimeout(() => {
+        head.classList.remove('raul-head-curious');
+        curiousBubble.classList.add('hidden');
+        if (leftPupil) leftPupil.setAttribute('rx', '4.5');
+        if (rightPupil) rightPupil.setAttribute('rx', '4.5');
+      }, 1900);
+    }
 
     function triggerPetting() {
       const head = document.getElementById('raulHeadGroup');
       const happyEyes = document.querySelectorAll('.raul-happy-eye');
       const pupils = document.querySelectorAll('.raul-pupil');
 
-
       head.classList.add('raul-purring');
       happyEyes.forEach(el => el.classList.remove('hidden'));
       pupils.forEach(el => el.classList.add('opacity-0'));
       setBlepState(true);
 
-
-      setMoodStatus('Prrrrr... amando o carinho! 💕', 'bg-rose-500');
       playPurrSound();
-
 
       for (let i = 0; i < 4; i++) {
         setTimeout(() => spawnParticle(['❤️', '💖', '🐾', '✨'][i % 4]), i * 160);
       }
 
-
       setTimeout(() => {
         head.classList.remove('raul-purring');
         happyEyes.forEach(el => el.classList.add('hidden'));
         pupils.forEach(el => el.classList.remove('opacity-0'));
-        setMoodStatus('Ronronando e atento', 'bg-emerald-500');
-      }, 2200);
+      }, 2400);
     }
-
 
     function giveTreat() {
       playMeowSound(480, 740, 0.22);
       const jaw = document.getElementById('raulJawGroup');
+      const tail = document.getElementById('raulTailGroup');
       jaw.classList.add('raul-talking-jaw');
+      tail.classList.add('raul-tail-excited');
       setBlepState(true);
-      setMoodStatus('Nham nham! Sachê delicioso! 🐟', 'bg-amber-500');
-
 
       for (let i = 0; i < 4; i++) {
         setTimeout(() => spawnParticle(['🐟', '😋', '💛', '✨'][i % 4]), i * 170);
       }
 
-
       setTimeout(() => {
         jaw.classList.remove('raul-talking-jaw');
-        setMoodStatus('Satisfeito e pronto para ajudar!', 'bg-emerald-500');
+        tail.classList.remove('raul-tail-excited');
       }, 2000);
     }
-
 
     function togglePartyMode(forceState) {
       isPartyMode = typeof forceState === 'boolean' ? forceState : !isPartyMode;
       localStorage.setItem(STORAGE_KEYS.PARTY_MODE, isPartyMode ? 'true' : 'false');
 
-
       const balloons = document.getElementById('partyBalloons');
       const btn = document.getElementById('btnPartyMode');
-
 
       if (isPartyMode) {
         balloons.classList.remove('hidden');
@@ -1146,7 +1608,6 @@ Diretrizes de comportamento:
         if (forceState === undefined) {
           const partyTie = BOW_TIES.find(t => t.id === 'party-forest-gold');
           if (partyTie) applyBowTie(partyTie, true);
-          showToast('Modo Festa "R" ativado com balões verdes!', '🎈');
         }
       } else {
         balloons.classList.add('hidden');
@@ -1154,58 +1615,63 @@ Diretrizes de comportamento:
       }
     }
 
-
     function spawnParticle(emoji) {
       const container = document.getElementById('particlesContainer');
       if (!container) return;
       const span = document.createElement('span');
       span.className = 'heart-particle absolute text-xl sm:text-2xl select-none';
-      const randomLeft = 36 + Math.random() * 28;
-      const randomTop = 28 + Math.random() * 25;
-      span.style.left = `${randomLeft}%`;
-      span.style.top = `${randomTop}%`;
+      span.style.left = `${36 + Math.random() * 28}%`;
+      span.style.top = `${28 + Math.random() * 25}%`;
       span.textContent = emoji;
       container.appendChild(span);
       setTimeout(() => span.remove(), 1650);
     }
 
-
-    function setMoodStatus(text, dotColorClass = 'bg-emerald-500') {
-      const moodText = document.getElementById('raulMoodText');
-      const moodDot = document.getElementById('raulMoodIndicator');
-      if (moodText) moodText.textContent = text;
-      if (moodDot) {
-        moodDot.className = `w-2 h-2 rounded-full animate-pulse ${dotColorClass}`;
-      }
-    }
-
-
+    // Master Visual State Controller for R.A.U.L. (No written text!)
     function setRaulAnimationState(state) {
+      const head = document.getElementById('raulHeadGroup');
       const jaw = document.getElementById('raulJawGroup');
       const rightPaw = document.getElementById('raulRightPaw');
+      const thoughtBubble = document.getElementById('raulThoughtBubble');
+      const smartGlasses = document.getElementById('raulSmartGlasses');
+      const ideaBubble = document.getElementById('raulReactionIdea');
+      const tail = document.getElementById('raulTailGroup');
       const pupils = document.querySelectorAll('.raul-pupil');
+      const effort = getThinkingEffortObj();
 
-
+      // Reset classes
+      head.classList.remove('raul-head-thinking', 'raul-head-curious');
       jaw.classList.remove('raul-talking-jaw');
       rightPaw.classList.remove('raul-thinking-paw');
-
+      thoughtBubble.classList.add('hidden');
+      smartGlasses.classList.add('hidden');
+      ideaBubble.classList.add('hidden');
+      tail.classList.remove('raul-tail-excited');
 
       if (state === 'thinking') {
+        head.classList.add('raul-head-thinking');
         rightPaw.classList.add('raul-thinking-paw');
-        pupils.forEach(p => (p.style.transform = 'translate(3px, -5px)'));
-        setMoodStatus('Ajustando a gravata e pensando...', 'bg-amber-500');
+        thoughtBubble.classList.remove('hidden');
+        pupils.forEach(p => (p.style.transform = 'translate(4px, -6px)'));
+        // Put on his golden intellectual glasses if Deep effort or analyzing files
+        if (effort.id === 'deep' || pendingAttachments.length > 0) {
+          smartGlasses.classList.remove('hidden');
+        }
       } else if (state === 'speaking') {
+        // Brief "Eureka!" reaction when he starts answering
+        ideaBubble.classList.remove('hidden');
+        setTimeout(() => ideaBubble.classList.add('hidden'), 900);
         jaw.classList.add('raul-talking-jaw');
+        tail.classList.add('raul-tail-excited');
         pupils.forEach(p => (p.style.transform = 'translate(0px, 0px)'));
-        setMoodStatus('Miando a resposta para você...', 'bg-sky-500');
-        playMeowSound(520, 680, 0.14);
       } else {
         pupils.forEach(p => (p.style.transform = 'translate(0px, 0px)'));
-        setMoodStatus('Ronronando e atento', 'bg-emerald-500');
       }
     }
 
-
+    /*************************************************************
+     * 10. BOOSTED PURR SYNTHESIZER + HAPTICS
+     *************************************************************/
     function getAudioContext() {
       if (!audioCtx) {
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1217,58 +1683,88 @@ Diretrizes de comportamento:
       return audioCtx;
     }
 
-
     function playPurrSound() {
+      if (navigator.vibrate) {
+        try { navigator.vibrate([90, 40, 110, 40, 130, 45, 110, 40, 90]); } catch (e) {}
+      }
+
       if (!soundEnabled) return;
       try {
         const ctx = getAudioContext();
         if (!ctx) return;
 
-
         const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const lfo = ctx.createOscillator();
-        const lfoGain = ctx.createGain();
-        const mainGain = ctx.createGain();
+        const duration = 2.2;
+        const volPercent = parseInt(localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '240', 10);
+        const masterLevel = Math.min(1.0, (volPercent / 100) * 0.38);
 
+        const compressor = ctx.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-24, now);
+        compressor.knee.setValueAtTime(12, now);
+        compressor.ratio.setValueAtTime(8, now);
+        compressor.attack.setValueAtTime(0.005, now);
+        compressor.release.setValueAtTime(0.15, now);
+        compressor.connect(ctx.destination);
 
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(26, now);
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const osc3 = ctx.createOscillator();
+        osc1.type = 'sawtooth';
+        osc2.type = 'triangle';
+        osc3.type = 'sine';
 
+        osc1.frequency.setValueAtTime(32, now);
+        osc2.frequency.setValueAtTime(96, now);
+        osc3.frequency.setValueAtTime(168, now);
 
-        lfo.type = 'sine';
-        lfo.frequency.setValueAtTime(4.5, now);
-        lfoGain.gain.setValueAtTime(8, now);
+        const rattleLfo = ctx.createOscillator();
+        const rattleGain = ctx.createGain();
+        rattleLfo.type = 'sine';
+        rattleLfo.frequency.setValueAtTime(25, now);
+        rattleGain.gain.setValueAtTime(0.45, now);
 
-
-        lfo.connect(lfoGain);
-        lfoGain.connect(osc.frequency);
-
+        const breathLfo = ctx.createOscillator();
+        const breathFreqGain = ctx.createGain();
+        breathLfo.type = 'sine';
+        breathLfo.frequency.setValueAtTime(0.85, now);
+        breathFreqGain.gain.setValueAtTime(12, now);
+        breathLfo.connect(breathFreqGain);
+        breathFreqGain.connect(osc2.frequency);
+        breathFreqGain.connect(osc3.frequency);
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(140, now);
+        filter.frequency.setValueAtTime(420, now);
+        filter.Q.setValueAtTime(2.8, now);
 
+        const modNode = ctx.createGain();
+        modNode.gain.setValueAtTime(0.55, now);
+        rattleLfo.connect(rattleGain);
+        rattleGain.connect(modNode.gain);
 
-        mainGain.gain.setValueAtTime(0.001, now);
-        mainGain.gain.exponentialRampToValueAtTime(0.14, now + 0.25);
-        mainGain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+        const envelope = ctx.createGain();
+        envelope.gain.setValueAtTime(0.001, now);
+        envelope.gain.linearRampToValueAtTime(masterLevel, now + 0.25);
+        envelope.gain.setValueAtTime(masterLevel * 0.75, now + 1.0);
+        envelope.gain.linearRampToValueAtTime(masterLevel, now + 1.45);
+        envelope.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
+        osc1.connect(filter);
+        osc2.connect(filter);
+        osc3.connect(filter);
+        filter.connect(modNode);
+        modNode.connect(envelope);
+        envelope.connect(compressor);
 
-        osc.connect(filter);
-        filter.connect(mainGain);
-        mainGain.connect(ctx.destination);
+        osc1.start(now); osc2.start(now); osc3.start(now);
+        rattleLfo.start(now); breathLfo.start(now);
 
-
-        osc.start(now);
-        lfo.start(now);
-        osc.stop(now + 1.65);
-        lfo.stop(now + 1.65);
+        osc1.stop(now + duration); osc2.stop(now + duration); osc3.stop(now + duration);
+        rattleLfo.stop(now + duration); breathLfo.stop(now + duration);
       } catch (e) {}
     }
 
-
-    function playMeowSound(startFreq = 500, endFreq = 680, duration = 0.16) {
+    function playMeowSound(startFreq = 520, endFreq = 700, duration = 0.16) {
       if (!soundEnabled) return;
       try {
         const ctx = getAudioContext();
@@ -1277,362 +1773,701 @@ Diretrizes de comportamento:
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
-
         osc.type = 'sine';
         osc.frequency.setValueAtTime(startFreq, now);
         osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration * 0.6);
         osc.frequency.exponentialRampToValueAtTime(startFreq * 0.9, now + duration);
 
-
         gain.gain.setValueAtTime(0.001, now);
-        gain.gain.exponentialRampToValueAtTime(0.09, now + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.16, now + 0.03);
         gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
 
         osc.connect(gain);
         gain.connect(ctx.destination);
-
-
         osc.start(now);
         osc.stop(now + duration + 0.02);
       } catch (e) {}
     }
 
-
     function initSoundSetting() {
-      const saved = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
-      soundEnabled = saved !== 'false';
+      soundEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED) !== 'false';
       updateSoundIcon();
     }
-
 
     function toggleSound() {
       soundEnabled = !soundEnabled;
       localStorage.setItem(STORAGE_KEYS.SOUND_ENABLED, soundEnabled ? 'true' : 'false');
       updateSoundIcon();
-      if (soundEnabled) playMeowSound(560, 720, 0.14);
-      showToast(soundEnabled ? 'Ronronados e sons ativados!' : 'Modo silencioso ativado', soundEnabled ? '🔊' : '🔇');
+      if (soundEnabled) playPurrSound();
     }
-
 
     function updateSoundIcon() {
       const icon = document.getElementById('iconSound');
       if (!icon) return;
       icon.className = soundEnabled
-        ? 'ph-fill ph-speaker-high text-lg text-amber-600 dark:text-amber-400'
-        : 'ph ph-speaker-slash text-lg text-slate-400';
+        ? 'ph-fill ph-speaker-high text-base sm:text-lg text-amber-600 dark:text-amber-400'
+        : 'ph ph-speaker-slash text-base sm:text-lg text-slate-400';
     }
 
+    /*************************************************************
+     * 11. FILE ATTACHMENTS
+     *************************************************************/
+    async function handleFilesSelected(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
 
-    async function callRaulGeminiAPI(userMessageText) {
-      const userKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
-      const apiKey = userKey || "";
-      const ownerName = (localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '').trim();
+      // Visual reaction when user attaches a file
+      document.getElementById('raulSmartGlasses').classList.remove('hidden');
+
+      for (const file of files) {
+        if (file.size > 18 * 1024 * 1024) {
+          showToast(`O arquivo ${file.name} excede 18MB.`, '⚠️');
+          continue;
+        }
+
+        const mimeType = file.type || guessMimeType(file.name);
+        const isTextLike = mimeType.startsWith('text/') || /\.(txt|csv|md|json|html|xml|js|py)$/i.test(file.name);
+
+        if (isTextLike) {
+          const textContent = await readFileAsText(file);
+          pendingAttachments.push({ name: file.name, mimeType: 'text/plain', textContent, size: formatBytes(file.size) });
+        } else {
+          const base64Data = await readFileAsBase64(file);
+          pendingAttachments.push({ name: file.name, mimeType: mimeType || 'application/octet-stream', base64Data, size: formatBytes(file.size) });
+        }
+      }
+
+      event.target.value = '';
+      renderPendingAttachments();
+    }
+
+    function guessMimeType(filename) {
+      const ext = filename.split('.').pop().toLowerCase();
+      const map = {
+        pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg',
+        webp: 'image/webp', mp3: 'audio/mp3', wav: 'audio/wav', csv: 'text/csv',
+        txt: 'text/plain', md: 'text/markdown', html: 'text/html', json: 'application/json'
+      };
+      return map[ext] || 'application/octet-stream';
+    }
+
+    function readFileAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          resolve(result.includes(',') ? result.split(',')[1] : result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function readFileAsText(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = reject;
+        reader.readAsText(file);
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function removeAttachment(idx) {
+      pendingAttachments.splice(idx, 1);
+      if (pendingAttachments.length === 0) {
+        document.getElementById('raulSmartGlasses').classList.add('hidden');
+      }
+      renderPendingAttachments();
+    }
+
+    function renderPendingAttachments() {
+      const bar = document.getElementById('attachmentsPreviewBar');
+      if (pendingAttachments.length === 0) {
+        bar.classList.add('hidden');
+        bar.innerHTML = '';
+        return;
+      }
+      bar.classList.remove('hidden');
+      bar.innerHTML = pendingAttachments.map((att, idx) => `
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white dark:bg-slate-800 border border-amber-300 dark:border-slate-700 text-xs font-medium shadow-sm">
+          <i class="ph-fill ${att.mimeType.startsWith('image/') ? 'ph-image text-pink-500' : att.mimeType === 'application/pdf' ? 'ph-file-pdf text-rose-500' : 'ph-file-text text-amber-500'}"></i>
+          <span class="truncate max-w-[140px]">${escapeHtml(att.name)}</span>
+          <span class="text-[10px] text-slate-400">(${att.size})</span>
+          <button type="button" onclick="removeAttachment(${idx})" class="text-slate-400 hover:text-rose-500 ml-1">
+            <i class="ph-bold ph-x"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    /*************************************************************
+     * 12. AUTO-UPDATING GEMINI FLASH STREAMING API
+     *************************************************************/
+    function getOwnerDisplayName() {
+      return (localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || 'Gi').trim() || 'Gi';
+    }
+
+    function buildSystemPrompt() {
+      const ownerName = getOwnerDisplayName();
       const customPrompt = (localStorage.getItem(STORAGE_KEYS.CUSTOM_PROMPT) || DEFAULT_PERSONALITY).trim();
 
-
       const memoriesBlock = ownerMemories.length > 0
-        ? `\n\nMemórias importantes sobre sua dona que você deve lembrar:\n- ${ownerMemories.join('\n- ')}`
+        ? `\nMemórias sobre ${ownerName}:\n- ${ownerMemories.join('\n- ')}`
         : '';
 
+      const locationBlock = userLocationContext
+        ? `\nLocalização e Clima em Tempo Real (${userLocationContext.updatedAt || 'agora'}):
+- Cidade/Região: ${userLocationContext.city}
+- Clima Atual: ${userLocationContext.currentTemp}°C (Sensação: ${userLocationContext.feelsLike}°C), ${userLocationContext.weatherDesc}
+- Previsão próximos dias: ${userLocationContext.dailySummary || 'Disponível'}`
+        : `\nLocalização: Caso ela pergunte sobre o tempo/clima e a localização ainda não esteja ativa, peça para ela tocar no botão "Clima/Local" no topo da tela.`;
 
-      const ownerGreetingContext = ownerName
-        ? `\nO nome ou apelido carinhoso da sua dona é: "${ownerName}".`
-        : '';
-
-
-      const currentDateStr = new Date().toLocaleDateString('pt-BR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+      const nowStr = new Date().toLocaleString('pt-BR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
       });
 
+      return `${customPrompt}
+Nome da pessoa: "${ownerName}".
+REGRA DE SAUDAÇÃO: Sempre que cumprimentar, use exatamente "Miau! ${ownerName}".
+REGRA DE FORMATO: Vá direto à resposta, nunca coloque títulos ou rótulos como "R.A.U.L.:" antes do texto.
+Data e hora atual: ${nowStr}.
+Hoje você está usando sua **${currentBowTie.description}** ("${currentBowTie.name}").
+${locationBlock}
+${memoriesBlock}
 
-      const fullSystemInstruction = `${customPrompt}
-${ownerGreetingContext}
-Contexto visual de hoje (${currentDateStr}):
-- Hoje você está usando orgulhosamente sua **${currentBowTie.description}** (nome da gravata: "${currentBowTie.name}").
-- Você é um gato frajola peludo de olhos verdes, peito branco bem fofo, cavanhaque preto e uma manchinha preta de meio-bigode apenas de um lado abaixo do nariz.
-${memoriesBlock}`;
+SUPERPODERES DE ARQUIVOS E GOOGLE APPS:
+1. GERAR ARQUIVOS PARA ELA BAIXAR OU SALVAR NO GOOGLE DRIVE:
+Sempre que ela pedir para você gerar/criar um arquivo, documento, texto para guardar, planilha, lista ou relatório, inclua o conteúdo dentro desta tag exata:
+[ARQUIVO: nome_do_arquivo.doc]
+Conteúdo completo do arquivo aqui...
+[/ARQUIVO]
 
+2. AGENDAR NO GOOGLE AGENDA:
+Sempre que ela pedir para marcar um compromisso ou evento na agenda, inclua no final da resposta esta tag exata (datas no formato YYYYMMDDTHHMMSS):
+[AGENDA: Título do Evento | 20250520T140000/20250520T150000 | Descrição | Local]
 
-      const recentTurns = chatHistory.slice(-14).map(msg => ({
+3. CRIAR E-MAIL PARA O GMAIL:
+Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta tag exata:
+[EMAIL: destinatario@email.com | Assunto do E-mail | Corpo do e-mail pronto]`;
+    }
+
+    async function streamRaulGeminiAPI(userMessageText, attachments, onChunkCallback, signal) {
+      const userKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
+      const apiKey = userKey || "";
+      const effort = getThinkingEffortObj();
+
+      const recentTurns = chatHistory.slice(-12).map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }]
       }));
 
-
-      recentTurns.push({
-        role: 'user',
-        parts: [{ text: userMessageText }]
-      });
-
-
-      const payload = {
-        contents: recentTurns,
-        systemInstruction: {
-          parts: [{ text: fullSystemInstruction }]
-        }
-      };
-
-
-      const modelsToTry = userKey
-        ? ['gemini-flash-latest', 'gemini-flash-latest']
-        : ['gemini-flash-latest'];
-
-
-      let lastError = null;
-
-
-      for (const modelName of modelsToTry) {
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-        const delays = [1000, 2000, 4000];
-
-
-        for (let attempt = 0; attempt <= delays.length; attempt++) {
-          try {
-            const response = await fetch(apiUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
+      const userParts = [];
+      if (attachments && attachments.length > 0) {
+        for (const att of attachments) {
+          if (att.textContent) {
+            userParts.push({
+              text: `\n--- CONTEÚDO DO ARQUIVO ANEXADO (${att.name}) ---\n${att.textContent}\n--- FIM DO ARQUIVO ---\n`
             });
-
-
-            if (response.ok) {
-              const result = await response.json();
-              const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (text) return text;
-            } else if (response.status === 429 && attempt < delays.length) {
-              await new Promise(r => setTimeout(r, delays[attempt]));
-              continue;
-            } else {
-              const errData = await response.json().catch(() => ({}));
-              lastError = errData?.error?.message || `Status ${response.status}`;
-              break;
-            }
-          } catch (err) {
-            lastError = err.message;
-            if (attempt < delays.length) {
-              await new Promise(r => setTimeout(r, delays[attempt]));
-            }
+          } else if (att.base64Data) {
+            userParts.push({
+              inlineData: { mimeType: att.mimeType, data: att.base64Data }
+            });
           }
         }
       }
+      userParts.push({ text: userMessageText || 'Analise o(s) arquivo(s) anexado(s).' });
+      recentTurns.push({ role: 'user', parts: userParts });
 
+      const basePayload = {
+        contents: recentTurns,
+        systemInstruction: { parts: [{ text: buildSystemPrompt() }] }
+      };
 
-      throw new Error(lastError || 'Não foi possível conectar ao Gemini.');
-    }
+      // Self-updating model priority chain:
+      // 1. Dynamically discovered newest flash model from Google API
+      // 2. 'gemini-flash-latest' (official Google alias that always points to the latest Flash release)
+      // 3. 'gemini-2.5-flash' / 'gemini-3-flash-preview' fallbacks
+      const modelsToTry = userKey
+        ? Array.from(new Set([dynamicLatestFlashModel, 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-3-flash-preview']))
+        : ['gemini-3-flash-preview', 'gemini-flash-latest', 'gemini-2.5-flash'];
 
+      let lastError = null;
 
-    function getWelcomeMessage() {
-      const ownerName = (localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '').trim();
-      const vocative = ownerName ? `, **${ownerName}**` : '';
-      return `*Prrrrr... Miau!* Olá${vocative}! 🐾\n\nEu sou o **R.A.U.L.** (*Ronronante Assistente Ultra Leal*). Já escovei meu peito branco fofinho e coloquei minha gravata **${currentBowTie.name}** especialmente para atender você hoje!\n\nComo posso deixar o seu dia mais leve? Posso organizar sua rotina, dar ideias de jantar, revisar textos ou simplesmente fazer companhia enquanto mostro minha linguinha (*blep* 👅).`;
-    }
+      for (const modelName of modelsToTry) {
+        if (signal.aborted) throw new Error('AbortError');
 
+        const payload = JSON.parse(JSON.stringify(basePayload));
+        payload.generationConfig = {
+          thinkingConfig: { thinkingBudget: effort.budget }
+        };
 
-    function loadChatHistory() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEYS.CHAT_HISTORY);
-        if (saved) {
-          chatHistory = JSON.parse(saved);
+        const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${apiKey}`;
+
+        try {
+          let response = await fetch(streamUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal
+          });
+
+          // If a specific model version doesn't accept thinkingConfig parameter, retry immediately without thinkingConfig
+          if (!response.ok && response.status === 400) {
+            delete payload.generationConfig;
+            response = await fetch(streamUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+              signal
+            });
+          }
+
+          if (!response.ok) {
+            const errJson = await response.json().catch(() => ({}));
+            lastError = errJson?.error?.message || `HTTP ${response.status}`;
+            continue;
+          }
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder('utf-8');
+          let fullText = '';
+          let buffer = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith('data:')) {
+                const dataStr = trimmed.slice(5).trim();
+                if (!dataStr || dataStr === '[DONE]') continue;
+                try {
+                  const parsed = JSON.parse(dataStr);
+                  const parts = parsed?.candidates?.[0]?.content?.parts || [];
+                  for (const part of parts) {
+                    // Skip internal thought parts if returned, only stream the final answer text
+                    if (part.thought) continue;
+                    if (part.text) {
+                      fullText += part.text;
+                      onChunkCallback(fullText);
+                    }
+                  }
+                } catch (e) {}
+              }
+            }
+          }
+
+          if (fullText.trim()) return fullText;
+        } catch (err) {
+          if (err.name === 'AbortError' || err.message === 'AbortError') {
+            throw new Error('AbortError');
+          }
+          lastError = err.message;
         }
-      } catch (e) {
-        chatHistory = [];
       }
 
-
-      const ownerName = (localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '').trim();
-      document.getElementById('chatWithLabel').innerHTML = ownerName
-        ? `<i class="ph-fill ph-sparkle text-amber-500"></i> R.A.U.L. — Assistente Leal de <strong>${escapeHtml(ownerName)}</strong>`
-        : `<i class="ph-fill ph-sparkle text-amber-500"></i> Conversando com o cavalheiro R.A.U.L.`;
-
-
-      renderChatMessages();
+      throw new Error(lastError || 'Não foi possível conectar à API do Gemini.');
     }
 
-
-    function saveChatHistory() {
-      try {
-        localStorage.setItem(STORAGE_KEYS.CHAT_HISTORY, JSON.stringify(chatHistory.slice(-40)));
-      } catch (e) {}
+    function cancelCurrentGeneration() {
+      if (currentAbortController) {
+        currentAbortController.abort();
+        currentAbortController = null;
+      }
     }
 
+    /*************************************************************
+     * 13. CHAT UI (NO PRE-RESPONSE TEXT, GREETING "Miau! Nome")
+     *************************************************************/
+    function getWelcomeMessage() {
+      const ownerName = getOwnerDisplayName();
+      return `Miau! ${ownerName}`;
+    }
 
     function renderChatMessages() {
       const container = document.getElementById('chatContainer');
       container.innerHTML = '';
-
-
       if (chatHistory.length === 0) {
         appendMessageBubble('model', getWelcomeMessage(), false);
         return;
       }
-
-
-      chatHistory.forEach((msg, index) => {
-        appendMessageBubble(msg.role, msg.text, false, index);
+      chatHistory.forEach((msg) => {
+        appendMessageBubble(msg.role, msg.text, false, msg.attachmentNames);
       });
-
-
       scrollToBottom();
     }
 
-
-    function appendMessageBubble(role, text, animateScroll = true) {
+    function appendMessageBubble(role, text, animateScroll = true, attachmentNames = []) {
       const container = document.getElementById('chatContainer');
       const wrapper = document.createElement('div');
-
 
       if (role === 'user') {
         wrapper.className = 'flex justify-end';
+        const attBadges = (attachmentNames && attachmentNames.length)
+          ? `<div class="mb-1.5 flex flex-wrap gap-1">${attachmentNames.map(n => `<span class="px-2 py-0.5 rounded-lg bg-white/15 text-[11px] flex items-center gap-1"><i class="ph-fill ph-paperclip"></i>${escapeHtml(n)}</span>`).join('')}</div>`
+          : '';
         wrapper.innerHTML = `
           <div class="max-w-[85%] sm:max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2.5 bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-sm shadow-sm leading-relaxed">
-            <div class="prose-raul">${formatMarkdown(text)}</div>
+            ${attBadges}
+            <div class="prose-raul">${formatMarkdownAndActions(text)}</div>
           </div>
         `;
       } else {
-        wrapper.className = 'flex items-start gap-2.5';
-        wrapper.innerHTML = `
-          <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-slate-700 text-sm" title="R.A.U.L.">
-            🐱
-          </div>
-          <div class="group relative max-w-[86%] sm:max-w-[78%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/80 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
-            <div class="prose-raul">${formatMarkdown(text)}</div>
-            <div class="mt-1.5 pt-1 border-t border-amber-200/40 dark:border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
-              <span>🎀 R.A.U.L.</span>
-              <button onclick="copyMessageText(this)" data-raw="${encodeURIComponent(text)}" class="hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 transition">
-                <i class="ph ph-copy"></i> Copiar
-              </button>
-            </div>
-          </div>
-        `;
+        wrapper.className = 'flex items-start gap-2';
+        wrapper.innerHTML = buildModelBubbleInnerHtml(text);
       }
-
 
       container.appendChild(wrapper);
       if (animateScroll) scrollToBottom();
+      return wrapper;
     }
 
+    // Clean model bubble without any written label before or inside the response!
+    function buildModelBubbleInnerHtml(text) {
+      const msgFileId = 'msg_' + Math.random().toString(36).substring(2, 9);
+      generatedFilesStore[msgFileId] = {
+        filename: `RAUL_${new Date().toISOString().slice(0,10)}.doc`,
+        mimeType: 'application/msword',
+        content: text
+      };
 
-    function appendTypingIndicator() {
-      const container = document.getElementById('chatContainer');
-      const wrapper = document.createElement('div');
-      wrapper.id = 'typingIndicatorRow';
-      wrapper.className = 'flex items-start gap-2.5';
-      wrapper.innerHTML = `
-        <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-slate-700 text-sm animate-bounce">
-          🐾
-        </div>
-        <div class="rounded-2xl rounded-tl-sm px-4 py-3 bg-amber-50/80 dark:bg-slate-800/90 border border-amber-200/60 dark:border-slate-700/70 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
-          <span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-          <span>R.A.U.L. está ajeitando a gravata <strong>${currentBowTie.name}</strong> e preparando a resposta...</span>
+      return `
+        <div class="group relative max-w-[90%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
+          <div class="prose-raul model-stream-content">${formatMarkdownAndActions(text)}</div>
+          <div class="mt-1.5 pt-1 border-t border-amber-200/40 dark:border-slate-700/50 flex items-center justify-end gap-3 text-[11px] text-slate-400 opacity-80 group-hover:opacity-100 transition">
+            <button onclick="downloadGeneratedFile('${msgFileId}')" class="hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 transition" title="Baixar como documento">
+              <i class="ph-bold ph-download-simple"></i> Doc
+            </button>
+            <button onclick="shareOrSaveToDrive('${msgFileId}')" class="hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center gap-1 transition" title="Salvar no Google Drive">
+              <i class="ph-fill ph-google-drive-logo"></i> Drive
+            </button>
+            <button onclick="copyMessageText(this)" data-raw="${encodeURIComponent(text)}" class="hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 transition" title="Copiar texto">
+              <i class="ph ph-copy"></i>
+            </button>
+          </div>
         </div>
       `;
-      container.appendChild(wrapper);
-      scrollToBottom();
     }
-
-
-    function removeTypingIndicator() {
-      const el = document.getElementById('typingIndicatorRow');
-      if (el) el.remove();
-    }
-
 
     async function handleChatSubmit(e) {
       if (e) e.preventDefault();
       if (isGenerating) return;
 
-
       const input = document.getElementById('userInput');
       const text = input.value.trim();
-      if (!text) return;
+      if (!text && pendingAttachments.length === 0) return;
 
+      const attachmentsToSend = [...pendingAttachments];
+      const attachmentNames = attachmentsToSend.map(a => a.name);
 
       input.value = '';
       input.style.height = 'auto';
+      pendingAttachments = [];
+      renderPendingAttachments();
 
-
-      await processUserMessage(text);
+      await processUserMessage(text, attachmentsToSend, attachmentNames);
     }
-
 
     function sendQuickPrompt(promptText) {
       if (isGenerating) return;
-      processUserMessage(promptText);
+      processUserMessage(promptText, [], []);
     }
 
-
-    async function processUserMessage(text) {
+    async function processUserMessage(text, attachments = [], attachmentNames = []) {
       isGenerating = true;
-      document.getElementById('sendBtn').disabled = true;
+      currentAbortController = new AbortController();
 
+      document.getElementById('sendBtn').classList.add('hidden');
+      document.getElementById('cancelBtn').classList.remove('hidden');
+      document.getElementById('cancelBtn').classList.add('flex');
 
-      appendMessageBubble('user', text, true);
-      chatHistory.push({ role: 'user', text });
-      saveChatHistory();
+      const displayUserText = text || `📎 ${attachmentNames.join(', ')}`;
+      appendMessageBubble('user', displayUserText, true, attachmentNames);
+      chatHistory.push({ role: 'user', text: displayUserText, attachmentNames });
+      saveConversationsState();
 
-
+      // R.A.U.L. visually animates thinking (paw on chin + comic thought cloud above his head, NO written text!)
       setRaulAnimationState('thinking');
-      appendTypingIndicator();
 
+      const container = document.getElementById('chatContainer');
+      let streamRow = null;
+      let partialReply = '';
+      let startedSpeaking = false;
 
       try {
-        const reply = await callRaulGeminiAPI(text);
-        removeTypingIndicator();
+        const finalReply = await streamRaulGeminiAPI(
+          text,
+          attachments,
+          (liveText) => {
+            partialReply = liveText;
+            if (!startedSpeaking) {
+              startedSpeaking = true;
+              setRaulAnimationState('speaking');
+              playMeowSound(520, 680, 0.12);
 
+              // Create the response bubble only when the first words arrive (no pre-response text!)
+              streamRow = document.createElement('div');
+              streamRow.className = 'flex items-start gap-2';
+              streamRow.innerHTML = `
+                <div class="max-w-[90%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
+                  <div id="liveStreamContent" class="prose-raul"></div>
+                </div>
+              `;
+              container.appendChild(streamRow);
+            }
+            const liveBox = document.getElementById('liveStreamContent');
+            if (liveBox) {
+              liveBox.innerHTML = formatMarkdownAndActions(liveText);
+              scrollToBottom();
+            }
+          },
+          currentAbortController.signal
+        );
 
-        setRaulAnimationState('speaking');
-        appendMessageBubble('model', reply, true);
-        chatHistory.push({ role: 'model', text: reply });
-        saveChatHistory();
-
-
-        const speakDuration = Math.min(3500, Math.max(1400, reply.length * 12));
-        setTimeout(() => {
-          setRaulAnimationState('idle');
-        }, speakDuration);
-
+        if (!streamRow) {
+          streamRow = document.createElement('div');
+          streamRow.className = 'flex items-start gap-2';
+          container.appendChild(streamRow);
+        }
+        streamRow.innerHTML = buildModelBubbleInnerHtml(finalReply);
+        chatHistory.push({ role: 'model', text: finalReply });
+        saveConversationsState();
+        scrollToBottom();
 
       } catch (err) {
-        removeTypingIndicator();
-        setRaulAnimationState('idle');
-
-
-        const friendlyError = `*Miau...* Minha gravatinha **${currentBowTie.name}** enroscou na conexão por um segundo! 🐾\n\nVerifique se sua **Chave da API gratuita do Google AI Studio** está configurada no botão de engrenagem ⚙️ lá no topo (detalhe técnico: \`${err.message}\`).`;
-        appendMessageBubble('model', friendlyError, true);
-        document.getElementById('apiKeyAlertDot').classList.remove('hidden');
+        if (err.message === 'AbortError') {
+          if (partialReply && streamRow) {
+            streamRow.innerHTML = buildModelBubbleInnerHtml(partialReply);
+            chatHistory.push({ role: 'model', text: partialReply });
+            saveConversationsState();
+          }
+        } else {
+          if (!streamRow) {
+            streamRow = document.createElement('div');
+            streamRow.className = 'flex items-start gap-2';
+            container.appendChild(streamRow);
+          }
+          const friendlyError = `Miau! Verifique sua chave gratuita do Google AI Studio no botão ⚙️ no topo (\`${err.message}\`).`;
+          streamRow.innerHTML = buildModelBubbleInnerHtml(friendlyError);
+          document.getElementById('apiKeyAlertDot').classList.remove('hidden');
+        }
       } finally {
         isGenerating = false;
-        document.getElementById('sendBtn').disabled = false;
+        currentAbortController = null;
+        setRaulAnimationState('idle');
+        document.getElementById('cancelBtn').classList.add('hidden');
+        document.getElementById('cancelBtn').classList.remove('flex');
+        document.getElementById('sendBtn').classList.remove('hidden');
       }
     }
 
+    /*************************************************************
+     * 14. PARSING FILES, GOOGLE CALENDAR & GMAIL CARDS IN CHAT
+     *************************************************************/
+    function formatMarkdownAndActions(rawText) {
+      let working = String(rawText || '');
+      const actionCardsHtml = [];
 
-    function handleInputKeydown(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        handleChatSubmit(e);
+      // 1. Parse [ARQUIVO: filename.ext]...[/ARQUIVO]
+      working = working.replace(/\[ARQUIVO:\s*([^\]]+)\]([\s\S]*?)\[\/ARQUIVO\]/gi, (_, rawMeta, fileContent) => {
+        const filename = rawMeta.split('|')[0].trim() || 'documento_raul.doc';
+        const cleanContent = fileContent.trim();
+        const fileId = 'file_' + Math.random().toString(36).substring(2, 9);
+        const mimeType = guessMimeType(filename);
+
+        generatedFilesStore[fileId] = { filename, mimeType, content: cleanContent };
+
+        actionCardsHtml.push(`
+          <div class="my-2.5 p-3 rounded-2xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-700 shadow-sm space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <i class="ph-fill ph-file-doc text-lg"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(filename)}</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <button type="button" onclick="downloadGeneratedFile('${fileId}')" class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-xs font-semibold flex items-center gap-1 hover:opacity-90">
+                <i class="ph-bold ph-download-simple"></i> Baixar no Celular
+              </button>
+              <button type="button" onclick="shareOrSaveToDrive('${fileId}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1">
+                <i class="ph-fill ph-google-drive-logo"></i> Salvar no Google Drive
+              </button>
+              <button type="button" onclick="openInGoogleDocs('${fileId}')" class="px-3 py-1.5 rounded-xl bg-blue-600/15 text-blue-700 dark:text-blue-300 text-xs font-semibold flex items-center gap-1">
+                <i class="ph-fill ph-file-text"></i> Copiar p/ Google Docs
+              </button>
+            </div>
+          </div>
+        `);
+        return '';
+      });
+
+      // 2. Parse [AGENDA: Title | Dates | Details | Location]
+      working = working.replace(/\[AGENDA:\s*([^\]]+)\]/gi, (_, inner) => {
+        const parts = inner.split('|').map(s => s.trim());
+        const title = encodeURIComponent(parts[0] || 'Compromisso R.A.U.L.');
+        const dates = encodeURIComponent(parts[1] || '');
+        const details = encodeURIComponent(parts[2] || 'Agendado pelo R.A.U.L.');
+        const location = encodeURIComponent(parts[3] || '');
+        const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}${dates ? `&dates=${dates}` : ''}&details=${details}&location=${location}`;
+
+        actionCardsHtml.push(`
+          <div class="my-2 p-3 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="ph-fill ph-calendar-plus text-xl text-blue-600 dark:text-blue-400 shrink-0"></i>
+              <div class="min-w-0">
+                <p class="font-bold text-xs text-blue-950 dark:text-blue-200 truncate">${escapeHtml(parts[0] || 'Compromisso')}</p>
+              </div>
+            </div>
+            <a href="${calUrl}" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 flex items-center gap-1">
+              <span>Google Agenda</span>
+              <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+          </div>
+        `);
+        return '';
+      });
+
+      // 3. Parse [EMAIL: To | Subject | Body]
+      working = working.replace(/\[EMAIL:\s*([^\]]+)\]/gi, (_, inner) => {
+        const parts = inner.split('|').map(s => s.trim());
+        const to = encodeURIComponent(parts[0] || '');
+        const su = encodeURIComponent(parts[1] || '');
+        const body = encodeURIComponent(parts[2] || '');
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&body=${body}`;
+        const mailtoUrl = `mailto:${parts[0] || ''}?subject=${su}&body=${body}`;
+
+        actionCardsHtml.push(`
+          <div class="my-2 p-3 rounded-2xl bg-rose-50/90 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="ph-fill ph-envelope-open text-xl text-rose-600 dark:text-rose-400 shrink-0"></i>
+              <div class="min-w-0">
+                <p class="font-bold text-xs text-rose-950 dark:text-rose-200 truncate">${escapeHtml(parts[1] || 'E-mail')}</p>
+              </div>
+            </div>
+            <div class="flex gap-1.5">
+              <a href="${mailtoUrl}" class="px-2.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-semibold flex items-center gap-1">
+                <span>App E-mail</span>
+              </a>
+              <a href="${gmailUrl}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold flex items-center gap-1">
+                <span>Gmail</span>
+              </a>
+            </div>
+          </div>
+        `);
+        return '';
+      });
+
+      return formatMarkdown(working) + actionCardsHtml.join('');
+    }
+
+    function createFileBlob(fileObj) {
+      if (fileObj.filename.endsWith('.doc')) {
+        const htmlDoc = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>${escapeHtml(fileObj.filename)}</title></head><body style="font-family: Arial, sans-serif; line-height: 1.6;">${formatMarkdown(fileObj.content)}</body></html>`;
+        return new Blob([htmlDoc], { type: 'application/msword;charset=utf-8' });
       }
+      return new Blob([fileObj.content], { type: `${fileObj.mimeType || 'text/plain'};charset=utf-8` });
     }
 
-
-    function autoResizeTextarea(el) {
-      el.style.height = 'auto';
-      el.style.height = Math.min(el.scrollHeight, 112) + 'px';
+    function downloadGeneratedFile(fileId) {
+      const fileObj = generatedFilesStore[fileId];
+      if (!fileObj) return;
+      const blob = createFileBlob(fileObj);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileObj.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
+    async function shareOrSaveToDrive(fileId) {
+      const fileObj = generatedFilesStore[fileId];
+      if (!fileObj) return;
 
-    function scrollToBottom() {
-      const container = document.getElementById('chatContainer');
-      if (container) {
-        container.scrollTop = container.scrollHeight;
+      if (googleAccessToken) {
+        try {
+          const metadata = { name: fileObj.filename, mimeType: fileObj.mimeType || 'text/plain' };
+          const form = new FormData();
+          form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+          form.append('file', createFileBlob(fileObj));
+
+          const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${googleAccessToken}` },
+            body: form
+          });
+          if (res.ok) {
+            showToast(`Salvo no Google Drive!`, '✅');
+            return;
+          }
+        } catch (e) {}
       }
+
+      try {
+        const blob = createFileBlob(fileObj);
+        const file = new File([blob], fileObj.filename, { type: blob.type });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ title: fileObj.filename, files: [file] });
+          return;
+        }
+      } catch (e) {
+        if (e.name === 'AbortError') return;
+      }
+
+      downloadGeneratedFile(fileId);
     }
 
+    function openInGoogleDocs(fileId) {
+      const fileObj = generatedFilesStore[fileId];
+      if (!fileObj) return;
+      const temp = document.createElement('textarea');
+      temp.value = fileObj.content;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      setTimeout(() => { window.open('https://docs.new', '_blank'); }, 400);
+    }
 
+    function connectGoogleOAuth() {
+      const clientId = document.getElementById('inputGoogleClientId').value.trim();
+      if (!clientId) return;
+      localStorage.setItem(STORAGE_KEYS.GOOGLE_CLIENT_ID, clientId);
+      try {
+        const client = google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: 'https://www.googleapis.com/auth/drive.file',
+          callback: (tokenResponse) => {
+            if (tokenResponse && tokenResponse.access_token) {
+              googleAccessToken = tokenResponse.access_token;
+              document.getElementById('oauthStatusBadge').textContent = 'Conectado ao Drive ✅';
+            }
+          }
+        });
+        client.requestAccessToken();
+      } catch (e) {}
+    }
+
+    /*************************************************************
+     * 15. MARKDOWN & UTILITIES
+     *************************************************************/
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -1641,264 +2476,219 @@ ${memoriesBlock}`;
         .replace(/"/g, '&quot;');
     }
 
-
     function formatMarkdown(rawText) {
       let safe = escapeHtml(rawText);
+      safe = safe.replace(/```([\s\S]*?)```/g, (_, code) => `<pre><code>${code.trim()}</code></pre>`);
+      safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
+      safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
+      const lines = safe.split('\n');
+      let inList = false;
+      let htmlLines = [];
 
-      safe = safe.replace(/```([\s\S]*?)```/g, (_, code) => {
-        return `<pre><code>${code.trim()}</code></pre>`;
-
-  });
-
-  safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
-  safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  safe = safe.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-  const lines = safe.split('\n');
-  let inList = false;
-  let htmlLines = [];
-
-  for (let line of lines) {
-    const trimmed = line.trim();
-    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-      if (!inList) {
-        htmlLines.push('<ul>');
-        inList = true;
+      for (let line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          if (!inList) { htmlLines.push('<ul>'); inList = true; }
+          htmlLines.push(`<li>${trimmed.substring(2)}</li>`);
+        } else {
+          if (inList) { htmlLines.push('</ul>'); inList = false; }
+          if (trimmed === '') htmlLines.push('</p><p>');
+          else htmlLines.push(line + '<br/>');
+        }
       }
-      htmlLines.push(`<li>${trimmed.substring(2)}</li>`);
-    } else {
-      if (inList) {
-        htmlLines.push('</ul>');
-        inList = false;
-      }
-      if (trimmed === '') {
-        htmlLines.push('</p><p>');
-      } else {
-        htmlLines.push(line + '<br/>');
+      if (inList) htmlLines.push('</ul>');
+      return `<p>${htmlLines.join('')}</p>`.replace(/<p><\/p>/g, '');
+    }
+
+    function copyMessageText(btn) {
+      const raw = decodeURIComponent(btn.getAttribute('data-raw') || '');
+      const temp = document.createElement('textarea');
+      temp.value = raw;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<i class="ph-fill ph-check text-emerald-500"></i>`;
+      setTimeout(() => { btn.innerHTML = originalHtml; }, 1500);
+    }
+
+    function handleInputKeydown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleChatSubmit(e);
       }
     }
-  }
-  if (inList) htmlLines.push('</ul>');
 
-  return `<p>${htmlLines.join('')}</p>`.replace(/<p><\/p>/g, '');
-}
+    function autoResizeTextarea(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 112) + 'px';
+    }
 
-function copyMessageText(btn) {
-  const raw = decodeURIComponent(btn.getAttribute('data-raw') || '');
-  const temp = document.createElement('textarea');
-  temp.value = raw;
-  document.body.appendChild(temp);
-  temp.select();
-  document.execCommand('copy');
-  document.body.removeChild(temp);
+    function scrollToBottom() {
+      const container = document.getElementById('chatContainer');
+      if (container) container.scrollTop = container.scrollHeight;
+    }
 
-  const originalHtml = btn.innerHTML;
-  btn.innerHTML = `<i class="ph-fill ph-check text-emerald-500"></i> Copiado!`;
-  setTimeout(() => {
-    btn.innerHTML = originalHtml;
-  }, 1800);
-}
+    /*************************************************************
+     * 16. SETTINGS, MEMORIES & THEME
+     *************************************************************/
+    function openModal(id) {
+      if (id === 'historyModal') renderConversationsList();
+      const m = document.getElementById(id);
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+    }
 
-function openModal(id) {
-  const m = document.getElementById(id);
-  if (m) {
-    m.classList.remove('hidden');
-    m.classList.add('flex');
-  }
-}
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
 
-function closeModal(id) {
-  const m = document.getElementById(id);
-  if (m) {
-    m.classList.add('hidden');
-    m.classList.remove('flex');
-  }
-}
+    function loadSettingsIntoInputs() {
+      document.getElementById('inputOwnerName').value = localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || 'Gi';
+      document.getElementById('inputApiKey').value = localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '';
+      document.getElementById('inputCustomPrompt').value = localStorage.getItem(STORAGE_KEYS.CUSTOM_PROMPT) || DEFAULT_PERSONALITY;
+      document.getElementById('inputPurrVolume').value = localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '240';
+      document.getElementById('inputSpeedMode').value = localStorage.getItem(STORAGE_KEYS.THINKING_EFFORT) || 'fast';
+      document.getElementById('inputGoogleClientId').value = localStorage.getItem(STORAGE_KEYS.GOOGLE_CLIENT_ID) || '';
+    }
 
-function loadSettingsIntoInputs() {
-  document.getElementById('inputOwnerName').value = localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '';
-  document.getElementById('inputApiKey').value = localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '';
-  document.getElementById('inputCustomPrompt').value = localStorage.getItem(STORAGE_KEYS.CUSTOM_PROMPT) || DEFAULT_PERSONALITY;
-}
+    function resetDefaultPrompt() {
+      document.getElementById('inputCustomPrompt').value = DEFAULT_PERSONALITY;
+    }
 
-function resetDefaultPrompt() {
-  document.getElementById('inputCustomPrompt').value = DEFAULT_PERSONALITY;
-}
+    function saveSettings() {
+      localStorage.setItem(STORAGE_KEYS.OWNER_NAME, document.getElementById('inputOwnerName').value.trim() || 'Gi');
+      localStorage.setItem(STORAGE_KEYS.USER_API_KEY, document.getElementById('inputApiKey').value.trim());
+      localStorage.setItem(STORAGE_KEYS.CUSTOM_PROMPT, document.getElementById('inputCustomPrompt').value.trim() || DEFAULT_PERSONALITY);
+      localStorage.setItem(STORAGE_KEYS.PURR_VOLUME, document.getElementById('inputPurrVolume').value);
+      localStorage.setItem(STORAGE_KEYS.THINKING_EFFORT, document.getElementById('inputSpeedMode').value);
 
-function saveSettings() {
-  const ownerName = document.getElementById('inputOwnerName').value.trim();
-  const apiKey = document.getElementById('inputApiKey').value.trim();
-  const customPrompt = document.getElementById('inputCustomPrompt').value.trim() || DEFAULT_PERSONALITY;
+      updateThinkingEffortUI();
+      discoverLatestGeminiFlashModel();
+      document.getElementById('apiKeyAlertDot').classList.add('hidden');
+      closeModal('settingsModal');
+      renderChatMessages();
+      triggerPetting();
+    }
 
-  localStorage.setItem(STORAGE_KEYS.OWNER_NAME, ownerName);
-  localStorage.setItem(STORAGE_KEYS.USER_API_KEY, apiKey);
-  localStorage.setItem(STORAGE_KEYS.CUSTOM_PROMPT, customPrompt);
+    function loadMemories() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEYS.MEMORIES);
+        ownerMemories = saved ? JSON.parse(saved) : ['Ama o gatinho frajola R.A.U.L. e suas gravatas borboleta coloridas'];
+      } catch (e) { ownerMemories = []; }
+      renderMemoriesList();
+    }
 
-  document.getElementById('apiKeyAlertDot').classList.add('hidden');
-  closeModal('settingsModal');
-  loadChatHistory();
-  triggerPetting();
-  showToast('Configurações do R.A.U.L. salvas com sucesso!', '🎩');
-}
+    function saveMemories() {
+      localStorage.setItem(STORAGE_KEYS.MEMORIES, JSON.stringify(ownerMemories));
+      renderMemoriesList();
+    }
 
-function loadMemories() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEYS.MEMORIES);
-    ownerMemories = saved ? JSON.parse(saved) : [
-      'Ama o gatinho frajola R.A.U.L. e suas gravatas borboleta coloridas'
-    ];
-  } catch (e) {
-    ownerMemories = [];
-  }
-  renderMemoriesList();
-}
+    function addMemoryItem() {
+      const input = document.getElementById('newMemoryInput');
+      const val = input.value.trim();
+      if (!val) return;
+      ownerMemories.unshift(val);
+      input.value = '';
+      saveMemories();
+    }
 
-function saveMemories() {
-  localStorage.setItem(STORAGE_KEYS.MEMORIES, JSON.stringify(ownerMemories));
-  renderMemoriesList();
-}
+    function deleteMemoryItem(idx) {
+      ownerMemories.splice(idx, 1);
+      saveMemories();
+    }
 
-function addMemoryItem() {
-  const input = document.getElementById('newMemoryInput');
-  const val = input.value.trim();
-  if (!val) return;
-  ownerMemories.unshift(val);
-  input.value = '';
-  saveMemories();
-  showToast('Memória guardada pelo R.A.U.L.!', '💝');
-}
-
-function deleteMemoryItem(idx) {
-  ownerMemories.splice(idx, 1);
-  saveMemories();
-}
-
-function renderMemoriesList() {
-  const list = document.getElementById('memoriesList');
-  if (!list) return;
-  if (ownerMemories.length === 0) {
-    list.innerHTML = `<li class="text-xs text-slate-400 italic py-3 text-center">Nenhuma memória adicionada ainda.</li>`;
-    return;
-  }
-  list.innerHTML = ownerMemories.map((m, idx) => `
-    <li class="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 text-xs">
-      <span class="flex items-center gap-2 text-slate-700 dark:text-slate-200">
-        <span class="text-rose-500">🐾</span> ${escapeHtml(m)}
-      </span>
-      <button onclick="deleteMemoryItem(${idx})" class="text-slate-400 hover:text-rose-500 p-1" title="Remover">
-        <i class="ph ph-trash"></i>
-      </button>
-    </li>
-  `).join('');
-}
-
-function confirmClearChat() {
-  openModal('confirmClearModal');
-}
-
-function executeClearChat() {
-  chatHistory = [];
-  localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
-  closeModal('confirmClearModal');
-  renderChatMessages();
-  showToast('Histórico limpo! R.A.U.L. pronto para nova conversa.', '✨');
-}
-
-function showToast(message, icon = '🐾') {
-  const banner = document.getElementById('toastBanner');
-  document.getElementById('toastText').textContent = message;
-  document.getElementById('toastIcon').textContent = icon;
-  banner.classList.remove('hidden');
-  banner.classList.add('flex');
-  setTimeout(() => {
-    banner.classList.add('hidden');
-    banner.classList.remove('flex');
-  }, 3000);
-}
-
-function initTheme() {
-  const saved = localStorage.getItem(STORAGE_KEYS.THEME);
-  if (saved === 'dark') {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-  updateThemeIcon();
-}
-
-function toggleTheme() {
-  const isDark = document.documentElement.classList.toggle('dark');
-  localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'dark' : 'light');
-  updateThemeIcon();
-}
-
-function updateThemeIcon() {
-  const icon = document.getElementById('iconTheme');
-  if (!icon) return;
-  const isDark = document.documentElement.classList.contains('dark');
-  icon.className = isDark ? 'ph-fill ph-sun text-lg text-amber-400' : 'ph ph-moon text-lg';
-}
-
-function injectDynamicPWA() {
-  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-    <rect width="200" height="200" rx="46" fill="#181622"/>
-    <polygon points="45,95 32,28 85,62" fill="#0d0d11"/>
-    <polygon points="155,95 168,28 115,62" fill="#0d0d11"/>
-    <ellipse cx="100" cy="170" rx="65" ry="42" fill="#ffffff"/>
-    <ellipse cx="100" cy="102" rx="58" ry="48" fill="#0d0d11"/>
-    <polygon points="100,68 72,126 128,126" fill="#ffffff"/>
-    <ellipse cx="100" cy="124" rx="38" ry="22" fill="#ffffff"/>
-    <ellipse cx="100" cy="136" rx="18" ry="9" fill="#0d0d11"/>
-    <ellipse cx="112" cy="126" rx="14" ry="5" fill="#0d0d11"/>
-    <circle cx="76" cy="96" r="11" fill="#84a94c"/>
-    <ellipse cx="76" cy="96" rx="3" ry="8" fill="#09090b"/>
-    <circle cx="124" cy="96" r="11" fill="#84a94c"/>
-    <ellipse cx="124" cy="96" rx="3" ry="8" fill="#09090b"/>
-    <polygon points="93,112 107,112 100,121" fill="#09090b"/>
-    <polygon points="100,158 64,142 64,174" fill="${currentBowTie.mainColor}"/>
-    <polygon points="100,158 136,142 136,174" fill="${currentBowTie.mainColor}"/>
-    <rect x="92" y="150" width="16" height="16" rx="4" fill="${currentBowTie.knotColor}"/>
-  </svg>`;
-
-  const iconDataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(iconSvg);
-
-  const appleLink = document.createElement('link');
-  appleLink.rel = 'apple-touch-icon';
-  appleLink.href = iconDataUrl;
-  document.head.appendChild(appleLink);
-
-  const favLink = document.createElement('link');
-  favLink.rel = 'icon';
-  favLink.type = 'image/svg+xml';
-  favLink.href = iconDataUrl;
-  document.head.appendChild(favLink);
-
-  const manifest = {
-    name: 'R.A.U.L. — Ronronante Assistente Ultra Leal',
-    short_name: 'R.A.U.L.',
-    description: 'Assistente pessoal felino de gravata borboleta',
-    start_url: '.',
-    display: 'standalone',
-    background_color: '#fdf8f5',
-    theme_color: '#181622',
-    icons: [
-      {
-        src: iconDataUrl,
-        sizes: '192x192 512x512',
-        type: 'image/svg+xml',
-        purpose: 'any maskable'
+    function renderMemoriesList() {
+      const list = document.getElementById('memoriesList');
+      if (!list) return;
+      if (ownerMemories.length === 0) {
+        list.innerHTML = `<li class="text-xs text-slate-400 italic py-3 text-center">Nenhuma memória adicionada ainda.</li>`;
+        return;
       }
-    ]
-  };
+      list.innerHTML = ownerMemories.map((m, idx) => `
+        <li class="flex items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 text-xs">
+          <span class="flex items-center gap-2 text-slate-700 dark:text-slate-200"><span class="text-rose-500">🐾</span> ${escapeHtml(m)}</span>
+          <button onclick="deleteMemoryItem(${idx})" class="text-slate-400 hover:text-rose-500 p-1"><i class="ph ph-trash"></i></button>
+        </li>
+      `).join('');
+    }
 
-  const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-  const manifestUrl = URL.createObjectURL(manifestBlob);
-  const manifestLink = document.createElement('link');
-  manifestLink.rel = 'manifest';
-  manifestLink.href = manifestUrl;
-  document.head.appendChild(manifestLink);
-}
+    function confirmClearChat() { openModal('confirmClearModal'); }
+
+    function executeClearChat() {
+      chatHistory = [];
+      const currentConv = conversations.find(c => c.id === activeConversationId);
+      if (currentConv) {
+        currentConv.messages = [];
+        currentConv.title = 'Nova conversa';
+      }
+      saveConversationsState();
+      closeModal('confirmClearModal');
+      closeModal('historyModal');
+      renderChatMessages();
+    }
+
+    function showToast(message, icon = '🐾') {
+      const banner = document.getElementById('toastBanner');
+      document.getElementById('toastText').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+      setTimeout(() => { banner.classList.add('hidden'); banner.classList.remove('flex'); }, 2600);
+    }
+
+    function initTheme() {
+      if (localStorage.getItem(STORAGE_KEYS.THEME) === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      updateThemeIcon();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'dark' : 'light');
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      const icon = document.getElementById('iconTheme');
+      if (!icon) return;
+      icon.className = document.documentElement.classList.contains('dark')
+        ? 'ph-fill ph-sun text-base sm:text-lg text-amber-400'
+        : 'ph ph-moon text-base sm:text-lg';
+    }
+
+    function injectDynamicPWA() {
+      const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <rect width="200" height="200" rx="46" fill="#181622"/>
+        <polygon points="45,95 32,28 85,62" fill="#0d0d11"/>
+        <polygon points="155,95 168,28 115,62" fill="#0d0d11"/>
+        <ellipse cx="100" cy="170" rx="65" ry="42" fill="#ffffff"/>
+        <ellipse cx="100" cy="102" rx="58" ry="48" fill="#0d0d11"/>
+        <polygon points="100,68 72,126 128,126" fill="#ffffff"/>
+        <ellipse cx="100" cy="124" rx="38" ry="22" fill="#ffffff"/>
+        <ellipse cx="100" cy="136" rx="18" ry="9" fill="#0d0d11"/>
+        <ellipse cx="112" cy="126" rx="14" ry="5" fill="#0d0d11"/>
+        <circle cx="76" cy="96" r="11" fill="#84a94c"/>
+        <ellipse cx="76" cy="96" rx="3" ry="8" fill="#09090b"/>
+        <circle cx="124" cy="96" r="11" fill="#84a94c"/>
+        <ellipse cx="124" cy="96" rx="3" ry="8" fill="#09090b"/>
+        <polygon points="93,112 107,112 100,121" fill="#09090b"/>
+        <polygon points="100,158 64,142 64,174" fill="${currentBowTie.mainColor}"/>
+        <polygon points="100,158 136,142 136,174" fill="${currentBowTie.mainColor}"/>
+        <rect x="92" y="150" width="16" height="16" rx="4" fill="${currentBowTie.knotColor}"/>
+      </svg>`;
+      const iconDataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(iconSvg);
+      const favLink = document.createElement('link');
+      favLink.rel = 'icon'; favLink.type = 'image/svg+xml'; favLink.href = iconDataUrl;
+      document.head.appendChild(favLink);
+    }
   </script>
 </body>
 </html>
