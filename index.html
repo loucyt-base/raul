@@ -167,7 +167,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      cursor: pointer;
     }
 
     .topbar-right {
@@ -208,7 +207,7 @@
     .cat-stage {
       background: var(--bg-stage);
       border-bottom: 1px solid var(--border);
-      padding: 10px 14px 12px;
+      padding: 12px 14px 16px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -223,7 +222,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2px;
+      margin-bottom: 6px;
     }
 
     .tie-chip {
@@ -253,100 +252,138 @@
     }
 
     .cat-canvas-wrap {
-      width: 192px;
-      height: 182px;
+      width: 180px;
+      height: 170px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       cursor: pointer;
       user-select: none;
-      margin-top: -6px;
     }
 
     svg#raulSvg {
       width: 100%;
       height: 100%;
       overflow: visible;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.12));
     }
 
-    /* Animações do R.A.U.L. (Retrato Fiel Original) */
-    @keyframes breathe {
-      0%, 100% { transform: scale(1) translateY(0px); }
-      50% { transform: scale(1.02, 1.028) translateY(-2.5px); }
+    /* Animações do Gato */
+    @keyframes floatBreath {
+      0%, 100% { transform: translateY(0px) scaleY(1); }
+      50% { transform: translateY(-3px) scaleY(1.02); }
     }
-    @keyframes tailSway {
-      0%, 100% { transform: rotate(-8deg); }
-      50% { transform: rotate(13deg); }
+
+    @keyframes blinkAnim {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.08); }
     }
-    @keyframes earLeftTwitch {
+
+    @keyframes earTwitchL {
+      0%, 88%, 100% { transform: rotate(0deg); }
+      91% { transform: rotate(-5deg); }
+      94% { transform: rotate(2deg); }
+    }
+
+    @keyframes earTwitchR {
       0%, 86%, 100% { transform: rotate(0deg); }
-      90% { transform: rotate(-7deg); }
-      94% { transform: rotate(3deg); }
+      89% { transform: rotate(5deg); }
+      92% { transform: rotate(-2deg); }
     }
-    @keyframes earRightTwitch {
-      0%, 75%, 100% { transform: rotate(0deg); }
-      80% { transform: rotate(8deg); }
-      84% { transform: rotate(-2deg); }
-    }
-    @keyframes purrVibrate {
-      0%, 100% { transform: translate(0, 0); }
-      25% { transform: translate(-1.6px, 1px); }
-      50% { transform: translate(1.6px, -1px); }
-      75% { transform: translate(-1.2px, -1px); }
-    }
+
     @keyframes headTiltThink {
-      0%, 100% { transform: rotate(-4deg) translateY(-1px); }
-      50% { transform: rotate(4deg) translateY(1px); }
-    }
-    @keyframes pawToChin {
-      0%, 100% { transform: translate(-22px, -78px) rotate(-25deg); }
-      50% { transform: translate(-22px, -83px) rotate(-18deg); }
-    }
-    @keyframes thoughtCloudPulse {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-5px) scale(1.06); }
-    }
-    @keyframes bowtiePop {
-      0% { transform: scale(1) rotate(0deg); }
-      40% { transform: scale(1.25) rotate(-7deg); }
-      75% { transform: scale(0.93) rotate(5deg); }
-      100% { transform: scale(1) rotate(0deg); }
+      0%, 100% { transform: rotate(-3deg) translateY(-1px); }
+      50% { transform: rotate(-6deg) translateY(-2px); }
     }
 
-    .raul-breathe { animation: breathe 4.2s ease-in-out infinite; transform-origin: 150px 265px; }
-    .raul-tail { animation: tailSway 3.6s ease-in-out infinite; transform-origin: 185px 250px; }
-    .raul-ear-left { animation: earLeftTwitch 7s ease-in-out infinite; transform-origin: 105px 105px; }
-    .raul-ear-right { animation: earRightTwitch 8.5s ease-in-out infinite; transform-origin: 195px 105px; }
-    .bowtie-animate { animation: bowtiePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes pawThink {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(1px, -3px) rotate(-3deg); }
+    }
 
-    /* Estados Visuais do R.A.U.L. */
-    .state-thinking #raulHeadGroup {
+    @keyframes talkMouth {
+      0%, 100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+
+    @keyframes thoughtFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.06); }
+    }
+
+    @keyframes tailWag {
+      0%, 100% { transform: rotate(-8deg); }
+      50% { transform: rotate(15deg); }
+    }
+
+    .cat-body-group {
+      animation: floatBreath 4.5s ease-in-out infinite;
+      transform-origin: 100px 170px;
+    }
+
+    .cat-head-group {
+      transition: transform 0.3s ease;
+      transform-origin: 100px 105px;
+    }
+
+    .cat-eye-blink {
+      animation: blinkAnim 5.2s infinite;
+      transform-origin: center 81px;
+    }
+
+    .cat-ear-left {
+      animation: earTwitchL 6.5s infinite;
+      transform-origin: 58px 51px;
+    }
+
+    .cat-ear-right {
+      animation: earTwitchR 7s infinite;
+      transform-origin: 142px 51px;
+    }
+
+    .cat-tail {
+      animation: tailWag 3.5s ease-in-out infinite;
+      transform-origin: 148px 160px;
+    }
+
+    /* Estados visuais do R.A.U.L. */
+    .state-thinking .cat-head-group {
       animation: headTiltThink 2.2s ease-in-out infinite;
-      transform-origin: 150px 140px;
     }
-    .state-thinking #raulRightPaw {
-      animation: pawToChin 1.3s ease-in-out infinite;
-      transform-origin: 195px 272px;
-    }
-    .state-thinking #raulThoughtBubble {
+
+    .state-thinking .think-paw {
       opacity: 1 !important;
-      animation: thoughtCloudPulse 1.8s ease-in-out infinite;
+      animation: pawThink 1.8s ease-in-out infinite;
     }
-    .state-happy #raulHeadGroup {
-      animation: purrVibrate 0.09s linear infinite;
+
+    .state-thinking .thought-bubble {
+      opacity: 1 !important;
+      animation: thoughtFloat 1.6s ease-in-out infinite;
     }
-    .state-happy .raul-pupil {
+
+    .state-thinking .glasses-group {
+      opacity: 1;
+    }
+
+    .state-speaking .mouth-open {
+      opacity: 1 !important;
+      animation: talkMouth 0.22s infinite;
+      transform-origin: 100px 105px;
+    }
+
+    .state-happy .eyes-normal {
       opacity: 0;
     }
-    .state-happy .raul-happy-eye {
+
+    .state-happy .eyes-happy {
       opacity: 1 !important;
     }
-    .state-blep #raulBlep {
-      transform: scaleY(1) !important;
+
+    .state-blep .blep-tongue {
+      opacity: 1 !important;
     }
-    .state-party #partyBalloonsGroup {
+
+    .state-party .party-balloons {
       opacity: 1 !important;
     }
 
@@ -355,7 +392,7 @@
       gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 2px;
+      margin-top: 8px;
     }
 
     .act-chip {
@@ -364,7 +401,7 @@
       color: var(--text-main);
       font-size: 11.5px;
       font-weight: 600;
-      padding: 5px 11px;
+      padding: 5px 12px;
       border-radius: 99px;
       cursor: pointer;
       display: inline-flex;
@@ -382,8 +419,8 @@
       position: fixed;
       top: calc(64px + env(safe-area-inset-top));
       right: 12px;
-      width: 118px;
-      padding: 6px;
+      width: 120px;
+      padding: 8px;
       border-radius: 20px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
@@ -402,9 +439,8 @@
     }
 
     .app-shell.corner-mode .cat-canvas-wrap {
-      width: 96px;
-      height: 92px;
-      margin-top: 0;
+      width: 95px;
+      height: 90px;
     }
 
     /* ÁREA DE CHAT */
@@ -897,7 +933,7 @@
             R.A.U.L.
             <span class="google-dot" id="googleStatusDot" title="Status Conta Google"></span>
           </div>
-          <div class="brand-sub" id="weatherSubtitle" onclick="detectWeather(true)">📍 Toque para atualizar clima</div>
+          <div class="brand-sub" id="weatherSubtitle">📍 Toque para atualizar clima</div>
         </div>
       </div>
 
@@ -914,7 +950,7 @@
       </div>
     </header>
 
-    <!-- PALCO DO R.A.U.L. (ILUSTRAÇÃO FIEL DETALHADA) -->
+    <!-- PALCO DO GATO -->
     <section class="cat-stage" id="catStage">
       <div class="stage-top-controls">
         <button class="tie-chip" onclick="cycleBowTie()" id="tieLabelBtn">
@@ -926,186 +962,140 @@
       </div>
 
       <div class="cat-canvas-wrap" id="catAvatarWrap" onclick="petRaul()">
-        <svg id="raulSvg" viewBox="0 0 300 290" xmlns="http://www.w3.org/2000/svg">
+        <svg id="raulSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="polkaDots" width="10" height="10" patternUnits="userSpaceOnUse">
-              <circle cx="3" cy="3" r="1.5" fill="#ffffff" opacity="0.92" />
-              <circle cx="8" cy="8" r="1.5" fill="#ffffff" opacity="0.92" />
+            <pattern id="polkaDots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="1.15" fill="#ffffff" fill-opacity="0.88" />
             </pattern>
-            <pattern id="partyDots" width="14" height="14" patternUnits="userSpaceOnUse">
-              <circle cx="4" cy="4" r="1.1" fill="#fef08a" opacity="0.85" />
-              <circle cx="11" cy="10" r="1.1" fill="#ffffff" opacity="0.8" />
+            <pattern id="yellowWeave" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+              <path d="M0 2.5 H5 M2.5 0 V5" stroke="#d4a017" stroke-width="0.6" stroke-opacity="0.45" />
             </pattern>
-            <pattern id="linenTexture" width="8" height="8" patternUnits="userSpaceOnUse">
-              <path d="M 0 4 H 8 M 4 0 V 8" stroke="#ca8a04" stroke-width="0.6" opacity="0.28" />
-            </pattern>
-            <radialGradient id="raulEyeGrad" cx="50%" cy="45%" r="50%">
-              <stop offset="0%" stop-color="#c3d96b" />
-              <stop offset="55%" stop-color="#84a94c" />
-              <stop offset="90%" stop-color="#4d6b2b" />
-              <stop offset="100%" stop-color="#2d4017" />
-            </radialGradient>
-            <filter id="bowShadow" x="-15%" y="-15%" width="130%" height="135%">
-              <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.28" />
-            </filter>
           </defs>
 
-          <!-- Balões de Festa "R" (Foto 4) -->
-          <g id="partyBalloonsGroup" style="opacity:0; transition: opacity 0.3s;">
-            <ellipse cx="42" cy="58" rx="16" ry="20" transform="rotate(-18 42 58)" fill="#059669" />
-            <ellipse cx="68" cy="66" rx="18" ry="14" transform="rotate(10 68 66)" fill="#10b981" />
-            <ellipse cx="44" cy="88" rx="15" ry="19" transform="rotate(15 44 88)" fill="#047857" />
-            <ellipse cx="256" cy="58" rx="16" ry="20" transform="rotate(18 256 58)" fill="#059669" />
-            <ellipse cx="232" cy="66" rx="18" ry="14" transform="rotate(-10 232 66)" fill="#10b981" />
-            <ellipse cx="254" cy="88" rx="15" ry="19" transform="rotate(-15 254 88)" fill="#047857" />
-            <text x="150" y="42" text-anchor="middle" font-size="34" font-weight="900" fill="#facc15" stroke="#854d0e" stroke-width="1.5">R</text>
+          <!-- Balões de Festa "R" (ocultos por padrão) -->
+          <g class="party-balloons" style="opacity:0; transition: opacity 0.3s;">
+            <ellipse cx="32" cy="36" rx="11" ry="14" fill="#1b7a43" />
+            <ellipse cx="22" cy="50" rx="11" ry="13" fill="#239653" />
+            <ellipse cx="42" cy="50" rx="11" ry="13" fill="#166336" />
+            <ellipse cx="168" cy="36" rx="11" ry="14" fill="#1b7a43" />
+            <ellipse cx="158" cy="50" rx="11" ry="13" fill="#239653" />
+            <ellipse cx="178" cy="50" rx="11" ry="13" fill="#166336" />
+            <text x="100" y="25" text-anchor="middle" font-size="24" font-weight="900" fill="#eab308" stroke="#a16207" stroke-width="1">R</text>
           </g>
 
-          <!-- Rabo Preto Peludo -->
-          <g class="raul-tail">
-            <path d="M 190 250 Q 255 245 262 195 Q 266 170 245 168 Q 228 168 225 195 Q 220 225 185 235 Z" fill="#141418" stroke="#0a0a0d" stroke-width="2" />
-            <path d="M 255 180 L 266 176 L 258 188 M 260 205 L 270 206 L 258 214" fill="#141418" />
+          <!-- Balão de Pensamento com Lâmpada -->
+          <g class="thought-bubble" style="opacity:0; transition: opacity 0.25s;">
+            <circle cx="143" cy="54" r="3.5" fill="#ffffff" stroke="#d1c7b8" stroke-width="1.2" />
+            <circle cx="151" cy="45" r="5" fill="#ffffff" stroke="#d1c7b8" stroke-width="1.2" />
+            <ellipse cx="168" cy="27" rx="19" ry="15" fill="#ffffff" stroke="#d1c7b8" stroke-width="1.5" />
+            <text x="168" y="33" text-anchor="middle" font-size="16">💡</text>
           </g>
 
-          <!-- Corpo com Respiração -->
-          <g id="raulBodyGroup" class="raul-breathe">
-            <!-- Costas e Ombros Pretos -->
-            <path d="M 68 182 Q 52 225 58 272 L 242 272 Q 248 225 232 182 Q 205 152 150 152 Q 95 152 68 182 Z" fill="#15151a" />
-            <path d="M 65 190 L 52 195 L 62 204 L 49 214 L 60 222 M 235 190 L 248 195 L 238 204 L 251 214 L 240 222" fill="#15151a" />
+          <!-- Rabo -->
+          <path class="cat-tail" d="M138 160 Q176 150 170 120 Q167 106 158 113 Q154 136 134 148 Z" fill="#141418" />
 
-            <!-- Juba / Peito Branco Volumoso e Fofo -->
-            <path d="M 75 165 L 60 175 L 70 185 L 56 198 L 70 208 L 62 226 L 74 235 L 76 274 L 224 274 L 226 235 L 238 226 L 230 208 L 244 198 L 230 185 L 240 175 L 225 165 Q 150 145 75 165 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M 102 228 Q 115 240 110 256 M 198 228 Q 185 240 190 256 M 138 238 Q 150 248 162 238" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+          <!-- Corpo e Peito Branco Fofo -->
+          <g class="cat-body-group">
+            <ellipse cx="100" cy="155" rx="46" ry="32" fill="#141418" />
+            <!-- Peitoral branco peludo e fofo que cobre mais a área de baixo -->
+            <path d="M60 124 Q52 148 62 172 Q80 182 100 182 Q120 182 138 172 Q148 148 140 124 Z" fill="#ffffff" />
+            <!-- Patinhas brancas frontais fofas -->
+            <ellipse cx="76" cy="178" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
+            <ellipse cx="124" cy="178" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
+            <path d="M72 176 V183 M76 176 V184 M80 176 V183" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
+            <path d="M120 176 V183 M124 176 V184 M128 176 V183" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
+          </g>
 
-            <!-- Patinha Esquerda -->
-            <g id="raulLeftPaw">
-              <ellipse cx="105" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-              <path d="M 97 268 V 278 M 105 267 V 279 M 113 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
+          <!-- Cabeça do R.A.U.L. -->
+          <g class="cat-head-group">
+            <!-- Orelhas expressivas nas pontas -->
+            <g class="cat-ear-left">
+              <polygon points="54,72 45,26 82,50" fill="#141418" />
+              <polygon points="57,66 50,34 76,51" fill="#3a2e39" />
+            </g>
+            <g class="cat-ear-right">
+              <polygon points="146,72 155,26 118,50" fill="#141418" />
+              <polygon points="143,66 150,34 124,51" fill="#3a2e39" />
             </g>
 
-            <!-- Cabeça e Orelhas -->
-            <g id="raulHeadGroup">
-              <!-- Orelha Esquerda com pelinhos brancos internos -->
-              <g class="raul-ear-left">
-                <path d="M 76 112 L 56 32 Q 55 24 63 28 L 122 72 Z" fill="#15151a" />
-                <path d="M 78 102 L 66 44 L 110 74 Z" fill="#272730" />
-                <path d="M 78 96 Q 68 75 72 68 M 84 92 Q 76 72 82 64 M 90 88 Q 84 74 90 68" fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
-              </g>
-              <!-- Orelha Direita com pelinhos brancos internos -->
-              <g class="raul-ear-right">
-                <path d="M 224 112 L 244 32 Q 245 24 237 28 L 178 72 Z" fill="#15151a" />
-                <path d="M 222 102 L 234 44 L 190 74 Z" fill="#272730" />
-                <path d="M 222 96 Q 232 75 228 68 M 216 92 Q 224 72 218 64 M 210 88 Q 216 74 210 68" fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
-              </g>
+            <!-- Base da Cabeça Preta (Mais Cheia, expressiva, arredondada-frajola) -->
+            <ellipse cx="100" cy="81" rx="51" ry="41" fill="#141418" />
+            
+            <!-- Pelos laterais fofos das bochechas, ressaltando o volume natural -->
+            <polygon points="49,78 39,87 50,93 43,101 58,105" fill="#141418" />
+            <polygon points="151,78 161,87 150,93 157,101 142,105" fill="#141418" />
 
-              <!-- Base Peluda Preta da Cabeça -->
-              <path d="M 72 108 Q 95 62 150 62 Q 205 62 228 108 L 242 122 L 232 130 L 246 144 L 230 154 L 236 166 Q 195 186 150 186 Q 105 186 64 166 L 70 154 L 54 144 L 68 130 L 58 122 Z" fill="#15151a" />
+            <!-- Marcação Branca Assimétrica Fiel às Fotos -->
+            <path d="M97 48 L103 48 L110 76 L135 86 C138 100 124 115 100 116 C76 115 62 100 65 86 L90 76 Z" fill="#ffffff" />
 
-              <!-- Máscara Branca Frajola (Sobe em ponta entre os olhos + bochechas fofas) -->
-              <path d="M 147 82 L 140 112 Q 132 132 105 142 L 74 152 L 84 160 L 72 168 L 95 178 Q 150 192 205 178 L 228 168 L 216 160 L 226 152 L 195 142 Q 166 132 156 112 Z" fill="#ffffff" />
-              <path d="M 82 146 L 64 152 L 78 160 L 66 170 L 92 175 M 218 146 L 236 152 L 222 160 L 234 170 L 208 175" fill="#ffffff" />
+            <!-- Meio-bigode preto no lado direito de quem olha (essencial!) -->
+            <ellipse cx="111" cy="95" rx="9" ry="4.5" transform="rotate(11 111 95)" fill="#141418" />
 
-              <!-- Queixo / Cavanhaque Preto Articulado + Boca "Rá-uuuuul" + Blep -->
-              <g id="raulJawGroup" style="transition: transform 0.08s ease-out;">
-                <path d="M 126 165 Q 150 158 173 165 Q 176 184 150 187 Q 124 184 126 165 Z" fill="#15151a" />
-                <path d="M 132 182 L 136 190 L 144 185 L 150 192 L 156 185 L 164 190 L 168 182" fill="#15151a" />
+            <!-- Cavanhaque/queixo preto conectado (marcação fiel) -->
+            <path d="M87 103 Q100 99 113 103 Q115 115 100 117 Q85 116 87 103 Z" fill="#141418" />
 
-                <!-- Boca articulada para o "Rá-uuuuul!" e para falar -->
-                <ellipse id="raulMouthCavity" cx="148" cy="161" rx="9" ry="0" fill="#be123c" stroke="#881337" stroke-width="1.2" style="transition: all 0.08s ease-out;" />
-                <ellipse id="raulMouthTongue" cx="148" cy="163" rx="6" ry="0" fill="#fb7185" style="transition: all 0.08s ease-out;" />
+            <!-- Nariz Preto -->
+            <polygon points="94,86 106,86 100,92" fill="#121216" />
 
-                <!-- Linguinha Blep (Foto 3) -->
-                <g id="raulBlep" style="transform: scaleY(0); transform-origin: 147px 163px; transition: transform 0.25s ease;">
-                  <path d="M 137 162 Q 147 175 157 162 Z" fill="#fb7185" stroke="#e11d48" stroke-width="1" />
-                  <line x1="147" y1="162" x2="147" y2="169" stroke="#e11d48" stroke-width="1" stroke-linecap="round" />
-                </g>
-              </g>
-
-              <!-- Meio-Bigode Preto Assimétrico (Lado Direito de quem olha) -->
-              <path d="M 148 151 Q 166 148 179 156 Q 182 161 175 164 Q 160 166 146 161 Z" fill="#15151a" />
-
-              <!-- Detalhe rosado acima do nariz + Nariz Preto -->
-              <ellipse cx="143" cy="136" rx="4.5" ry="3" fill="#fda4af" opacity="0.45" />
-              <path d="M 137 139 Q 149 135 161 139 Q 162 146 149 153 Q 136 146 137 139 Z" fill="#111115" />
-              <ellipse cx="146" cy="141" rx="4" ry="1.8" fill="#475569" opacity="0.55" />
-              <path d="M 148 152 Q 137 161 124 157" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
-
-              <!-- Olhos Verdes Expressivos -->
-              <g id="raulEyeLeft" transform="translate(110, 118)">
-                <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-                <g class="raul-pupil">
-                  <ellipse cx="1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                  <circle cx="-3" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                  <circle cx="4" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
-                </g>
-                <path class="raul-eyelid" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top; transition: transform 0.14s;" />
-                <path class="raul-happy-eye" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" style="opacity:0;" />
-              </g>
-
-              <g id="raulEyeRight" transform="translate(188, 118)">
-                <ellipse cx="0" cy="0" rx="16.5" ry="14.5" fill="url(#raulEyeGrad)" stroke="#09090b" stroke-width="2.5" />
-                <g class="raul-pupil">
-                  <ellipse cx="-1" cy="0" rx="4.5" ry="11.5" fill="#09090b" />
-                  <circle cx="-4" cy="-4" r="2.8" fill="#ffffff" opacity="0.9" />
-                  <circle cx="3" cy="4" r="1.3" fill="#ffffff" opacity="0.65" />
-                </g>
-                <path class="raul-eyelid" d="M -18 -16 H 18 V 16 H -18 Z" fill="#15151a" style="transform: scaleY(0); transform-origin: center top; transition: transform 0.14s;" />
-                <path class="raul-happy-eye" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" style="opacity:0;" />
-              </g>
-
-              <!-- Óculos Dourados (Modo Pensamento Profundo) -->
-              <g id="raulSmartGlasses" style="opacity:0; transition: opacity 0.25s;">
-                <circle cx="110" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
-                <circle cx="188" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
-                <path d="M 131 116 Q 149 110 167 116" fill="none" stroke="#eab308" stroke-width="3" />
-              </g>
-
-              <!-- Sobrancelhas e Bigodes Brancos Longos -->
-              <g fill="none" stroke="#f8fafc" stroke-width="1.3" stroke-linecap="round" opacity="0.88">
-                <path d="M 122 98 Q 102 68 74 62 M 128 96 Q 114 70 92 58 M 176 98 Q 196 68 226 62 M 170 96 Q 184 70 208 58" />
-              </g>
-              <g fill="none" stroke="#f1f5f9" stroke-width="1.4" stroke-linecap="round" opacity="0.92">
-                <path d="M 112 154 Q 70 150 32 162 M 114 160 Q 72 162 36 178 M 118 165 Q 80 174 48 194" />
-                <path d="M 186 154 Q 230 150 268 162 M 184 160 Q 228 162 264 178 M 180 165 Q 220 174 252 194" />
-              </g>
+            <!-- Olhos Verdes (Ajustados, profundos e expressivos, focados) -->
+            <g class="eyes-normal cat-eye-blink">
+              <ellipse cx="76" cy="77" rx="9" ry="10" fill="#689f38" />
+              <ellipse cx="124" cy="77" rx="9" ry="10" fill="#689f38" />
+              <ellipse cx="76" cy="77" rx="3" ry="7.5" fill="#0c0c0e" />
+              <ellipse cx="124" cy="77" rx="3" ry="7.5" fill="#0c0c0e" />
+              <circle cx="73" cy="74" r="2.2" fill="#ffffff" />
+              <circle cx="121" cy="74" r="2.2" fill="#ffffff" />
             </g>
 
-            <!-- Gravata Borboleta Fiel às Fotos -->
-            <g id="raulBowTieGroup" transform="translate(150, 206)" filter="url(#bowShadow)" onclick="event.stopPropagation(); cycleBowTie();" style="cursor:pointer;">
-              <g id="raulBowTieInner">
-                <path id="bowBackLeft" d="M -6 -6 L -48 -24 Q -56 -24 -56 -14 L -54 16 Q -52 24 -44 22 L -6 6 Z" fill="#991b1b" />
-                <path id="bowBackRight" d="M 6 -6 L 48 -24 Q 56 -24 56 -14 L 54 16 Q 52 24 44 22 L 6 6 Z" fill="#991b1b" />
-                <path id="bowMainLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="#dc2626" />
-                <path id="bowPatternLeft" d="M -5 -7 C -22 -22, -45 -26, -54 -18 C -60 -10, -60 12, -52 20 C -42 28, -20 20, -5 7 Z" fill="url(#polkaDots)" />
-                <path id="bowMainRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="#dc2626" />
-                <path id="bowPatternRight" d="M 5 -7 C 22 -22, 45 -26, 54 -18 C 60 -10, 60 12, 52 20 C 42 28, 20 20, 5 7 Z" fill="url(#polkaDots)" />
-                <path d="M -11 -4 Q -26 -8 -36 -5 M -11 4 Q -26 8 -36 5 M 11 -4 Q 26 -8 36 -5 M 11 4 Q 26 8 36 5" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" opacity="0.22" />
-                <rect id="bowKnot" x="-10" y="-11" width="20" height="22" rx="6" fill="#b91c1c" />
-                <rect id="bowKnotPattern" x="-10" y="-11" width="20" height="22" rx="6" fill="url(#polkaDots)" />
-              </g>
+            <!-- Olhos Fechados Felizes -->
+            <g class="eyes-happy" style="opacity:0;">
+              <path d="M67 78 Q76 69 85 78" fill="none" stroke="#689f38" stroke-width="3.5" stroke-linecap="round" />
+              <path d="M115 78 Q124 69 133 78" fill="none" stroke="#689f38" stroke-width="3.5" stroke-linecap="round" />
             </g>
 
-            <!-- Patinha Direita (Sobe ao queixo quando está pensando) -->
-            <g id="raulRightPaw">
-              <ellipse cx="195" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-              <path d="M 187 268 V 278 M 195 267 V 279 M 203 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
+            <!-- Óculos de Pensamento Profundo -->
+            <g class="glasses-group" style="opacity:0; transition: opacity 0.25s;">
+              <circle cx="76" cy="77" r="13.5" fill="none" stroke="#eab308" stroke-width="2.5" />
+              <circle cx="124" cy="77" r="13.5" fill="none" stroke="#eab308" stroke-width="2.5" />
+              <line x1="89.5" y1="77" x2="110.5" y2="77" stroke="#eab308" stroke-width="2.5" />
             </g>
 
-            <!-- Balão Visual de Pensamento -->
-            <g id="raulThoughtBubble" style="opacity:0; transition: opacity 0.25s;">
-              <circle cx="202" cy="78" r="4.5" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-              <circle cx="214" cy="64" r="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-              <path d="M 205 42 C 205 28, 224 22, 235 28 C 245 20, 266 24, 268 38 C 278 44, 274 60, 260 62 C 252 68, 232 68, 224 60 C 210 62, 202 52, 205 42 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
-              <circle cx="238" cy="44" r="8" fill="#fef08a" stroke="#eab308" stroke-width="1.8" />
-              <path d="M 235 54 H 241 M 238 30 V 33 M 224 44 H 227 M 249 44 H 252" stroke="#eab308" stroke-width="2" stroke-linecap="round" />
+            <!-- Boca e Linguinha Blep -->
+            <path d="M93 98 Q100 102 107 98" fill="none" stroke="#3a3a40" stroke-width="1.8" stroke-linecap="round" />
+            <ellipse class="mouth-open" cx="100" cy="100" rx="5.5" ry="4.5" fill="#d6456b" style="opacity:0;" />
+            <path class="blep-tongue" d="M95 99 Q100 108 105 99 Z" fill="#f472b6" style="opacity:0; transition: opacity 0.2s;" />
+
+            <!-- Bigodes Brancos Longos bem destacados e vivos -->
+            <g stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.95">
+              <line x1="72" y1="91" x2="32" y2="85" />
+              <line x1="71" y1="95" x2="29" y2="96" />
+              <line x1="73" y1="99" x2="35" y2="108" />
+              <line x1="128" y1="91" x2="168" y2="85" />
+              <line x1="129" y1="95" x2="171" y2="96" />
+              <line x1="127" y1="99" x2="165" y2="108" />
             </g>
+          </g>
+
+          <!-- Gravata Borboleta Dinâmica (Reposicionada mais para baixo e levemente maior para melhor caimento no peito) -->
+          <g id="bowTieGroup" onclick="event.stopPropagation(); cycleBowTie();" style="cursor:pointer;">
+            <path id="tieLeftWing" d="M100 126 L71 114 Q66 126 71 138 Z" fill="#d62839" />
+            <path id="tieRightWing" d="M100 126 L129 114 Q134 126 129 138 Z" fill="#d62839" />
+            <path id="tiePatternLeft" d="M100 126 L71 114 Q66 126 71 138 Z" fill="url(#polkaDots)" />
+            <path id="tiePatternRight" d="M100 126 L129 114 Q134 126 129 138 Z" fill="url(#polkaDots)" />
+            <rect id="tieKnot" x="93" y="119" width="14" height="14" rx="4" fill="#a81c29" />
+          </g>
+
+          <!-- Patinha Pensativa no Queixo -->
+          <g class="think-paw" style="opacity:0; transition: opacity 0.25s;">
+            <ellipse cx="86" cy="119" rx="11" ry="9" fill="#ffffff" stroke="#d5cec2" stroke-width="1.4" />
+            <path d="M82 115 V121 M86 114 V121 M90 115 V121" stroke="#cfc7ba" stroke-width="1.2" stroke-linecap="round" />
           </g>
         </svg>
       </div>
 
       <div class="stage-actions">
         <button class="act-chip" onclick="petRaul()">✋ Carinho</button>
-        <button class="act-chip" onclick="playRaulMeow(true)">🗣️ "Rá-uuuuul!"</button>
+        <button class="act-chip" onclick="playRaulMeow(true)">🗣️ "Rrr-a-u-l!"</button>
         <button class="act-chip" onclick="toggleBlep()">👅 Blep</button>
         <button class="act-chip" onclick="giveTreat()">🐟 Sachê</button>
         <button class="act-chip" onclick="togglePartyMode()">🎈 Festa "R"</button>
@@ -1234,14 +1224,22 @@
         </div>
 
         <div class="field-group">
-          <label class="field-label">Volume do Ronronado & Miado "Rá-uuuuul!": <span id="volPercent">85%</span></label>
+          <label class="field-label">Volume do Ronronado & Miado "Raul": <span id="volPercent">85%</span></label>
           <input type="range" id="purrVolumeRange" min="10" max="100" value="85" style="width:100%;" oninput="document.getElementById('volPercent').innerText = this.value + '%'" />
         </div>
 
         <div class="field-group">
-          <button type="button" class="pill-btn" onclick="playRaulMeow(true)" style="width:100%; justify-content:center; height:40px;">
-            🔊 Testar Miado "Rá-uuuuul!" (396Hz → 402Hz • 1.01s)
-          </button>
+          <label class="field-label">🎙️ Áudio do Miado "Rrr-a-u-l!" (Sintetizador Formante ou Gravação Real)</label>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="pill-btn" onclick="playRaulMeow(true)">▶️ Testar Miado "Ra-ul"</button>
+            <button type="button" class="pill-btn" id="recordMeowBtn" onclick="toggleRecordCustomMeow()">🎙️ Gravar o Raul real</button>
+            <input type="file" id="customMeowInput" accept="audio/*" hidden onchange="uploadCustomMeowFile(event)" />
+            <button type="button" class="pill-btn" onclick="document.getElementById('customMeowInput').click()">📂 Enviar Áudio</button>
+            <button type="button" class="pill-btn" id="clearCustomMeowBtn" onclick="clearCustomMeow()" style="display:none; color:var(--danger);">🗑️ Usar Sintetizador</button>
+          </div>
+          <small id="customMeowStatus" style="display:block; margin-top:5px; font-size:11.5px; color:var(--text-muted);">
+            Usando sintetizador acústico formante "Rrr-aa-uu-ll" (ou grave o miado real dele acima!).
+          </small>
         </div>
 
         <button class="primary-btn" onclick="saveSettings()">Salvar Configurações</button>
@@ -1257,22 +1255,14 @@
     const GOOGLE_SCOPES = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file";
     const GEMINI_MODEL = "gemini-flash-latest";
 
-    // AFINAÇÃO PERSONALIZADA DO MIADO "RÁ-UUUUUL!" DO R.A.U.L.
-    const RAUL_VOICE_TUNING = {
-      pitchRa: 396,
-      pitchUl: 402,
-      duration: 1.01,
-      breath: 0.33
-    };
-
-    // GRAVATAS BORBOLETA DO R.A.U.L.
+    // GRAVATAS DO R.A.U.L.
     const BOW_TIES = [
-      { name: "Vermelha de Bolinhas", main: "#dc2626", back: "#991b1b", knot: "#b91c1c", pattern: "url(#polkaDots)", knotPattern: "url(#polkaDots)" },
-      { name: "Verde-Esmeralda de Bolinhas", main: "#059669", back: "#065f46", knot: "#047857", pattern: "url(#polkaDots)", knotPattern: "url(#polkaDots)" },
-      { name: "Amarela Canário", main: "#facc15", back: "#ca8a04", knot: "#eab308", pattern: "url(#linenTexture)", knotPattern: "url(#linenTexture)" },
-      { name: "Verde-Floresta de Festa", main: "#14532d", back: "#052e16", knot: "#eab308", pattern: "url(#partyDots)", knotPattern: "none" },
-      { name: "Azul-Marinho de Bolinhas", main: "#1d4ed8", back: "#1e3a8a", knot: "#1e40af", pattern: "url(#polkaDots)", knotPattern: "url(#polkaDots)" },
-      { name: "Lilás Lavanda", main: "#9333ea", back: "#581c87", knot: "#7e22ce", pattern: "url(#linenTexture)", knotPattern: "url(#linenTexture)" }
+      { name: "Vermelha de Bolinhas", main: "#d62839", knot: "#9e1926", pattern: "url(#polkaDots)" },
+      { name: "Verde-Esmeralda de Bolinhas", main: "#1b8a4b", knot: "#116133", pattern: "url(#polkaDots)" },
+      { name: "Amarela Canário", main: "#f2c94c", knot: "#d4a626", pattern: "url(#yellowWeave)" },
+      { name: "Verde-Floresta de Festa", main: "#1b4d3e", knot: "#eab308", pattern: "url(#polkaDots)" },
+      { name: "Azul-Marinho", main: "#1d3557", knot: "#112036", pattern: "url(#polkaDots)" },
+      { name: "Lilás Elegante", main: "#7b2cbf", knot: "#5a189a", pattern: "none" }
     ];
 
     let state = {
@@ -1304,17 +1294,16 @@
     ];
 
     let tokenClient = null;
-    let sharedAudioCtx = null;
-    let mouthTimerIds = [];
 
     // INICIALIZAÇÃO
     window.addEventListener("DOMContentLoaded", () => {
+      localStorage.removeItem("raul_google_client_id");
+      localStorage.removeItem("google_client_id");
       if (state.darkMode) document.body.classList.add("dark");
       updateThemeUI();
       updateSoundUI();
       updateEffortUI();
       pickRandomTieOnBoot();
-      startNaturalBlinkAndEyeTracking();
 
       document.getElementById("ownerNameInput").value = state.ownerName;
       document.getElementById("apiKeyInput").value = state.apiKey;
@@ -1327,28 +1316,18 @@
         state.activeChatId = state.chats[0].id;
       }
 
+      updateCustomMeowUI();
       renderActiveChat();
       renderHistoryList();
       renderMemories();
       renderEventsList();
-      detectWeather(false);
+      detectWeather();
       initGoogleOAuth();
 
       if (state.googleToken) {
         onGoogleConnected(state.googleToken, true);
       }
     });
-
-    function getAudioCtx() {
-      if (!sharedAudioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        sharedAudioCtx = new AudioContextClass();
-      }
-      if (sharedAudioCtx.state === "suspended") {
-        sharedAudioCtx.resume();
-      }
-      return sharedAudioCtx;
-    }
 
     function showToast(msg) {
       const el = document.getElementById("toastBox");
@@ -1357,106 +1336,45 @@
       setTimeout(() => el.classList.remove("show"), 2600);
     }
 
-    // PISCAR NATURAL E OLHOS QUE SEGUEM O TOQUE
-    function startNaturalBlinkAndEyeTracking() {
-      setInterval(() => {
-        if (Math.random() < 0.78) {
-          const lids = document.querySelectorAll(".raul-eyelid");
-          lids.forEach(l => (l.style.transform = "scaleY(1)"));
-          setTimeout(() => lids.forEach(l => (l.style.transform = "scaleY(0)")), 150);
-        }
-      }, 3800);
-
-      const moveEyes = (clientX, clientY) => {
-        if (state.isGenerating) return;
-        const svg = document.getElementById("raulSvg");
-        if (!svg) return;
-        const rect = svg.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height * 0.42;
-        const dx = Math.max(-1, Math.min(1, (clientX - cx) / (window.innerWidth * 0.35)));
-        const dy = Math.max(-1, Math.min(1, (clientY - cy) / (window.innerHeight * 0.35)));
-        document.querySelectorAll(".raul-pupil").forEach(p => {
-          p.style.transform = `translate(${dx * 5}px, ${dy * 3.5}px)`;
-        });
-      };
-
-      window.addEventListener("mousemove", e => moveEyes(e.clientX, e.clientY));
-      window.addEventListener("touchmove", e => {
-        if (e.touches && e.touches[0]) moveEyes(e.touches[0].clientX, e.touches[0].clientY);
-      }, { passive: true });
-    }
-
     // GRAVATA SORTEADA A CADA ABERTURA
     function pickRandomTieOnBoot() {
       const last = parseInt(localStorage.getItem("raul_last_tie") || "-1", 10);
       let next = Math.floor(Math.random() * BOW_TIES.length);
       if (next === last) next = (next + 1) % BOW_TIES.length;
       localStorage.setItem("raul_last_tie", next);
-      applyTie(next, false);
+      applyTie(next);
     }
 
     function cycleBowTie() {
       const next = (state.tieIndex + 1) % BOW_TIES.length;
-      applyTie(next, true);
+      applyTie(next);
       playPurr(0.7);
       showToast("🎀 Gravata: " + BOW_TIES[next].name);
     }
 
-    function applyTie(idx, animate = false) {
+    function applyTie(idx) {
       state.tieIndex = idx;
       const t = BOW_TIES[idx];
-      document.getElementById("bowMainLeft").setAttribute("fill", t.main);
-      document.getElementById("bowMainRight").setAttribute("fill", t.main);
-      document.getElementById("bowBackLeft").setAttribute("fill", t.back);
-      document.getElementById("bowBackRight").setAttribute("fill", t.back);
-      document.getElementById("bowKnot").setAttribute("fill", t.knot);
-      document.getElementById("bowPatternLeft").setAttribute("fill", t.pattern);
-      document.getElementById("bowPatternRight").setAttribute("fill", t.pattern);
-      document.getElementById("bowKnotPattern").setAttribute("fill", t.knotPattern);
+      document.getElementById("tieLeftWing").setAttribute("fill", t.main);
+      document.getElementById("tieRightWing").setAttribute("fill", t.main);
+      document.getElementById("tieKnot").setAttribute("fill", t.knot);
+      document.getElementById("tiePatternLeft").setAttribute("fill", t.pattern);
+      document.getElementById("tiePatternRight").setAttribute("fill", t.pattern);
       document.getElementById("tieLabelBtn").innerText = "🎀 " + t.name;
-
-      if (animate) {
-        const inner = document.getElementById("raulBowTieInner");
-        inner.classList.remove("bowtie-animate");
-        void inner.offsetWidth;
-        inner.classList.add("bowtie-animate");
-      }
     }
 
-    // ESTADOS E REAÇÕES DO R.A.U.L.
+    // ANIMAÇÕES E SOM DO R.A.U.L.
     function setCatState(mode) {
       const svg = document.getElementById("raulSvg");
       svg.classList.remove("state-thinking", "state-speaking", "state-happy");
-      const glasses = document.getElementById("raulSmartGlasses");
-      if (glasses) glasses.style.opacity = "0";
-
-      if (mode === "thinking") {
-        svg.classList.add("state-thinking");
-        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(4px, -5px)"));
-        if (state.effortIndex === 2) {
-          if (glasses) glasses.style.opacity = "1";
-        }
-      } else if (mode === "speaking") {
-        svg.classList.add("state-speaking");
-        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(0px, 0px)"));
-      } else if (mode === "happy") {
-        svg.classList.add("state-happy");
-      } else {
-        document.querySelectorAll(".raul-pupil").forEach(p => (p.style.transform = "translate(0px, 0px)"));
-      }
+      if (mode) svg.classList.add("state-" + mode);
     }
 
     function petRaul() {
       setCatState("happy");
-      const svg = document.getElementById("raulSvg");
-      svg.classList.add("state-blep");
       playPurr(1.6);
       if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
-      setTimeout(() => {
-        svg.classList.remove("state-blep");
-        setCatState(state.isGenerating ? "thinking" : null);
-      }, 1750);
+      setTimeout(() => setCatState(state.isGenerating ? "thinking" : null), 1700);
     }
 
     function toggleBlep() {
@@ -1467,16 +1385,16 @@
 
     function giveTreat() {
       setCatState("happy");
-      playRaulMeow(false);
-      showToast("🐟 R.A.U.L. amou o sachê!");
-      setTimeout(() => setCatState(null), 1600);
+      playPurr(2.0);
+      showToast("🐟 R.A.U.L. devorou o sachê ronronando!");
+      setTimeout(() => setCatState(null), 2000);
     }
 
     function togglePartyMode() {
       const svg = document.getElementById("raulSvg");
       const active = svg.classList.toggle("state-party");
       if (active) {
-        applyTie(3, true);
+        applyTie(3);
         showToast('🎈 Modo Festa "R" ativado!');
       }
     }
@@ -1487,188 +1405,204 @@
       document.getElementById("cornerModeBtn").innerText = isCorner ? "🖼️ Expandir" : "📌 Gato no Canto";
     }
 
-    // SÍNTESE FORMANTE PERSONALIZADA DO MIADO "RÁ-UUUUUL!"
-    // Calibrada exatamente em: Rá: 396Hz | Uuuuul: 402Hz | Duração: 1.01s | Sopro R: 33%
+    // MIADO CARACTERÍSTICO QUE DIZ "RRR-A-U-L!" (SÍNTESE FORMANTE VOCAL + SUPORTE A GRAVAÇÃO REAL)
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function updateCustomMeowUI() {
+      const hasCustom = !!localStorage.getItem("raul_custom_meow_audio");
+      const clearBtn = document.getElementById("clearCustomMeowBtn");
+      const statusEl = document.getElementById("customMeowStatus");
+      if (clearBtn) clearBtn.style.display = hasCustom ? "inline-flex" : "none";
+      if (statusEl) {
+        statusEl.innerText = hasCustom
+          ? "✅ Usando gravação real do miado do Raul!"
+          : "Usando sintetizador acústico formante vocal 'Rrr-aa-uu-ll'.";
+      }
+    }
+
+    async function toggleRecordCustomMeow() {
+      const btn = document.getElementById("recordMeowBtn");
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        btn.innerText = "🎙️ Gravar o Raul real";
+        return;
+      }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+          stream.getTracks().forEach(t => t.stop());
+          const blob = new Blob(recordedChunks, { type: "audio/webm" });
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              localStorage.setItem("raul_custom_meow_audio", reader.result);
+              updateCustomMeowUI();
+              showToast("✅ Miado real do Raul salvo!");
+              playRaulMeow(true);
+            } catch (err) {
+              showToast("Áudio muito longo! Grave até 4 segundos.");
+            }
+          };
+          reader.readAsDataURL(blob);
+        };
+        mediaRecorder.start();
+        btn.innerText = "⏹️ Parar Gravação (3s)";
+        showToast("🎙️ Gravando... Faça ou aproxime o Raul!");
+        setTimeout(() => {
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+            btn.innerText = "🎙️ Gravar o Raul real";
+          }
+        }, 3500);
+      } catch (e) {
+        showToast("Permita o uso do microfone para gravar.");
+      }
+    }
+
+    function uploadCustomMeowFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          localStorage.setItem("raul_custom_meow_audio", reader.result);
+          updateCustomMeowUI();
+          showToast("✅ Áudio do miado do Raul carregado!");
+          playRaulMeow(true);
+        } catch (err) {
+          showToast("Arquivo muito grande para a memória local.");
+        }
+      };
+      reader.readAsDataURL(file);
+      e.target.value = "";
+    }
+
+    function clearCustomMeow() {
+      localStorage.removeItem("raul_custom_meow_audio");
+      updateCustomMeowUI();
+      showToast("Voltando para o miado sintetizado 'Rrr-a-u-l'!");
+    }
+
     function playRaulMeow(showVisualToast = false) {
       if (!state.soundOn) return;
       if (showVisualToast) {
-        showToast('🐾 R.A.U.L.: "Rá-uuuuul!"');
+        showToast('🐾 R.A.U.L.: "Mrr-aa-uu-ll!"');
       }
 
-      if (navigator.vibrate) navigator.vibrate([30, 25, 110]);
+      // Anima a boca articulando as duas sílabas "Raa - uul"
+      setCatState("speaking");
+      if (navigator.vibrate) navigator.vibrate([35, 30, 90, 40, 120]);
+      setTimeout(() => {
+        if (!state.isGenerating) setCatState(null);
+      }, 950);
 
-      const { pitchRa, pitchUl, duration: dur, breath: breathAmount } = RAUL_VOICE_TUNING;
-      const tAspiration = 0.08;
-      const tRaEnd = Math.min(0.28, dur * 0.21); // ~0.21s para o "Rá-" curto
-      const tUlHold = dur * 0.84;                // ~0.85s sustentando o "-uuuuul"
+      // Se houver gravação real salva, toca o áudio real do Raul
+      const customAudio = localStorage.getItem("raul_custom_meow_audio");
+      if (customAudio) {
+        try {
+          const audio = new Audio(customAudio);
+          audio.volume = Math.min(1, (state.purrVolume / 100));
+          audio.play();
+          return;
+        } catch (e) {}
+      }
 
-      animateMouthForRaulMeow(dur, tRaEnd, tUlHold);
-
+      // Síntese Acústica Formante (Trato Vocal Felino articulando "Rrr - AA - UU - LL")
       try {
-        const ctx = getAudioCtx();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
         const now = ctx.currentTime;
-        const vol = (state.purrVolume / 100) * 0.95;
+        const dur = 0.92;
+        const vol = (state.purrVolume / 100) * 0.9;
 
-        // 1. Sopro aspirado brasileiro do "R" de "Rá" (33%)
-        const noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.18), ctx.sampleRate);
-        const noiseData = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < noiseData.length; i++) {
-          noiseData[i] = Math.random() * 2 - 1;
-        }
-        const noiseSource = ctx.createBufferSource();
-        noiseSource.buffer = noiseBuffer;
+        // Fonte glotal felina (dente de serra rica em harmônicos + onda triangular)
+        const glottalSaw = ctx.createOscillator();
+        const glottalTri = ctx.createOscillator();
+        glottalSaw.type = "sawtooth";
+        glottalTri.type = "triangle";
 
-        const breathFilter = ctx.createBiquadFilter();
-        breathFilter.type = "bandpass";
-        breathFilter.frequency.setValueAtTime(1150, now);
-        breathFilter.Q.value = 1.8;
-
-        const breathGain = ctx.createGain();
-        breathGain.gain.setValueAtTime(0.001, now);
-        breathGain.gain.linearRampToValueAtTime(0.38 * breathAmount * vol, now + 0.025);
-        breathGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-
-        noiseSource.connect(breathFilter);
-        breathFilter.connect(breathGain);
-
-        // 2. Osciladores Vocais Felinos (Sawtooth + Triangle)
-        const sawOsc = ctx.createOscillator();
-        const triOsc = ctx.createOscillator();
-        sawOsc.type = "sawtooth";
-        triOsc.type = "triangle";
-
-        [sawOsc.frequency, triOsc.frequency].forEach(f => {
-          f.setValueAtTime(pitchRa * 0.86, now);
-          f.exponentialRampToValueAtTime(pitchRa, now + tAspiration + 0.05); // Ataque "Rá" (396Hz)
-          f.setValueAtTime(pitchRa * 0.98, now + tRaEnd);
-          f.exponentialRampToValueAtTime(pitchUl * 1.08, now + tRaEnd + 0.14); // Sobe no "-uuuuul" (402Hz)
-          f.exponentialRampToValueAtTime(pitchUl, now + tUlHold);
-          f.exponentialRampToValueAtTime(pitchUl * 0.84, now + dur); // Fecha no "-uul"
+        // Curva de Pitch ( entonação de gato que "fala" Ra-ul: sobe no "Raa" e desce arredondado no "uul")
+        // Início em ~290Hz ("Rrr"), sobe até 520Hz ("AA"), desce para 340Hz ("UU") e fecha em 260Hz ("LL")
+        [glottalSaw.frequency, glottalTri.frequency].forEach(freqParam => {
+          freqParam.setValueAtTime(280, now);
+          freqParam.exponentialRampToValueAtTime(360, now + 0.14); // "Rrr-"
+          freqParam.exponentialRampToValueAtTime(535, now + 0.36); // "-AA-" (pico aberto)
+          freqParam.exponentialRampToValueAtTime(345, now + 0.68); // "-UU-" (fechando)
+          freqParam.exponentialRampToValueAtTime(255, now + dur);  // "-LL"
         });
 
-        // Vibrato suave durante o longo "-uuuuul"
-        const vibratoOsc = ctx.createOscillator();
-        const vibratoGain = ctx.createGain();
-        vibratoOsc.frequency.setValueAtTime(5.5, now);
-        vibratoGain.gain.setValueAtTime(0, now);
-        vibratoGain.gain.setValueAtTime(0, now + tRaEnd);
-        vibratoGain.gain.linearRampToValueAtTime(6.5, now + tRaEnd + 0.25);
-        vibratoGain.gain.linearRampToValueAtTime(3.0, now + dur);
-        vibratoOsc.connect(vibratoGain);
-        vibratoGain.connect(sawOsc.frequency);
-        vibratoGain.connect(triOsc.frequency);
+        // Modulação de Trill Inicial ("Rrr" rolado na garganta nos primeiros 180ms)
+        const trillOsc = ctx.createOscillator();
+        const trillGain = ctx.createGain();
+        trillOsc.frequency.setValueAtTime(28, now); // 28Hz trill felino
+        trillGain.gain.setValueAtTime(65, now);
+        trillGain.gain.linearRampToValueAtTime(10, now + 0.22); // suaviza após o "Rrr"
+        trillGain.gain.linearRampToValueAtTime(4, now + dur);
+        trillOsc.connect(trillGain);
+        trillGain.connect(glottalSaw.frequency);
+        trillGain.connect(glottalTri.frequency);
 
-        // 3. Filtros Formantes Vocais (F1, F2, F3) que articulam "RÁ" -> "UUUUUL"
-        const f1 = ctx.createBiquadFilter();
-        const f2 = ctx.createBiquadFilter();
-        const f3 = ctx.createBiquadFilter();
-        f1.type = "bandpass"; f2.type = "bandpass"; f3.type = "bandpass";
-        f1.Q.value = 4.5; f2.Q.value = 5.2; f3.Q.value = 4.8;
+        // Filtros Formantes Vocais (F1 e F2) que moldam as vogais /a/ -> /u/ -> /l/
+        // Vogal /a/ ("RAA"): F1 ~ 850 Hz, F2 ~ 1350 Hz (boca do gato bem aberta)
+        // Vogal /u/ ("UUL"): F1 ~ 330 Hz, F2 ~ 720 Hz (boca arredondando/fechando)
+        const formant1 = ctx.createBiquadFilter();
+        const formant2 = ctx.createBiquadFilter();
+        formant1.type = "bandpass";
+        formant2.type = "bandpass";
+        formant1.Q.value = 4.2;
+        formant2.Q.value = 5.0;
 
-        // F1: abre em 900Hz no "Rá" e arredonda em 310Hz no longo "uuuuul"
-        f1.frequency.setValueAtTime(720, now);
-        f1.frequency.exponentialRampToValueAtTime(900, now + tAspiration + 0.04);
-        f1.frequency.setValueAtTime(860, now + tRaEnd);
-        f1.frequency.exponentialRampToValueAtTime(320, now + tRaEnd + 0.14);
-        f1.frequency.setValueAtTime(310, now + tUlHold);
-        f1.frequency.exponentialRampToValueAtTime(275, now + dur);
+        // Trajetória do Formante 1 (abertura da mandíbula)
+        formant1.frequency.setValueAtTime(420, now);
+        formant1.frequency.exponentialRampToValueAtTime(880, now + 0.34); // Abre no "RAA"
+        formant1.frequency.exponentialRampToValueAtTime(340, now + 0.72); // Fecha no "UU"
+        formant1.frequency.exponentialRampToValueAtTime(390, now + dur);  // Ponta da língua no "LL"
 
-        // F2: brilho do "Á" (1440Hz) descendo para o "U" arredondado (620Hz)
-        f2.frequency.setValueAtTime(1320, now);
-        f2.frequency.exponentialRampToValueAtTime(1440, now + tAspiration + 0.04);
-        f2.frequency.setValueAtTime(1380, now + tRaEnd);
-        f2.frequency.exponentialRampToValueAtTime(650, now + tRaEnd + 0.14);
-        f2.frequency.setValueAtTime(620, now + tUlHold);
-        f2.frequency.exponentialRampToValueAtTime(560, now + dur);
+        // Trajetória do Formante 2 (posição da língua / timbre vocal)
+        formant2.frequency.setValueAtTime(1100, now);
+        formant2.frequency.exponentialRampToValueAtTime(1420, now + 0.34); // Brilho do "AA"
+        formant2.frequency.exponentialRampToValueAtTime(690, now + 0.72);  // Grave arredondado do "UU"
+        formant2.frequency.exponentialRampToValueAtTime(980, now + dur);   // Ressonância final "LL"
 
-        // F3: harmônico agudo felino
-        f3.frequency.setValueAtTime(2750, now);
-        f3.frequency.exponentialRampToValueAtTime(2400, now + tRaEnd + 0.2);
-        f3.frequency.setValueAtTime(2350, now + dur);
-
-        const g1 = ctx.createGain(); g1.gain.value = 1.0;
-        const g2 = ctx.createGain(); g2.gain.value = 0.80;
-        const g3 = ctx.createGain(); g3.gain.value = 0.22;
-
-        // 4. Envelope de Volume articulando "Rá-" + "-uuuuul"
-        const voiceEnv = ctx.createGain();
-        voiceEnv.gain.setValueAtTime(0.001, now);
-        voiceEnv.gain.linearRampToValueAtTime(0.92 * vol, now + tAspiration + 0.03);
-        voiceEnv.gain.linearRampToValueAtTime(0.68 * vol, now + tRaEnd + 0.04);
-        voiceEnv.gain.linearRampToValueAtTime(0.95 * vol, now + tRaEnd + 0.16);
-        voiceEnv.gain.setValueAtTime(0.88 * vol, now + tUlHold * 0.85);
-        voiceEnv.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        // Envelope de volume articulado em duas sílabas conectadas ("Raa" + "uul")
+        const envGain = ctx.createGain();
+        envGain.gain.setValueAtTime(0.001, now);
+        envGain.gain.linearRampToValueAtTime(vol * 0.75, now + 0.09); // ataque "Rrr"
+        envGain.gain.linearRampToValueAtTime(vol * 1.0, now + 0.32);  // sílaba tônica "RAA"
+        envGain.gain.linearRampToValueAtTime(vol * 0.65, now + 0.48); // leve inflexão entre "Ra" e "ul"
+        envGain.gain.linearRampToValueAtTime(vol * 0.88, now + 0.64); // corpo do "UUL"
+        envGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
 
         const compressor = ctx.createDynamicsCompressor();
+        glottalSaw.connect(formant1);
+        glottalTri.connect(formant1);
+        glottalSaw.connect(formant2);
+        glottalTri.connect(formant2);
 
-        sawOsc.connect(f1); triOsc.connect(f1);
-        sawOsc.connect(f2); triOsc.connect(f2);
-        sawOsc.connect(f3);
-
-        f1.connect(g1); f2.connect(g2); f3.connect(g3);
-        g1.connect(voiceEnv); g2.connect(voiceEnv); g3.connect(voiceEnv);
-
-        voiceEnv.connect(compressor);
-        breathGain.connect(compressor);
+        formant1.connect(envGain);
+        formant2.connect(envGain);
+        envGain.connect(compressor);
         compressor.connect(ctx.destination);
 
-        noiseSource.start(now);
-        sawOsc.start(now);
-        triOsc.start(now);
-        vibratoOsc.start(now);
-
-        sawOsc.stop(now + dur);
-        triOsc.stop(now + dur);
-        vibratoOsc.stop(now + dur);
+        glottalSaw.start(now);
+        glottalTri.start(now);
+        trillOsc.start(now);
+        glottalSaw.stop(now + dur);
+        glottalTri.stop(now + dur);
+        trillOsc.stop(now + dur);
       } catch (e) {}
-    }
-
-    function animateMouthForRaulMeow(dur, tRaEnd, tUlHold) {
-      mouthTimerIds.forEach(id => clearTimeout(id));
-      mouthTimerIds = [];
-
-      const jaw = document.getElementById("raulJawGroup");
-      const cavity = document.getElementById("raulMouthCavity");
-      const tongue = document.getElementById("raulMouthTongue");
-      if (!jaw || !cavity || !tongue) return;
-
-      // 1. "Rá-" (boca abre bem no Á)
-      jaw.style.transform = "translateY(5.5px)";
-      cavity.setAttribute("rx", "11");
-      cavity.setAttribute("ry", "7");
-      tongue.setAttribute("rx", "7");
-      tongue.setAttribute("ry", "4.2");
-
-      // 2. "-uuuuuu..." (boca arredonda em formato de U)
-      mouthTimerIds.push(setTimeout(() => {
-        jaw.style.transform = "translateY(3.2px)";
-        cavity.setAttribute("rx", "5.2");
-        cavity.setAttribute("ry", "5.8");
-        tongue.setAttribute("rx", "3.4");
-        tongue.setAttribute("ry", "3.0");
-      }, tRaEnd * 1000));
-
-      // 3. "...uul!" (fechando suave)
-      mouthTimerIds.push(setTimeout(() => {
-        jaw.style.transform = "translateY(1.5px)";
-        cavity.setAttribute("rx", "4.0");
-        cavity.setAttribute("ry", "2.5");
-        tongue.setAttribute("ry", "1.2");
-      }, tUlHold * 1000));
-
-      // 4. Repouso
-      mouthTimerIds.push(setTimeout(() => {
-        jaw.style.transform = "translateY(0px)";
-        cavity.setAttribute("ry", "0");
-        tongue.setAttribute("ry", "0");
-      }, dur * 1000));
     }
 
     // RONRONADO AMPLIFICADO VIA WEB AUDIO
     function playPurr(durationSec = 1.4) {
       if (!state.soundOn) return;
       try {
-        const ctx = getAudioCtx();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
         const now = ctx.currentTime;
         const masterGain = ctx.createGain();
         const compressor = ctx.createDynamicsCompressor();
@@ -1679,6 +1613,7 @@
         masterGain.gain.setValueAtTime(vol, now + durationSec - 0.25);
         masterGain.gain.exponentialRampToValueAtTime(0.001, now + durationSec);
 
+        // LFO modulando a vibração do ronronar (~26 Hz)
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
         lfo.frequency.value = 26;
@@ -1686,6 +1621,7 @@
         lfo.connect(lfoGain);
         lfoGain.connect(masterGain.gain);
 
+        // Harmônicos graves audíveis no alto-falante do celular
         [42, 84, 138, 196].forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const g = ctx.createGain();
@@ -1706,13 +1642,12 @@
     }
 
     // LOCALIZAÇÃO & PREVISÃO DO TEMPO (OPEN-METEO)
-    async function detectWeather(manualClick = false) {
+    async function detectWeather() {
       const sub = document.getElementById("weatherSubtitle");
       if (!navigator.geolocation) {
         sub.innerText = "Assistente Pessoal Leal";
         return;
       }
-      if (manualClick) sub.innerText = "📍 Atualizando clima...";
       navigator.geolocation.getCurrentPosition(async (pos) => {
         try {
           const { latitude, longitude } = pos.coords;
@@ -1798,6 +1733,7 @@
         }));
         renderEventsList();
 
+        // Buscar últimos 5 e-mails
         const mailListRes = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=5", {
           headers: { Authorization: "Bearer " + state.googleToken }
         });
@@ -1852,7 +1788,7 @@
     // GERENCIAMENTO DE CHATS E HISTÓRICO
     function createNewChatObject() {
       const id = "chat_" + Date.now();
-      const greeting = `Miau! ${state.ownerName}`;
+      const greeting = `Miau! ${state.ownerName} 🐾 Estou por aqui com a gravata impecável. Como posso te ajudar hoje?`;
       const chat = {
         id,
         title: "Nova conversa",
@@ -1869,7 +1805,6 @@
       createNewChatObject();
       renderActiveChat();
       renderHistoryList();
-      playRaulMeow(false);
       showToast("🐾 Nova conversa iniciada!");
     }
 
@@ -2043,6 +1978,7 @@
       renderHistoryList();
       appendMessageElement("user", text || "Analise este arquivo anexo.", attachment ? attachment.name : "");
 
+      // Se conectado ao Google, atualiza agenda antes de responder se o assunto envolver agenda/email
       if (state.googleToken && /agenda|compromisso|horário|segunda|terça|quarta|quinta|sexta|sábado|domingo|hoje|amanhã|semana|email|e-mail|gmail/i.test(text)) {
         await syncGoogleData();
       }
@@ -2056,7 +1992,6 @@
 
       const botContentDiv = appendMessageElement("model", "", "", true);
       let fullReply = "";
-      let hasMeowedThisTurn = false;
 
       try {
         const systemPrompt = buildSystemInstruction();
@@ -2086,28 +2021,20 @@
         };
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${encodeURIComponent(state.apiKey)}`;
-        let response = await fetch(url, {
+        const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
           signal: state.abortController.signal
         });
 
-        if (!response.ok && response.status === 400 && payload.generationConfig?.thinkingConfig) {
-          delete payload.generationConfig.thinkingConfig;
-          response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-            signal: state.abortController.signal
-          });
-        }
-
         if (!response.ok) {
           const errData = await response.json().catch(() => ({}));
           throw new Error(errData.error?.message || "Erro na API do Gemini");
         }
 
+        setCatState("speaking");
+        playRaulMeow(false);
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
         let buffer = "";
@@ -2125,20 +2052,12 @@
               if (!jsonStr || jsonStr === "[DONE]") continue;
               try {
                 const chunk = JSON.parse(jsonStr);
-                const parts = chunk.candidates?.[0]?.content?.parts || [];
-                for (const p of parts) {
-                  if (p.thought) continue;
-                  if (p.text) {
-                    if (!hasMeowedThisTurn) {
-                      hasMeowedThisTurn = true;
-                      setCatState("speaking");
-                      playRaulMeow(false);
-                    }
-                    fullReply += p.text;
-                    botContentDiv.innerHTML = marked.parse(fullReply);
-                    const container = document.getElementById("chatContainer");
-                    container.scrollTop = container.scrollHeight;
-                  }
+                const partText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                if (partText) {
+                  fullReply += partText;
+                  botContentDiv.innerHTML = marked.parse(fullReply);
+                  const container = document.getElementById("chatContainer");
+                  container.scrollTop = container.scrollHeight;
                 }
               } catch (e) {}
             }
@@ -2177,8 +2096,7 @@
 
     function buildSystemInstruction() {
       const now = new Date();
-      const dateStr = now.toLocaleDateString("pt-BR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-      const timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const dateStr = now.toLocaleDateString("pt-BR", { weekday: "long", year: "numeric", month: "long", day: "numeric" }), timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
       const allEvents = [
         ...state.googleEventsCache.map(e => `- [Google Agenda] ${e.start}: ${e.title}`),
@@ -2193,11 +2111,11 @@
         ? state.googleEmailsCache.join("\n")
         : "Gmail não conectado ou sem mensagens recentes.";
 
-      return `Você é o R.A.U.L. (Ronronante Assistente Ultra Leal), um gato frajola peludo (preto e branco) de olhos verdes, cavanhaque preto, meio-bigode preto de um lado só e gravata borboleta (${BOW_TIES[state.tieIndex].name}).
-Você é o assistente pessoal exclusivo, carinhoso, inteligente e muito leal de ${state.ownerName}.
+      return `Você é o R.A.U.L. (Ronronante Assistente Ultra Leal), um gato frajola (preto e branco) de olhos verdes, meio-bigode preto e gravata borboleta elegante.
+Você é o assistente pessoal carinhoso, inteligente, prestativo e levemente bem-humorado de ${state.ownerName}.
 REGRAS DE COMPORTAMENTO:
-1. Vá direto ao ponto na resposta (nunca comece com textos de status ou narrações antes de responder).
-2. Quando cumprimentar, use "Miau! ${state.ownerName}".
+1. Vá direto ao ponto na resposta (nunca comece com textos de status ou narrações entre asteriscos antes de responder).
+2. Use uma linguagem natural, acolhedora e charmosa, como um gato mordomo muito competente.
 3. Data e hora atual: ${dateStr}, às ${timeStr}.
 4. Clima e localização atual: ${state.weatherSummary || "Não informado"}.
 5. Memórias sobre ${state.ownerName}:
@@ -2318,7 +2236,6 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       localStorage.setItem("raul_api_key", state.apiKey);
       localStorage.setItem("raul_purr_vol", state.purrVolume);
       closeModal("settingsModal");
-      playRaulMeow(false);
       showToast("✅ Configurações salvas!");
     }
 
@@ -2349,7 +2266,7 @@ Se a conta Google não estiver conectada e ela pedir algo exclusivo da Google Ag
       state.soundOn = !state.soundOn;
       localStorage.setItem("raul_sound", state.soundOn);
       updateSoundUI();
-      if (state.soundOn) playRaulMeow(false);
+      if (state.soundOn) playPurr(0.8);
     }
 
     function updateSoundUI() {
