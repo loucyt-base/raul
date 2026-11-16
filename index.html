@@ -207,7 +207,7 @@
     .cat-stage {
       background: var(--bg-stage);
       border-bottom: 1px solid var(--border);
-      padding: 8px 14px 10px;
+      padding: 12px 14px 16px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -222,7 +222,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2px;
+      margin-bottom: 6px;
     }
 
     .tie-chip {
@@ -252,8 +252,8 @@
     }
 
     .cat-canvas-wrap {
-      width: 156px;
-      height: 142px;
+      width: 180px;
+      height: 170px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -271,7 +271,7 @@
     /* Animações do Gato */
     @keyframes floatBreath {
       0%, 100% { transform: translateY(0px) scaleY(1); }
-      50% { transform: translateY(-2.5px) scaleY(1.015); }
+      50% { transform: translateY(-3px) scaleY(1.02); }
     }
 
     @keyframes blinkAnim {
@@ -279,24 +279,30 @@
       95% { transform: scaleY(0.08); }
     }
 
-    @keyframes earTwitch {
+    @keyframes earTwitchL {
       0%, 88%, 100% { transform: rotate(0deg); }
-      91% { transform: rotate(-6deg); }
-      94% { transform: rotate(3deg); }
+      91% { transform: rotate(-5deg); }
+      94% { transform: rotate(2deg); }
+    }
+
+    @keyframes earTwitchR {
+      0%, 86%, 100% { transform: rotate(0deg); }
+      89% { transform: rotate(5deg); }
+      92% { transform: rotate(-2deg); }
     }
 
     @keyframes headTiltThink {
-      0%, 100% { transform: rotate(-5deg) translateY(-1px); }
-      50% { transform: rotate(-8deg) translateY(-3px); }
+      0%, 100% { transform: rotate(-3deg) translateY(-1px); }
+      50% { transform: rotate(-6deg) translateY(-2px); }
     }
 
     @keyframes pawThink {
       0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      50% { transform: translate(0, -3px) rotate(-4deg); }
+      50% { transform: translate(1px, -3px) rotate(-3deg); }
     }
 
     @keyframes talkMouth {
-      0%, 100% { transform: scaleY(0.2); }
+      0%, 100% { transform: scaleY(0.3); }
       50% { transform: scaleY(1); }
     }
 
@@ -307,32 +313,37 @@
 
     @keyframes tailWag {
       0%, 100% { transform: rotate(-8deg); }
-      50% { transform: rotate(12deg); }
+      50% { transform: rotate(15deg); }
     }
 
     .cat-body-group {
-      animation: floatBreath 3.6s ease-in-out infinite;
-      transform-origin: 100px 150px;
+      animation: floatBreath 4.5s ease-in-out infinite;
+      transform-origin: 100px 170px;
     }
 
     .cat-head-group {
       transition: transform 0.3s ease;
-      transform-origin: 100px 95px;
+      transform-origin: 100px 105px;
     }
 
     .cat-eye-blink {
-      animation: blinkAnim 4.8s infinite;
-      transform-origin: center 74px;
+      animation: blinkAnim 5.2s infinite;
+      transform-origin: center 81px;
     }
 
     .cat-ear-left {
-      animation: earTwitch 6s infinite;
-      transform-origin: 64px 48px;
+      animation: earTwitchL 6.5s infinite;
+      transform-origin: 58px 51px;
+    }
+
+    .cat-ear-right {
+      animation: earTwitchR 7s infinite;
+      transform-origin: 142px 51px;
     }
 
     .cat-tail {
-      animation: tailWag 3s ease-in-out infinite;
-      transform-origin: 145px 152px;
+      animation: tailWag 3.5s ease-in-out infinite;
+      transform-origin: 148px 160px;
     }
 
     /* Estados visuais do R.A.U.L. */
@@ -356,8 +367,8 @@
 
     .state-speaking .mouth-open {
       opacity: 1 !important;
-      animation: talkMouth 0.26s infinite;
-      transform-origin: 100px 96px;
+      animation: talkMouth 0.22s infinite;
+      transform-origin: 100px 105px;
     }
 
     .state-happy .eyes-normal {
@@ -381,7 +392,7 @@
       gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 2px;
+      margin-top: 8px;
     }
 
     .act-chip {
@@ -390,7 +401,7 @@
       color: var(--text-main);
       font-size: 11.5px;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 5px 12px;
       border-radius: 99px;
       cursor: pointer;
       display: inline-flex;
@@ -408,12 +419,13 @@
       position: fixed;
       top: calc(64px + env(safe-area-inset-top));
       right: 12px;
-      width: 114px;
-      padding: 6px;
+      width: 120px;
+      padding: 8px;
       border-radius: 20px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       z-index: 30;
+      background: var(--bg-surface);
     }
 
     .app-shell.corner-mode .tie-chip,
@@ -427,8 +439,8 @@
     }
 
     .app-shell.corner-mode .cat-canvas-wrap {
-      width: 88px;
-      height: 80px;
+      width: 95px;
+      height: 90px;
     }
 
     /* ÁREA DE CHAT */
@@ -950,7 +962,7 @@
       </div>
 
       <div class="cat-canvas-wrap" id="catAvatarWrap" onclick="petRaul()">
-        <svg id="raulSvg" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+        <svg id="raulSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="polkaDots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
               <circle cx="3" cy="3" r="1.15" fill="#ffffff" fill-opacity="0.88" />
@@ -980,102 +992,103 @@
           </g>
 
           <!-- Rabo -->
-          <path class="cat-tail" d="M138 152 Q174 142 168 112 Q165 98 156 105 Q152 128 134 140 Z" fill="#16161c" />
+          <path class="cat-tail" d="M138 160 Q176 150 170 120 Q167 106 158 113 Q154 136 134 148 Z" fill="#141418" />
 
           <!-- Corpo e Peito Branco Fofo -->
           <g class="cat-body-group">
-            <ellipse cx="100" cy="144" rx="46" ry="34" fill="#16161c" />
-            <!-- Peitoral branco peludo -->
-            <path d="M62 118 Q54 142 64 166 Q82 176 100 176 Q118 176 136 166 Q146 142 138 118 Z" fill="#ffffff" />
-            <!-- Patinhas brancas frontais -->
-            <ellipse cx="78" cy="168" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
-            <ellipse cx="122" cy="168" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
-            <path d="M74 166 V173 M78 166 V174 M82 166 V173" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
-            <path d="M118 166 V173 M122 166 V174 M126 166 V173" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
+            <ellipse cx="100" cy="155" rx="46" ry="32" fill="#141418" />
+            <!-- Peitoral branco peludo e fofo que cobre mais a área de baixo -->
+            <path d="M60 124 Q52 148 62 172 Q80 182 100 182 Q120 182 138 172 Q148 148 140 124 Z" fill="#ffffff" />
+            <!-- Patinhas brancas frontais fofas -->
+            <ellipse cx="76" cy="178" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
+            <ellipse cx="124" cy="178" rx="14" ry="10" fill="#ffffff" stroke="#e5dfd5" stroke-width="1" />
+            <path d="M72 176 V183 M76 176 V184 M80 176 V183" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
+            <path d="M120 176 V183 M124 176 V184 M128 176 V183" stroke="#d5cec2" stroke-width="1.2" stroke-linecap="round" />
           </g>
 
           <!-- Cabeça do R.A.U.L. -->
           <g class="cat-head-group">
-            <!-- Orelhas -->
+            <!-- Orelhas expressivas nas pontas -->
             <g class="cat-ear-left">
-              <polygon points="55,66 47,24 82,46" fill="#16161c" />
-              <polygon points="58,60 52,32 76,47" fill="#3a2e39" />
+              <polygon points="54,72 45,26 82,50" fill="#141418" />
+              <polygon points="57,66 50,34 76,51" fill="#3a2e39" />
             </g>
-            <g>
-              <polygon points="145,66 153,24 118,46" fill="#16161c" />
-              <polygon points="142,60 148,32 124,47" fill="#3a2e39" />
+            <g class="cat-ear-right">
+              <polygon points="146,72 155,26 118,50" fill="#141418" />
+              <polygon points="143,66 150,34 124,51" fill="#3a2e39" />
             </g>
 
-            <!-- Base da Cabeça Preta -->
-            <ellipse cx="100" cy="76" rx="48" ry="39" fill="#16161c" />
-            <!-- Pelos laterais fofos -->
-            <polygon points="52,74 44,82 54,88 47,95 60,99" fill="#16161c" />
-            <polygon points="148,74 156,82 146,88 153,95 140,99" fill="#16161c" />
+            <!-- Base da Cabeça Preta (Mais Cheia, expressiva, arredondada-frajola) -->
+            <ellipse cx="100" cy="81" rx="51" ry="41" fill="#141418" />
+            
+            <!-- Pelos laterais fofos das bochechas, ressaltando o volume natural -->
+            <polygon points="49,78 39,87 50,93 43,101 58,105" fill="#141418" />
+            <polygon points="151,78 161,87 150,93 157,101 142,105" fill="#141418" />
 
             <!-- Marcação Branca Assimétrica Fiel às Fotos -->
-            <path d="M97 44 L103 44 L109 73 L133 83 C136 96 123 111 100 112 C77 111 64 96 67 83 L91 73 Z" fill="#ffffff" />
+            <path d="M97 48 L103 48 L110 76 L135 86 C138 100 124 115 100 116 C76 115 62 100 65 86 L90 76 Z" fill="#ffffff" />
 
-            <!-- Meio-bigode preto no lado direito de quem olha -->
-            <ellipse cx="111" cy="91" rx="8.5" ry="4.5" transform="rotate(10 111 91)" fill="#16161c" />
+            <!-- Meio-bigode preto no lado direito de quem olha (essencial!) -->
+            <ellipse cx="111" cy="95" rx="9" ry="4.5" transform="rotate(11 111 95)" fill="#141418" />
 
-            <!-- Cavanhaque/queixo preto conectado -->
-            <path d="M87 99 Q100 95 112 99 Q114 111 100 113 Q85 112 87 99 Z" fill="#16161c" />
+            <!-- Cavanhaque/queixo preto conectado (marcação fiel) -->
+            <path d="M87 103 Q100 99 113 103 Q115 115 100 117 Q85 116 87 103 Z" fill="#141418" />
 
             <!-- Nariz Preto -->
-            <polygon points="94,81 106,81 100,88" fill="#121216" />
+            <polygon points="94,86 106,86 100,92" fill="#121216" />
 
-            <!-- Olhos Verdes -->
+            <!-- Olhos Verdes (Ajustados, profundos e expressivos, focados) -->
             <g class="eyes-normal cat-eye-blink">
-              <ellipse cx="77" cy="73" rx="8.5" ry="9.5" fill="#7cb342" />
-              <ellipse cx="123" cy="73" rx="8.5" ry="9.5" fill="#7cb342" />
-              <ellipse cx="77" cy="73" rx="3" ry="7.2" fill="#0f0f13" />
-              <ellipse cx="123" cy="73" rx="3" ry="7.2" fill="#0f0f13" />
-              <circle cx="74.5" cy="70" r="2.2" fill="#ffffff" />
-              <circle cx="120.5" cy="70" r="2.2" fill="#ffffff" />
+              <ellipse cx="76" cy="77" rx="9" ry="10" fill="#689f38" />
+              <ellipse cx="124" cy="77" rx="9" ry="10" fill="#689f38" />
+              <ellipse cx="76" cy="77" rx="3" ry="7.5" fill="#0c0c0e" />
+              <ellipse cx="124" cy="77" rx="3" ry="7.5" fill="#0c0c0e" />
+              <circle cx="73" cy="74" r="2.2" fill="#ffffff" />
+              <circle cx="121" cy="74" r="2.2" fill="#ffffff" />
             </g>
 
             <!-- Olhos Fechados Felizes -->
             <g class="eyes-happy" style="opacity:0;">
-              <path d="M68 74 Q77 65 86 74" fill="none" stroke="#8bc34a" stroke-width="3.2" stroke-linecap="round" />
-              <path d="M114 74 Q123 65 132 74" fill="none" stroke="#8bc34a" stroke-width="3.2" stroke-linecap="round" />
+              <path d="M67 78 Q76 69 85 78" fill="none" stroke="#689f38" stroke-width="3.5" stroke-linecap="round" />
+              <path d="M115 78 Q124 69 133 78" fill="none" stroke="#689f38" stroke-width="3.5" stroke-linecap="round" />
             </g>
 
             <!-- Óculos de Pensamento Profundo -->
             <g class="glasses-group" style="opacity:0; transition: opacity 0.25s;">
-              <circle cx="77" cy="73" r="13" fill="none" stroke="#eab308" stroke-width="2.4" />
-              <circle cx="123" cy="73" r="13" fill="none" stroke="#eab308" stroke-width="2.4" />
-              <line x1="90" y1="73" x2="110" y2="73" stroke="#eab308" stroke-width="2.4" />
+              <circle cx="76" cy="77" r="13.5" fill="none" stroke="#eab308" stroke-width="2.5" />
+              <circle cx="124" cy="77" r="13.5" fill="none" stroke="#eab308" stroke-width="2.5" />
+              <line x1="89.5" y1="77" x2="110.5" y2="77" stroke="#eab308" stroke-width="2.5" />
             </g>
 
             <!-- Boca e Linguinha Blep -->
-            <path d="M93 94 Q100 98 107 94" fill="none" stroke="#4a4a52" stroke-width="1.6" stroke-linecap="round" />
-            <ellipse class="mouth-open" cx="100" cy="96" rx="5.5" ry="4.5" fill="#d6456b" style="opacity:0;" />
-            <path class="blep-tongue" d="M95 95 Q100 104 105 95 Z" fill="#f472b6" style="opacity:0; transition: opacity 0.2s;" />
+            <path d="M93 98 Q100 102 107 98" fill="none" stroke="#3a3a40" stroke-width="1.8" stroke-linecap="round" />
+            <ellipse class="mouth-open" cx="100" cy="100" rx="5.5" ry="4.5" fill="#d6456b" style="opacity:0;" />
+            <path class="blep-tongue" d="M95 99 Q100 108 105 99 Z" fill="#f472b6" style="opacity:0; transition: opacity 0.2s;" />
 
-            <!-- Bigodes Brancos Longos -->
-            <g stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" opacity="0.9">
-              <line x1="74" y1="87" x2="36" y2="81" />
-              <line x1="73" y1="91" x2="34" y2="92" />
-              <line x1="75" y1="95" x2="40" y2="103" />
-              <line x1="126" y1="87" x2="164" y2="81" />
-              <line x1="127" y1="91" x2="166" y2="92" />
-              <line x1="125" y1="95" x2="160" y2="103" />
+            <!-- Bigodes Brancos Longos bem destacados e vivos -->
+            <g stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.95">
+              <line x1="72" y1="91" x2="32" y2="85" />
+              <line x1="71" y1="95" x2="29" y2="96" />
+              <line x1="73" y1="99" x2="35" y2="108" />
+              <line x1="128" y1="91" x2="168" y2="85" />
+              <line x1="129" y1="95" x2="171" y2="96" />
+              <line x1="127" y1="99" x2="165" y2="108" />
             </g>
           </g>
 
-          <!-- Gravata Borboleta Dinâmica -->
+          <!-- Gravata Borboleta Dinâmica (Reposicionada mais para baixo e levemente maior para melhor caimento no peito) -->
           <g id="bowTieGroup" onclick="event.stopPropagation(); cycleBowTie();" style="cursor:pointer;">
-            <path id="tieLeftWing" d="M100 119 L72 108 Q67 119 72 130 Z" fill="#d62839" />
-            <path id="tieRightWing" d="M100 119 L128 108 Q133 119 128 130 Z" fill="#d62839" />
-            <path id="tiePatternLeft" d="M100 119 L72 108 Q67 119 72 130 Z" fill="url(#polkaDots)" />
-            <path id="tiePatternRight" d="M100 119 L128 108 Q133 119 128 130 Z" fill="url(#polkaDots)" />
-            <rect id="tieKnot" x="93" y="112" width="14" height="14" rx="4" fill="#a81c29" />
+            <path id="tieLeftWing" d="M100 126 L71 114 Q66 126 71 138 Z" fill="#d62839" />
+            <path id="tieRightWing" d="M100 126 L129 114 Q134 126 129 138 Z" fill="#d62839" />
+            <path id="tiePatternLeft" d="M100 126 L71 114 Q66 126 71 138 Z" fill="url(#polkaDots)" />
+            <path id="tiePatternRight" d="M100 126 L129 114 Q134 126 129 138 Z" fill="url(#polkaDots)" />
+            <rect id="tieKnot" x="93" y="119" width="14" height="14" rx="4" fill="#a81c29" />
           </g>
 
           <!-- Patinha Pensativa no Queixo -->
           <g class="think-paw" style="opacity:0; transition: opacity 0.25s;">
-            <ellipse cx="86" cy="112" rx="11" ry="9" fill="#ffffff" stroke="#d5cec2" stroke-width="1.4" />
-            <path d="M82 108 V114 M86 107 V114 M90 108 V114" stroke="#cfc7ba" stroke-width="1.2" stroke-linecap="round" />
+            <ellipse cx="86" cy="119" rx="11" ry="9" fill="#ffffff" stroke="#d5cec2" stroke-width="1.4" />
+            <path d="M82 115 V121 M86 114 V121 M90 115 V121" stroke="#cfc7ba" stroke-width="1.2" stroke-linecap="round" />
           </g>
         </svg>
       </div>
@@ -1872,8 +1885,7 @@
 
     function buildSystemInstruction() {
       const now = new Date();
-      const dateStr = now.toLocaleDateString("pt-BR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-      const timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const dateStr = now.toLocaleDateString("pt-BR", { weekday: "long", year: "numeric", month: "long", day: "numeric" }), timeStr = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
       const allEvents = [
         ...state.googleEventsCache.map(e => `- [Google Agenda] ${e.start}: ${e.title}`),
