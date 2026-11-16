@@ -20,7 +20,7 @@
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <!-- Google Identity Services (Optional OAuth for Direct Google Drive Upload) -->
+  <!-- Google Identity Services (OAuth 2.0 for Google Calendar, Gmail & Drive) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <script>
@@ -109,10 +109,6 @@
       0%, 100% { transform: translateY(0px) scale(1); opacity: 0.96; }
       50% { transform: translateY(-5px) scale(1.06); opacity: 1; }
     }
-    @keyframes gearSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
     @keyframes balloonFloat {
       0%, 100% { transform: translateY(0px) rotate(-2deg); }
       50% { transform: translateY(-7px) rotate(2deg); }
@@ -134,7 +130,6 @@
     .raul-talking-jaw { animation: jawTalk 0.22s ease-in-out infinite; }
     .raul-thinking-paw { animation: pawToChin 1.2s ease-in-out infinite; transform-origin: 195px 272px; }
     .thought-cloud-anim { animation: thoughtCloudPulse 1.8s ease-in-out infinite; transform-origin: center; }
-    .gear-spin-anim { animation: gearSpin 4s linear infinite; transform-origin: 232px 44px; }
     .balloon-float { animation: balloonFloat 4s ease-in-out infinite; }
     .exclaim-anim { animation: exclaimBounce 0.7s ease-in-out infinite; }
     .heart-particle { animation: floatHeart 1.6s ease-out forwards; pointer-events: none; }
@@ -159,77 +154,171 @@
 
 <body class="bg-raul-cream dark:bg-raul-dark text-slate-800 dark:text-slate-100 font-sans h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto transition-colors duration-300">
 
-  <!-- TOP NAVIGATION BAR -->
-  <header class="w-full max-w-4xl mx-auto px-2.5 sm:px-6 pt-2 pb-1.5 flex items-center justify-between shrink-0 z-20 gap-1">
-    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-      <!-- Chat History Drawer Button -->
-      <button onclick="openModal('historyModal')" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/90 dark:bg-raul-card hover:bg-amber-50 dark:hover:bg-slate-800 flex items-center justify-center shadow-sm border border-slate-200/80 dark:border-slate-700/60 cursor-pointer shrink-0 transition" title="Histórico de Conversas do R.A.U.L.">
-        <i class="ph-bold ph-chats-circle text-lg sm:text-xl text-slate-800 dark:text-amber-400"></i>
-        <span id="historyCountBadge" class="absolute -top-1 -right-1 px-1 min-w-[16px] h-4 rounded-full bg-amber-500 text-slate-950 text-[9px] font-bold flex items-center justify-center">1</span>
+  <!-- ========================================================= -->
+  <!-- CLEAN, UNCLUTTERED TOP NAVIGATION BAR                     -->
+  <!-- ========================================================= -->
+  <header class="w-full max-w-4xl mx-auto px-3 sm:px-6 pt-2.5 pb-1.5 flex items-center justify-between shrink-0 z-20">
+    <!-- Left: Menu Drawer Button + Clear R.A.U.L. Brand -->
+    <div class="flex items-center gap-2.5">
+      <button onclick="openDrawer()" class="relative w-10 h-10 rounded-2xl bg-white dark:bg-raul-card hover:bg-amber-50 dark:hover:bg-slate-800 flex items-center justify-center shadow-sm border border-slate-200/80 dark:border-slate-700/70 transition active:scale-95" title="Abrir Menu, Histórico e Configurações">
+        <i class="ph-bold ph-list text-xl text-slate-800 dark:text-slate-100"></i>
+        <span id="apiKeyAlertDot" class="hidden absolute -top-1 -right-1 w-3 h-3 rounded-full bg-rose-500 border-2 border-white dark:border-slate-900 animate-ping"></span>
       </button>
 
-      <!-- New Chat Button -->
-      <button onclick="startNewConversation()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 flex items-center justify-center shadow-sm shrink-0 transition active:scale-95" title="Nova Conversa com o R.A.U.L.">
-        <i class="ph-bold ph-plus text-base sm:text-lg"></i>
-      </button>
-
-      <div class="min-w-0 pl-0.5">
+      <div>
         <div class="flex items-center gap-1.5">
-          <h1 class="font-display font-bold text-base sm:text-xl tracking-tight text-slate-900 dark:text-white leading-none truncate">
+          <h1 class="font-display font-bold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white leading-none">
             R.A.U.L.
           </h1>
-          <span id="headerTieDot" class="w-3 h-3 rounded-full border border-white dark:border-slate-900 bg-rose-600 shrink-0" title="Cor da gravata atual"></span>
-          <button onclick="requestUserLocation(true)" id="locationBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-300/50 dark:border-sky-700/50 flex items-center gap-1 truncate max-w-[125px] sm:max-w-none hover:opacity-80 transition" title="Detectar localização e clima em tempo real">
-            <i class="ph-fill ph-map-pin text-sky-500"></i>
-            <span id="locationBadgeText">Clima/Local</span>
-          </button>
+          <span id="headerTieDot" onclick="cycleBowTie(true)" class="w-3.5 h-3.5 rounded-full border-2 border-white dark:border-slate-900 bg-rose-600 cursor-pointer shadow-sm transition-transform hover:scale-125" title="Cor da gravata atual (toque para trocar)"></span>
         </div>
+        <button onclick="requestUserLocation(true)" class="text-[11px] text-slate-500 dark:text-slate-400 hover:text-sky-500 flex items-center gap-1 mt-0.5 transition">
+          <i class="ph-fill ph-map-pin text-sky-500 text-xs"></i>
+          <span id="locationBadgeText" class="truncate max-w-[130px] sm:max-w-[200px]">Detectar clima</span>
+        </button>
       </div>
     </div>
 
-    <!-- Right Action Buttons -->
-    <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
-      <!-- Thinking Effort Selector Button ("Esforço de Pensamento do Gato") -->
-      <button id="btnThinkingEffort" onclick="cycleThinkingEffort()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 border border-amber-500/30 transition flex items-center gap-1 text-xs font-semibold active:scale-95" title="Escolher o Esforço de Pensamento do R.A.U.L.">
-        <span id="thinkingEffortIcon">⚡</span>
-        <span id="thinkingEffortLabel" class="hidden sm:inline">Rápido</span>
+    <!-- Right: Only 3 Intuitive Quick Controls -->
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- 1. Thinking Effort Pill -->
+      <button id="btnThinkingEffort" onclick="cycleThinkingEffort()" class="h-9 px-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 border border-amber-500/30 transition flex items-center gap-1.5 text-xs font-semibold active:scale-95" title="Nível de Esforço de Pensamento do R.A.U.L.">
+        <span id="thinkingEffortIcon" class="text-sm">⚡</span>
+        <span id="thinkingEffortLabel">Rápido</span>
       </button>
 
-      <!-- Toggle Corner Cat / Expanded Chat Mode -->
-      <button id="btnCornerMode" onclick="toggleCornerMode()" class="px-2 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300 border border-indigo-500/30 transition flex items-center gap-1 text-xs font-semibold" title="Alternar entre Palco Completo e Gato no Canto (Chat Maior)">
-        <i id="iconCornerMode" class="ph-fill ph-picture-in-picture text-base"></i>
-        <span id="textCornerMode" class="hidden md:inline">Canto</span>
+      <!-- 2. Agenda & Google Connection Pill -->
+      <button onclick="openModal('googleModal')" class="relative h-9 px-3 rounded-2xl bg-white dark:bg-raul-card hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/70 shadow-sm transition flex items-center gap-1.5 text-xs font-semibold active:scale-95" title="Conectar Google Agenda, Gmail, Drive e Ver Compromissos">
+        <i class="ph-fill ph-calendar-check text-base text-blue-500"></i>
+        <span>Agenda</span>
+        <span id="agendaSyncDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
       </button>
 
-      <!-- Google Workspace Hub Button -->
-      <button onclick="openModal('googleModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Google Agenda, Gmail, Drive e Docs">
-        <i class="ph-fill ph-google-logo text-base sm:text-lg text-rose-500"></i>
-      </button>
-
-      <!-- Sound Toggle -->
-      <button id="btnSound" onclick="toggleSound()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Som de Ronronado / Miado">
-        <i id="iconSound" class="ph-fill ph-speaker-high text-base sm:text-lg text-amber-600 dark:text-amber-400"></i>
-      </button>
-
-      <!-- Memories Modal Button -->
-      <button onclick="openModal('memoriesModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Memórias sobre a Dona">
-        <i class="ph-fill ph-notebook text-base sm:text-lg text-rose-500"></i>
-      </button>
-
-      <!-- Dark Mode Toggle -->
-      <button onclick="toggleTheme()" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/70 dark:border-slate-700/60 transition" title="Alternar Tema Claro/Escuro">
-        <i id="iconTheme" class="ph ph-moon text-base sm:text-lg"></i>
-      </button>
-
-      <!-- Settings Modal Button -->
-      <button onclick="openModal('settingsModal')" class="p-2 rounded-xl bg-white/80 dark:bg-raul-card hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700/60 transition relative" title="Configurações, Volume do Ronronado e Chave da API">
-        <i class="ph-fill ph-gear-six text-base sm:text-lg"></i>
-        <span id="apiKeyAlertDot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+      <!-- 3. New Conversation Quick Button -->
+      <button onclick="startNewConversation()" class="w-9 h-9 rounded-2xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 flex items-center justify-center shadow-sm transition active:scale-95" title="Nova Conversa">
+        <i class="ph-bold ph-plus text-base"></i>
       </button>
     </div>
   </header>
 
-  <!-- MAIN CONTENT AREA -->
+  <!-- ========================================================= -->
+  <!-- SLIDE-OVER NAVIGATION DRAWER (CLEAN MENU)                 -->
+  <!-- ========================================================= -->
+  <div id="sideDrawerOverlay" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeDrawer()">
+    <aside class="w-80 max-w-[86vw] h-full bg-white dark:bg-raul-card border-r border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between overflow-hidden" onclick="event.stopPropagation()">
+      <!-- Drawer Header -->
+      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center text-lg">🐾</div>
+          <div>
+            <h2 class="font-display font-bold text-base text-slate-900 dark:text-white leading-tight">Menu do R.A.U.L.</h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Histórico, Memórias e Ajustes</p>
+          </div>
+        </div>
+        <button onclick="closeDrawer()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Body: Conversations + Menu Items -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-5">
+        <!-- New Chat & Search -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Suas Conversas</span>
+            <button onclick="startNewConversation(); closeDrawer();" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1">
+              <i class="ph-bold ph-plus"></i> Nova conversa
+            </button>
+          </div>
+
+          <div class="relative">
+            <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input
+              id="historySearchInput"
+              type="text"
+              placeholder="Buscar nas conversas..."
+              class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"
+              oninput="renderConversationsList()"
+            />
+          </div>
+
+          <div id="conversationsListContainer" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- Organized Menu Grid -->
+        <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Ferramentas & Ajustes</span>
+
+          <button onclick="closeDrawer(); openModal('googleModal');" class="w-full px-3.5 py-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs font-semibold transition">
+            <span class="flex items-center gap-2.5">
+              <i class="ph-fill ph-google-logo text-base text-blue-500"></i>
+              Agenda & Conta Google
+            </span>
+            <span id="drawerGoogleStatus" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">Abrir</span>
+          </button>
+
+          <button onclick="closeDrawer(); openModal('memoriesModal');" class="w-full px-3.5 py-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs font-semibold transition">
+            <span class="flex items-center gap-2.5">
+              <i class="ph-fill ph-notebook text-base text-rose-500"></i>
+              Memórias sobre a Dona
+            </span>
+            <span id="drawerMemoriesCount" class="text-[10px] text-slate-400">1</span>
+          </button>
+
+          <button onclick="toggleCornerMode(); closeDrawer();" class="w-full px-3.5 py-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs font-semibold transition">
+            <span class="flex items-center gap-2.5">
+              <i class="ph-fill ph-picture-in-picture text-base text-indigo-500"></i>
+              Modo Gato no Canto (Chat Maior)
+            </span>
+            <span id="drawerCornerStatus" class="text-[10px] text-slate-400">Alternar</span>
+          </button>
+
+          <button onclick="toggleSound();" class="w-full px-3.5 py-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs font-semibold transition">
+            <span class="flex items-center gap-2.5">
+              <i id="iconSound" class="ph-fill ph-speaker-high text-base text-amber-500"></i>
+              Som de Ronronado & Miado
+            </span>
+            <span id="drawerSoundStatus" class="text-[10px] text-emerald-500 font-bold">Ativo</span>
+          </button>
+
+          <button onclick="toggleTheme();" class="w-full px-3.5 py-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs font-semibold transition">
+            <span class="flex items-center gap-2.5">
+              <i id="iconTheme" class="ph ph-moon text-base text-purple-500"></i>
+              Alternar Tema (Claro / Escuro)
+            </span>
+          </button>
+
+          <button onclick="closeDrawer(); openModal('settingsModal');" class="w-full px-3.5 py-2.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-300 flex items-center justify-between text-xs font-bold transition mt-1">
+            <span class="flex items-center gap-2.5">
+              <i class="ph-fill ph-gear-six text-base"></i>
+              Chave da API & Configurações
+            </span>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Drawer Footer: Backup & Clear -->
+      <div class="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50 flex items-center justify-between text-[11px]">
+        <div class="flex items-center gap-2">
+          <button onclick="exportHistoryBackup()" class="text-slate-500 hover:text-slate-800 dark:hover:text-white font-semibold flex items-center gap-1" title="Exportar Backup">
+            <i class="ph-bold ph-download-simple"></i> Backup
+          </button>
+          <label class="text-slate-500 hover:text-slate-800 dark:hover:text-white font-semibold flex items-center gap-1 cursor-pointer" title="Restaurar Backup">
+            <i class="ph-bold ph-upload-simple"></i> Restaurar
+            <input type="file" accept=".json" class="hidden" onchange="importHistoryBackup(event)" />
+          </label>
+        </div>
+        <button onclick="closeDrawer(); confirmClearChat();" class="text-rose-500 hover:underline font-semibold flex items-center gap-1">
+          <i class="ph ph-trash"></i> Limpar chat
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MAIN CONTENT AREA (STAGE + CHAT)                          -->
+  <!-- ========================================================= -->
   <main class="flex-1 w-full max-w-4xl mx-auto px-2.5 sm:px-6 pb-2.5 flex flex-col min-h-0 gap-2 relative">
 
     <!-- 1. FULL STAGE CARD (Hidden when "Gato no Canto" mode is active) -->
@@ -278,7 +367,7 @@
       <!-- Particles Container -->
       <div id="particlesContainer" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
 
-      <!-- Subtle Top Controls inside Stage (No written mood text!) -->
+      <!-- Subtle Top Controls inside Stage -->
       <div class="relative z-10 px-3 pt-2 flex items-center justify-between gap-1.5">
         <button onclick="cycleBowTie(true)" class="group inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/90 dark:bg-slate-800/90 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm border border-slate-200/60 dark:border-slate-700 transition cursor-pointer" title="Trocar a gravata borboleta do R.A.U.L.">
           <span class="text-xs group-hover:rotate-12 transition-transform">🎀</span>
@@ -295,7 +384,7 @@
       <div class="relative z-10 flex flex-col items-center justify-center -mt-3">
         <div id="raulStageSvgHolder" class="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center select-none">
           
-          <!-- R.A.U.L. MASTER SVG WITH VISUAL REACTIONS & THOUGHT BUBBLES -->
+          <!-- R.A.U.L. MASTER SVG -->
           <svg id="raulSvg" viewBox="0 0 300 290" class="w-full h-full drop-shadow-md overflow-visible">
             <defs>
               <pattern id="polkaDots" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -328,7 +417,6 @@
 
             <!-- Breathing Body -->
             <g id="raulBodyGroup" class="raul-breathe">
-              <!-- Tuxedo Shoulders -->
               <path d="M 68 182 Q 52 225 58 272 L 242 272 Q 248 225 232 182 Q 205 152 150 152 Q 95 152 68 182 Z" fill="#15151a" />
               <path d="M 65 190 L 52 195 L 62 204 L 49 214 L 60 222 M 235 190 L 248 195 L 238 204 L 251 214 L 240 222" fill="#15151a" />
 
@@ -399,7 +487,7 @@
                   <path class="raul-happy-eye hidden" d="M -17 4 Q 0 -14 17 4" fill="none" stroke="#84a94c" stroke-width="3.5" stroke-linecap="round" />
                 </g>
 
-                <!-- INTELLECTUAL GLASSES (Shown during Deep Thinking or File Analysis!) -->
+                <!-- INTELLECTUAL GLASSES -->
                 <g id="raulSmartGlasses" class="hidden">
                   <circle cx="110" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
                   <circle cx="188" cy="118" r="21" fill="rgba(255,255,255,0.12)" stroke="#eab308" stroke-width="3" />
@@ -433,34 +521,26 @@
                 </g>
               </g>
 
-              <!-- Right Paw (Placed on top so it can touch R.A.U.L.'s chin while thinking!) -->
+              <!-- Right Paw -->
               <g id="raulRightPaw">
                 <ellipse cx="195" cy="272" rx="22" ry="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
                 <path d="M 187 268 V 278 M 195 267 V 279 M 203 268 V 278" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
               </g>
 
-              <!-- VISUAL REACTION 1: ANIMATED COMIC THOUGHT CLOUD (Shown when thinking!) -->
+              <!-- VISUAL REACTION 1: ANIMATED COMIC THOUGHT CLOUD -->
               <g id="raulThoughtBubble" class="hidden thought-cloud-anim">
                 <circle cx="202" cy="78" r="4.5" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
                 <circle cx="214" cy="64" r="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-                <path d="M 205 42
-                         C 205 28, 224 22, 235 28
-                         C 245 20, 266 24, 268 38
-                         C 278 44, 274 60, 260 62
-                         C 252 68, 232 68, 224 60
-                         C 210 62, 202 52, 205 42 Z"
-                      fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
-                <!-- Animated spinning gear / lightbulb inside the thought cloud -->
+                <path d="M 205 42 C 205 28, 224 22, 235 28 C 245 20, 266 24, 268 38 C 278 44, 274 60, 260 62 C 252 68, 232 68, 224 60 C 210 62, 202 52, 205 42 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
                 <circle cx="238" cy="44" r="8" fill="#fef08a" stroke="#eab308" stroke-width="1.8" />
                 <path d="M 235 54 H 241 M 238 30 V 33 M 224 44 H 227 M 249 44 H 252" stroke="#eab308" stroke-width="2" stroke-linecap="round" />
               </g>
 
-              <!-- VISUAL REACTION 2: CURIOUS / IDEA / SURPRISE SYMBOLS (No words, pure visual comic reactions!) -->
+              <!-- VISUAL REACTION 2: CURIOUS / IDEA SYMBOLS -->
               <g id="raulReactionIdea" class="hidden exclaim-anim">
                 <circle cx="62" cy="54" r="16" fill="#fef9c3" stroke="#facc15" stroke-width="2" />
                 <path d="M 62 43 V 55 M 62 61 V 62" stroke="#ca8a04" stroke-width="3.5" stroke-linecap="round" />
               </g>
-
               <g id="raulReactionCurious" class="hidden exclaim-anim">
                 <circle cx="62" cy="54" r="16" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2" />
                 <path d="M 57 47 C 57 42, 67 42, 67 48 C 67 52, 62 53, 62 56 M 62 62 V 63" fill="none" stroke="#0284c7" stroke-width="3" stroke-linecap="round" />
@@ -494,7 +574,7 @@
     <!-- 2. CHAT MESSAGES & FILE/WORKSPACE SECTION -->
     <section class="relative flex-1 flex flex-col min-h-0 bg-white/85 dark:bg-raul-card/90 backdrop-blur-md rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
 
-      <!-- FLOATING CORNER CAT DOCK (Visible when "Gato no Canto" mode is active!) -->
+      <!-- FLOATING CORNER CAT DOCK -->
       <div id="raulCornerDock" class="hidden absolute top-2.5 right-2.5 z-30 flex-col items-end pointer-events-none">
         <div class="pointer-events-auto relative group rounded-2xl bg-gradient-to-b from-amber-50/95 to-white/95 dark:from-slate-800/95 dark:to-slate-900/95 border border-amber-300/70 dark:border-slate-700 shadow-xl p-1.5 flex flex-col items-center">
           <div class="w-full flex items-center justify-between px-1 mb-0.5 gap-1">
@@ -503,23 +583,20 @@
               <i class="ph-bold ph-arrows-out-simple"></i>
             </button>
           </div>
-          <!-- Corner SVG Holder -->
           <div id="raulCornerSvgHolder" class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center"></div>
         </div>
       </div>
 
       <!-- Messages Scroll Container -->
-      <div id="chatContainer" class="flex-1 overflow-y-auto px-3 sm:px-5 py-3.5 space-y-3">
-        <!-- Populated via JS -->
-      </div>
+      <div id="chatContainer" class="flex-1 overflow-y-auto px-3 sm:px-5 py-3.5 space-y-3"></div>
 
       <!-- Quick Suggestions Strip -->
       <div id="quickPromptsStrip" class="px-3 py-1.5 border-t border-slate-100 dark:border-slate-800/70 bg-slate-50/60 dark:bg-slate-900/40 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+        <button onclick="sendQuickPrompt('Me diga minha agenda e compromissos programados!')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
+          <span>📅</span> Ver Minha Agenda
+        </button>
         <button onclick="sendQuickPrompt('Qual é a previsão do tempo para hoje e para os próximos dias aqui na minha localização?')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
           <span>🌦️</span> Previsão do Tempo
-        </button>
-        <button onclick="sendQuickPrompt('Crie um compromisso na minha Google Agenda para amanhã às 14h e me dê o botão para salvar!')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
-          <span>📅</span> Agendar Compromisso
         </button>
         <button onclick="sendQuickPrompt('Gere um arquivo de documento (.doc) bem organizado com um planejamento semanal para eu baixar ou salvar no Google Drive.')" class="shrink-0 px-2.5 py-1 rounded-xl text-xs font-medium bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 shadow-sm transition flex items-center gap-1">
           <span>📄</span> Gerar Doc / Drive
@@ -532,23 +609,22 @@
       <!-- Pending Attachments Preview Bar -->
       <div id="attachmentsPreviewBar" class="hidden px-3 py-2 bg-amber-50/90 dark:bg-slate-900/90 border-t border-amber-200/60 dark:border-slate-800 flex flex-wrap items-center gap-2 shrink-0"></div>
 
-      <!-- Input Form with File Upload + Send / Cancel Button -->
+      <!-- Input Form -->
       <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2 sm:p-3 bg-white dark:bg-raul-card border-t border-slate-200/80 dark:border-slate-800 flex items-end gap-1.5 sm:gap-2 shrink-0">
         <input
           id="fileUploadInput"
           type="file"
           multiple
-          accept="image/*,application/pdf,audio/*,.txt,.csv,.md,.json,.html,.doc,.docx"
+          accept="image/*,application/pdf,audio/*,.txt,.csv,.md,.json,.html,.doc,.docx,.ics"
           class="hidden"
           onchange="handleFilesSelected(event)"
         />
 
-        <!-- Attach File Button -->
         <button
           type="button"
           onclick="document.getElementById('fileUploadInput').click()"
           class="h-10 w-10 rounded-2xl bg-slate-100 hover:bg-amber-500/15 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center shrink-0 transition border border-slate-200/70 dark:border-slate-700"
-          title="Anexar arquivo, PDF, foto ou documento"
+          title="Anexar arquivo, PDF, foto ou agenda (.ics)"
         >
           <i class="ph-bold ph-paperclip text-lg"></i>
         </button>
@@ -564,7 +640,6 @@
           ></textarea>
         </div>
 
-        <!-- Send Button -->
         <button
           id="sendBtn"
           type="submit"
@@ -574,7 +649,6 @@
           <i class="ph-fill ph-paper-plane-right"></i>
         </button>
 
-        <!-- Cancel / Stop Generation Button -->
         <button
           id="cancelBtn"
           type="button"
@@ -591,70 +665,138 @@
   </main>
 
   <!-- ========================================================= -->
-  <!-- MODAL 0: MULTI-CONVERSATION HISTORY DRAWER ("HISTÓRICO")  -->
+  <!-- MODAL 1: CENTRAL DE AGENDA & CONTA GOOGLE                 -->
   <!-- ========================================================= -->
-  <div id="historyModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-    <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
-      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+  <div id="googleModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4">
+    <div class="w-full max-w-xl rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <span class="text-2xl">🗂️</span>
+          <span class="text-2xl">📅</span>
           <div>
-            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Histórico de Conversas</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Todas as conversas salvas no aplicativo do R.A.U.L.</p>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Agenda & Conexão Google</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Onde o R.A.U.L. consulta e salva os compromissos dela</p>
           </div>
         </div>
-        <button onclick="closeModal('historyModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <button onclick="closeModal('googleModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
           <i class="ph ph-x text-xl"></i>
         </button>
       </div>
 
-      <div class="p-5 overflow-y-auto space-y-3 flex-1">
-        <!-- Top Actions: New Chat + Export/Import Backup -->
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <button onclick="startNewConversation(); closeModal('historyModal');" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-sm hover:opacity-90">
-            <i class="ph-bold ph-plus"></i> Nova Conversa
-          </button>
+      <div class="p-5 overflow-y-auto space-y-5 text-xs sm:text-sm flex-1">
 
-          <div class="flex items-center gap-1.5">
-            <button onclick="exportHistoryBackup()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold flex items-center gap-1" title="Exportar backup de todas as conversas e memórias">
-              <i class="ph-bold ph-download-simple"></i> Exportar
+        <!-- SECTION A: ADD OR VIEW COMPROMISSOS DIRETO NO R.A.U.L. -->
+        <div class="p-4 rounded-2xl bg-amber-50/70 dark:bg-slate-900/80 border border-amber-200/70 dark:border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 text-sm">
+              <i class="ph-fill ph-calendar-star text-amber-500 text-lg"></i>
+              1. Compromissos que o R.A.U.L. já sabe
+            </h3>
+            <span id="agendaCountBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">0 eventos</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            Você pode adicionar compromissos abaixo, importar da Google Agenda (Opções 2 e 3) ou simplesmente dizer no chat: <em>"R.A.U.L., anote que segunda às 10h tenho reunião"</em> — ele salva aqui automaticamente!
+          </p>
+
+          <!-- Add Event Form -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+            <input id="newEventTitle" type="text" placeholder="Ex: Dentista / Reunião..." class="sm:col-span-1 px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+            <input id="newEventDate" type="datetime-local" class="sm:col-span-1 px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs" />
+            <button onclick="addManualAgendaEvent()" class="px-3 py-2 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 font-bold text-xs hover:opacity-90">
+              + Adicionar na Agenda
             </button>
-            <label class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold flex items-center gap-1 cursor-pointer" title="Importar arquivo de backup">
-              <i class="ph-bold ph-upload-simple"></i> Importar
-              <input type="file" accept=".json" class="hidden" onchange="importHistoryBackup(event)" />
+          </div>
+
+          <!-- Events List -->
+          <ul id="raulAgendaList" class="space-y-1.5 max-h-44 overflow-y-auto pt-1"></ul>
+        </div>
+
+        <!-- SECTION B: SINCRONIZAR GOOGLE AGENDA SEM PRECISAR DE NUVEM (LINK ICAL / .ICS) -->
+        <div class="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/70 dark:border-blue-900/50 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-blue-950 dark:text-blue-200 flex items-center gap-1.5 text-sm">
+              <i class="ph-fill ph-arrows-clockwise text-blue-500 text-lg"></i>
+              2. Sincronizar Google Agenda (Rápido via Link iCal ou Arquivo)
+            </h3>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Cole o <strong>Endereço secreto no formato iCal (.ics)</strong> da Google Agenda dela (encontrado em <em>Google Agenda no PC &rarr; Configurações da agenda &rarr; Endereço secreto no formato iCal</em>) ou envie o arquivo `.ics`:
+          </p>
+          <div class="flex gap-2">
+            <input
+              id="inputIcalUrl"
+              type="url"
+              placeholder="Cole aqui o link https://calendar.google.com/calendar/ical/.../basic.ics"
+              class="flex-1 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-blue-300 dark:border-slate-700 text-xs"
+            />
+            <button onclick="syncIcalUrl()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shrink-0">
+              Sincronizar
+            </button>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 cursor-pointer hover:underline">
+              <i class="ph-bold ph-upload-simple"></i> Ou importar arquivo .ics da Google Agenda
+              <input type="file" accept=".ics,text/calendar" class="hidden" onchange="importIcsFile(event)" />
             </label>
+            <span id="icalSyncStatus" class="text-[11px] text-slate-400"></span>
           </div>
         </div>
 
-        <!-- Search input -->
-        <div class="relative">
-          <i class="ph ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input
-            id="historySearchInput"
-            type="text"
-            placeholder="Buscar nas conversas com o R.A.U.L..."
-            class="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"
-            oninput="renderConversationsList()"
-          />
+        <!-- SECTION C: LOGIN OFICIAL GOOGLE OAUTH (CALENDAR + GMAIL + DRIVE) -->
+        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 text-sm">
+              <i class="ph-fill ph-google-logo text-rose-500 text-lg"></i>
+              3. Login Direto com Conta Google (OAuth: Agenda, Gmail e Drive)
+            </h3>
+            <span id="oauthStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold">Desconectado</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            Se você tiver criado um <strong>Client ID OAuth Web</strong> gratuito no Google Cloud Console (autorizando a URL <code>https://loucyt-base.github.io</code>), cole abaixo e toque em <strong>Entrar com Google</strong> para o R.A.U.L. ler a Google Agenda, os últimos e-mails do Gmail e salvar no Drive automaticamente:
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              id="inputGoogleClientId"
+              type="text"
+              placeholder="Client ID (Ex: 123456-abc.apps.googleusercontent.com)"
+              class="flex-1 px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-mono"
+            />
+            <button onclick="connectGoogleOAuth()" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs shrink-0 flex items-center justify-center gap-1.5 shadow-sm hover:opacity-90">
+              <i class="ph-bold ph-google-logo text-rose-500"></i> Entrar com Google
+            </button>
+          </div>
         </div>
 
-        <!-- Conversations List -->
-        <div id="conversationsListContainer" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+        <!-- Quick Shortcuts to Official Google Apps -->
+        <div class="grid grid-cols-4 gap-2 pt-1">
+          <a href="https://calendar.google.com" target="_blank" class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 hover:bg-amber-50 flex flex-col items-center gap-1 text-center border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-calendar text-xl text-blue-500"></i>
+            <span class="font-semibold text-[11px]">Abrir Agenda</span>
+          </a>
+          <a href="https://mail.google.com" target="_blank" class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 hover:bg-amber-50 flex flex-col items-center gap-1 text-center border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-envelope-simple text-xl text-rose-500"></i>
+            <span class="font-semibold text-[11px]">Abrir Gmail</span>
+          </a>
+          <a href="https://drive.google.com" target="_blank" class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 hover:bg-amber-50 flex flex-col items-center gap-1 text-center border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-google-drive-logo text-xl text-emerald-500"></i>
+            <span class="font-semibold text-[11px]">Abrir Drive</span>
+          </a>
+          <a href="https://docs.new" target="_blank" class="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 hover:bg-amber-50 flex flex-col items-center gap-1 text-center border border-slate-200/60 dark:border-slate-700">
+            <i class="ph-fill ph-file-doc text-xl text-indigo-500"></i>
+            <span class="font-semibold text-[11px]">Novo Doc</span>
+          </a>
+        </div>
       </div>
 
-      <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-between items-center">
-        <button onclick="confirmClearChat()" class="text-xs text-rose-600 dark:text-rose-400 hover:underline font-semibold flex items-center gap-1">
-          <i class="ph ph-trash"></i> Limpar conversa atual
-        </button>
-        <button onclick="closeModal('historyModal')" class="px-5 py-2 rounded-xl text-xs font-semibold bg-slate-900 dark:bg-slate-700 text-white">
-          Fechar
+      <div class="px-5 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+        <button onclick="closeModal('googleModal')" class="px-5 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950">
+          Concluído
         </button>
       </div>
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- MODAL 1: SETTINGS, VOLUME & GEMINI API     -->
+  <!-- MODAL 2: SETTINGS, VOLUME & GEMINI API     -->
   <!-- ========================================== -->
   <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
     <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
@@ -663,7 +805,7 @@
           <span class="text-2xl">🎩</span>
           <div>
             <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Configurações do R.A.U.L.</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Modelo Auto-Atualizável, Esforço, Volume & Chave</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Chave da API, Esforço, Volume & Personalidade</p>
           </div>
         </div>
         <button onclick="closeModal('settingsModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
@@ -672,7 +814,6 @@
       </div>
 
       <div class="p-6 overflow-y-auto space-y-4 text-sm">
-        <!-- Owner Name -->
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
             Nome da Dona (Para a saudação "Miau! Nome")
@@ -685,7 +826,6 @@
           />
         </div>
 
-        <!-- Purr Volume Boost Slider -->
         <div class="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/70 dark:border-rose-800/40 space-y-2">
           <div class="flex items-center justify-between">
             <label class="text-xs font-bold text-rose-900 dark:text-rose-300 flex items-center gap-1.5">
@@ -701,12 +841,11 @@
             min="50"
             max="300"
             step="10"
-            value="240"
+            value="250"
             class="w-full accent-rose-600 cursor-pointer"
           />
         </div>
 
-        <!-- Thinking Effort Selector ("Esforço de Pensamento") -->
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
             Esforço de Pensamento do Gato (Modelo Gemini Flash)
@@ -718,14 +857,13 @@
           </select>
         </div>
 
-        <!-- Google AI Studio Free API Key -->
         <div class="p-4 rounded-2xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5 text-xs">
               <i class="ph-fill ph-key"></i> Chave da API do Gemini (Google AI Studio)
             </span>
-            <span id="detectedModelBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-semibold">
-              Auto-Flash Latest
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-semibold">
+              gemini-flash-latest
             </span>
           </div>
 
@@ -735,12 +873,8 @@
             placeholder="Cole aqui a chave AIzaSy..."
             class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700/60 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs"
           />
-          <p class="text-[11px] text-amber-800/80 dark:text-amber-200/80">
-            🔄 O código detecta e usa automaticamente o <strong>último modelo Gemini Flash</strong> disponível na sua chave (`gemini-flash-latest` + busca dinâmica de modelos da Google).
-          </p>
         </div>
 
-        <!-- Custom System Prompt -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
@@ -764,71 +898,6 @@
         </button>
         <button onclick="saveSettings()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 hover:opacity-90 shadow-sm">
           Salvar Configurações
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================== -->
-  <!-- MODAL 2: GOOGLE WORKSPACE APPS INTEGRATION -->
-  <!-- ========================================== -->
-  <div id="googleModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-    <div class="w-full max-w-lg rounded-3xl bg-white dark:bg-raul-card border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <span class="text-2xl">🔗</span>
-          <div>
-            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Conexão com Apps Google</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Agenda, Gmail, Google Drive & Google Docs</p>
-          </div>
-        </div>
-        <button onclick="closeModal('googleModal')" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
-          <i class="ph ph-x text-xl"></i>
-        </button>
-      </div>
-
-      <div class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <a href="https://calendar.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
-            <i class="ph-fill ph-calendar-check text-2xl text-blue-500"></i>
-            <span class="font-semibold text-xs">Google Agenda</span>
-          </a>
-          <a href="https://mail.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
-            <i class="ph-fill ph-envelope-simple text-2xl text-rose-500"></i>
-            <span class="font-semibold text-xs">Abrir Gmail</span>
-          </a>
-          <a href="https://drive.google.com" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
-            <i class="ph-fill ph-google-drive-logo text-2xl text-emerald-500"></i>
-            <span class="font-semibold text-xs">Google Drive</span>
-          </a>
-          <a href="https://docs.new" target="_blank" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 flex flex-col items-center gap-1.5 text-center transition border border-slate-200/60 dark:border-slate-700">
-            <i class="ph-fill ph-file-doc text-2xl text-indigo-500"></i>
-            <span class="font-semibold text-xs">Novo Doc</span>
-          </a>
-        </div>
-
-        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-2">
-          <p class="font-bold text-xs text-slate-700 dark:text-slate-200 flex items-center justify-between">
-            <span>Upload Direto via API do Google Drive (Opcional)</span>
-            <span id="oauthStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Modo Nativo Celular</span>
-          </p>
-          <div class="flex gap-2">
-            <input
-              id="inputGoogleClientId"
-              type="text"
-              placeholder="Opcional: Client ID OAuth Google"
-              class="flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-mono"
-            />
-            <button onclick="connectGoogleOAuth()" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shrink-0">
-              Conectar
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
-        <button onclick="closeModal('googleModal')" class="px-5 py-2 rounded-xl text-sm font-semibold bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950">
-          Fechar
         </button>
       </div>
     </div>
@@ -884,7 +953,7 @@
       <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center mx-auto text-2xl">🐾</div>
       <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Limpar esta conversa?</h3>
       <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-        As mensagens desta conversa serão reiniciadas, mas suas outras conversas salvas e as <strong>Memórias da Dona</strong> continuarão intactas!
+        As mensagens desta conversa serão reiniciadas, mas suas outras conversas, sua Agenda e as <strong>Memórias da Dona</strong> continuarão salvas!
       </p>
       <div class="flex gap-2 justify-center pt-2">
         <button onclick="closeModal('confirmClearModal')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cancelar</button>
@@ -963,14 +1032,15 @@
       OWNER_NAME: 'raul_owner_name',
       CUSTOM_PROMPT: 'raul_custom_prompt',
       MEMORIES: 'raul_owner_memories',
+      AGENDA_EVENTS: 'raul_agenda_events_v1',
+      ICAL_URL: 'raul_ical_url',
       SOUND_ENABLED: 'raul_sound_enabled',
       PURR_VOLUME: 'raul_purr_volume',
       THINKING_EFFORT: 'raul_thinking_effort',
       CORNER_MODE: 'raul_corner_mode',
       THEME: 'raul_theme',
       PARTY_MODE: 'raul_party_mode',
-      GOOGLE_CLIENT_ID: 'raul_google_client_id',
-      CACHED_FLASH_MODEL: 'raul_latest_flash_model'
+      GOOGLE_CLIENT_ID: 'raul_google_client_id'
     };
 
     const THINKING_EFFORT_LEVELS = [
@@ -987,11 +1057,15 @@ Diretrizes:
 3. Mantenha um toque felino elegante (menções sutis à sua gravata borboleta do dia ou a um ronronado), sem enrolar e sem colocar prefixos escritos antes da resposta.
 4. Responda sempre em português do Brasil.`;
 
+    const AUTO_MODEL_SHORTCUT = 'gemini-flash-latest';
+
     let currentBowTie = BOW_TIES[0];
-    let conversations = []; // [{ id, title, updatedAt, messages: [] }]
+    let conversations = [];
     let activeConversationId = null;
     let chatHistory = [];
     let ownerMemories = [];
+    let raulAgendaEvents = [];
+    let googleGmailSnippets = [];
     let pendingAttachments = [];
     let generatedFilesStore = {};
     let soundEnabled = true;
@@ -1003,7 +1077,6 @@ Diretrizes:
     let audioCtx = null;
     let userLocationContext = null;
     let googleAccessToken = null;
-    let dynamicLatestFlashModel = localStorage.getItem(STORAGE_KEYS.CACHED_FLASH_MODEL) || 'gemini-flash-latest';
 
     /*************************************************************
      * 3. INITIALIZATION
@@ -1013,6 +1086,7 @@ Diretrizes:
       initSoundSetting();
       pickNewBowTieOnOpen();
       loadMemories();
+      loadAgendaEvents();
       loadSettingsIntoInputs();
       updateThinkingEffortUI();
       initConversationsSystem();
@@ -1027,58 +1101,294 @@ Diretrizes:
         toggleCornerMode(true);
       }
 
-      // Auto-discover the latest Gemini Flash model from Google's API
-      discoverLatestGeminiFlashModel();
-
-      // Silent location & weather detection
       requestUserLocation(false);
+
+      const savedIcal = localStorage.getItem(STORAGE_KEYS.ICAL_URL);
+      if (savedIcal) {
+        document.getElementById('inputIcalUrl').value = savedIcal;
+        syncIcalUrl(true);
+      }
     };
 
     /*************************************************************
-     * 4. AUTO-DISCOVER LATEST GEMINI FLASH MODEL
+     * 4. DRAWER MENU CONTROLS
      *************************************************************/
-    async function discoverLatestGeminiFlashModel() {
-      const userKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
-      if (!userKey) return;
+    function openDrawer() {
+      renderConversationsList();
+      const overlay = document.getElementById('sideDrawerOverlay');
+      overlay.classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      const overlay = document.getElementById('sideDrawerOverlay');
+      overlay.classList.add('hidden');
+    }
+
+    /*************************************************************
+     * 5. AGENDA & GOOGLE SYNC SYSTEM (BUILT-IN + ICAL + OAUTH)
+     *************************************************************/
+    function loadAgendaEvents() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.AGENDA_EVENTS);
+        raulAgendaEvents = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        raulAgendaEvents = [];
+      }
+      renderAgendaEventsList();
+    }
+
+    function saveAgendaEvents() {
+      raulAgendaEvents.sort((a, b) => String(a.dateStr || '').localeCompare(String(b.dateStr || '')));
+      localStorage.setItem(STORAGE_KEYS.AGENDA_EVENTS, JSON.stringify(raulAgendaEvents));
+      renderAgendaEventsList();
+    }
+
+    function addManualAgendaEvent() {
+      const titleEl = document.getElementById('newEventTitle');
+      const dateEl = document.getElementById('newEventDate');
+      const title = titleEl.value.trim();
+      const dateVal = dateEl.value;
+      if (!title) {
+        showToast('Digite o nome do compromisso!', '📅');
+        return;
+      }
+      const formattedDate = dateVal
+        ? new Date(dateVal).toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : 'Data a definir';
+
+      raulAgendaEvents.push({
+        id: 'ev_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        title,
+        dateStr: formattedDate,
+        rawIso: dateVal || '',
+        source: 'manual'
+      });
+
+      titleEl.value = '';
+      dateEl.value = '';
+      saveAgendaEvents();
+      showToast('Compromisso salvo na Agenda do R.A.U.L.!', '📅');
+    }
+
+    function deleteAgendaEvent(id) {
+      raulAgendaEvents = raulAgendaEvents.filter(e => e.id !== id);
+      saveAgendaEvents();
+    }
+
+    function renderAgendaEventsList() {
+      const list = document.getElementById('raulAgendaList');
+      const badge = document.getElementById('agendaCountBadge');
+      if (badge) badge.textContent = `${raulAgendaEvents.length} evento(s)`;
+      if (!list) return;
+
+      if (raulAgendaEvents.length === 0) {
+        list.innerHTML = `<li class="text-xs text-slate-400 italic py-2 text-center">Nenhum compromisso salvo ainda. Adicione acima ou conecte sua Google Agenda abaixo!</li>`;
+        return;
+      }
+
+      list.innerHTML = raulAgendaEvents.map(ev => `
+        <li class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700 text-xs">
+          <div class="min-w-0">
+            <p class="font-bold text-slate-800 dark:text-slate-100 truncate">📌 ${escapeHtml(ev.title)}</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400">${escapeHtml(ev.dateStr)} ${ev.source === 'google' ? '• <span class="text-blue-500 font-semibold">Google Agenda</span>' : ''}</p>
+          </div>
+          <button onclick="deleteAgendaEvent('${ev.id}')" class="text-slate-400 hover:text-rose-500 p-1 shrink-0" title="Remover">
+            <i class="ph ph-trash"></i>
+          </button>
+        </li>
+      `).join('');
+    }
+
+    function parseIcsContent(icsText) {
+      const events = [];
+      const blocks = icsText.split('BEGIN:VEVENT');
+      const now = new Date();
+      now.setDate(now.getDate() - 1);
+
+      for (let i = 1; i < blocks.length; i++) {
+        const block = blocks[i].split('END:VEVENT')[0];
+        const summaryMatch = block.match(/SUMMARY(?:;[^:]*)?:(.*)/i);
+        const dtStartMatch = block.match(/DTSTART(?:;[^:]*)?:([0-9TZ]+)/i);
+
+        if (summaryMatch && dtStartMatch) {
+          const title = summaryMatch[1].trim().replace(/\\,/g, ',');
+          const rawDt = dtStartMatch[1].trim();
+          const parsedDate = parseIcsDate(rawDt);
+
+          if (parsedDate && parsedDate >= now) {
+            events.push({
+              id: 'ics_' + i + '_' + rawDt,
+              title,
+              rawIso: parsedDate.toISOString(),
+              dateStr: parsedDate.toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+              source: 'google'
+            });
+          }
+        }
+      }
+      return events.slice(0, 40);
+    }
+
+    function parseIcsDate(icalStr) {
+      if (!icalStr || icalStr.length < 8) return null;
+      const year = parseInt(icalStr.slice(0, 4), 10);
+      const month = parseInt(icalStr.slice(4, 6), 10) - 1;
+      const day = parseInt(icalStr.slice(6, 8), 10);
+      if (icalStr.includes('T') && icalStr.length >= 13) {
+        const hour = parseInt(icalStr.slice(9, 11), 10);
+        const min = parseInt(icalStr.slice(11, 13), 10);
+        if (icalStr.endsWith('Z')) {
+          return new Date(Date.UTC(year, month, day, hour, min));
+        }
+        return new Date(year, month, day, hour, min);
+      }
+      return new Date(year, month, day, 9, 0);
+    }
+
+    async function syncIcalUrl(silent = false) {
+      const urlInput = document.getElementById('inputIcalUrl');
+      const url = (urlInput?.value || '').trim();
+      if (!url) {
+        if (!silent) showToast('Cole o link iCal (.ics) da Google Agenda primeiro!', '🔗');
+        return;
+      }
+      localStorage.setItem(STORAGE_KEYS.ICAL_URL, url);
+      const statusEl = document.getElementById('icalSyncStatus');
+      if (statusEl) statusEl.textContent = 'Sincronizando...';
 
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${userKey}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        const models = data.models || [];
+        let icsText = '';
+        const proxies = [
+          url,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+          `https://corsproxy.io/?${encodeURIComponent(url)}`
+        ];
+        for (const fetchUrl of proxies) {
+          try {
+            const res = await fetch(fetchUrl);
+            if (res.ok) {
+              const txt = await res.text();
+              if (txt.includes('BEGIN:VCALENDAR')) {
+                icsText = txt;
+                break;
+              }
+            }
+          } catch (e) {}
+        }
 
-        // Filter all models that support generateContent and are Flash models (excluding live/tts/image-only)
-        const flashCandidates = models
-          .map(m => m.name.replace('models/', ''))
-          .filter(name =>
-            name.includes('gemini') &&
-            name.includes('flash') &&
-            !name.includes('lite') &&
-            !name.includes('tts') &&
-            !name.includes('image') &&
-            !name.includes('audio') &&
-            !name.includes('8b')
-          );
+        if (!icsText) throw new Error('Não foi possível ler o link iCal.');
+        const imported = parseIcsContent(icsText);
 
-        // Sort descending by version number so e.g. gemini-3.8-flash > gemini-3.0-flash > gemini-2.5-flash
-        flashCandidates.sort((a, b) => {
-          const verA = parseFloat((a.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
-          const verB = parseFloat((b.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
-          if (verB !== verA) return verB - verA;
-          return b.localeCompare(a);
+        const manualOnly = raulAgendaEvents.filter(e => e.source !== 'google');
+        raulAgendaEvents = [...manualOnly, ...imported];
+        saveAgendaEvents();
+
+        if (statusEl) statusEl.textContent = `✅ ${imported.length} eventos sincronizados!`;
+        if (!silent) showToast(`${imported.length} compromissos sincronizados da Google Agenda!`, '📅');
+      } catch (err) {
+        if (statusEl) statusEl.textContent = 'Use a opção de importar arquivo .ics';
+        if (!silent) showToast('Bloqueio de CORS do link: baixe e importe o arquivo .ics logo abaixo!', 'ℹ️');
+      }
+    }
+
+    function importIcsFile(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const icsText = String(reader.result || '');
+        const imported = parseIcsContent(icsText);
+        const manualOnly = raulAgendaEvents.filter(e => e.source !== 'google');
+        raulAgendaEvents = [...manualOnly, ...imported];
+        saveAgendaEvents();
+        showToast(`${imported.length} compromissos importados da Google Agenda!`, '📅');
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function connectGoogleOAuth() {
+      const clientId = document.getElementById('inputGoogleClientId').value.trim();
+      if (!clientId) {
+        showToast('Cole o Client ID OAuth Google ou use a Opção 1 ou 2 acima!', 'ℹ️');
+        return;
+      }
+      localStorage.setItem(STORAGE_KEYS.GOOGLE_CLIENT_ID, clientId);
+      try {
+        const client = google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/drive.file',
+          callback: async (tokenResponse) => {
+            if (tokenResponse && tokenResponse.access_token) {
+              googleAccessToken = tokenResponse.access_token;
+              document.getElementById('oauthStatusBadge').textContent = 'Conectado ✅';
+              document.getElementById('oauthStatusBadge').className = 'text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold';
+              document.getElementById('drawerGoogleStatus').textContent = 'Conectado ✅';
+              await fetchGoogleCalendarAndGmailOAuth();
+              showToast('Conta Google conectada! Agenda e Gmail sincronizados.', '🎉');
+            }
+          }
         });
+        client.requestAccessToken();
+      } catch (e) {
+        showToast('Erro ao iniciar OAuth Google. Verifique o Client ID.', '⚠️');
+      }
+    }
 
-        if (flashCandidates.length > 0) {
-          dynamicLatestFlashModel = flashCandidates[0];
-          localStorage.setItem(STORAGE_KEYS.CACHED_FLASH_MODEL, dynamicLatestFlashModel);
-          const badge = document.getElementById('detectedModelBadge');
-          if (badge) badge.textContent = `Auto: ${dynamicLatestFlashModel}`;
+    async function fetchGoogleCalendarAndGmailOAuth() {
+      if (!googleAccessToken) return;
+      try {
+        const timeMin = new Date().toISOString();
+        const calRes = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&maxResults=25&singleEvents=true&orderBy=startTime`, {
+          headers: { Authorization: `Bearer ${googleAccessToken}` }
+        });
+        if (calRes.ok) {
+          const calData = await calRes.json();
+          const items = calData.items || [];
+          const googleEvents = items.map(item => {
+            const rawStart = item.start?.dateTime || item.start?.date || '';
+            const d = rawStart ? new Date(rawStart) : null;
+            return {
+              id: 'gcal_' + item.id,
+              title: item.summary || 'Compromisso sem título',
+              rawIso: rawStart,
+              dateStr: d ? d.toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : rawStart,
+              source: 'google'
+            };
+          });
+          const manualOnly = raulAgendaEvents.filter(e => e.source !== 'google');
+          raulAgendaEvents = [...manualOnly, ...googleEvents];
+          saveAgendaEvents();
+        }
+      } catch (e) {}
+
+      try {
+        const msgListRes = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=5`, {
+          headers: { Authorization: `Bearer ${googleAccessToken}` }
+        });
+        if (msgListRes.ok) {
+          const listData = await msgListRes.json();
+          const msgs = listData.messages || [];
+          const snippets = [];
+          for (const m of msgs) {
+            const detailRes = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From`, {
+              headers: { Authorization: `Bearer ${googleAccessToken}` }
+            });
+            if (detailRes.ok) {
+              const d = await detailRes.json();
+              const headers = d.payload?.headers || [];
+              const subj = headers.find(h => h.name === 'Subject')?.value || '(Sem assunto)';
+              const from = headers.find(h => h.name === 'From')?.value || '';
+              snippets.push(`De: ${from} | Assunto: ${subj} | Resumo: ${d.snippet || ''}`);
+            }
+          }
+          googleGmailSnippets = snippets;
         }
       } catch (e) {}
     }
 
     /*************************************************************
-     * 5. THINKING EFFORT BUTTON ("ESFORÇO DE PENSAMENTO")
+     * 6. THINKING EFFORT BUTTON ("ESFORÇO DE PENSAMENTO")
      *************************************************************/
     function getThinkingEffortObj() {
       const savedId = localStorage.getItem(STORAGE_KEYS.THINKING_EFFORT) || 'fast';
@@ -1096,7 +1406,6 @@ Diretrizes:
 
       updateThinkingEffortUI();
 
-      // Visual reaction on R.A.U.L. when switching effort!
       if (next.id === 'deep') {
         document.getElementById('raulSmartGlasses').classList.remove('hidden');
         setTimeout(() => { if (!isGenerating) document.getElementById('raulSmartGlasses').classList.add('hidden'); }, 1800);
@@ -1117,17 +1426,14 @@ Diretrizes:
     }
 
     /*************************************************************
-     * 6. MULTI-CONVERSATION HISTORY MANAGER (LOCAL + BACKUP)
+     * 7. MULTI-CONVERSATION HISTORY MANAGER
      *************************************************************/
     function initConversationsSystem() {
       try {
         const raw = localStorage.getItem(STORAGE_KEYS.CONVERSATIONS);
         conversations = raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        conversations = [];
-      }
+      } catch (e) { conversations = []; }
 
-      // Migrate legacy single chat history if present
       if (conversations.length === 0) {
         try {
           const legacy = localStorage.getItem(STORAGE_KEYS.LEGACY_CHAT);
@@ -1146,7 +1452,6 @@ Diretrizes:
         } catch (e) {}
       }
 
-      // Ensure at least one active conversation exists
       const savedActiveId = localStorage.getItem(STORAGE_KEYS.ACTIVE_CONV_ID);
       const existing = conversations.find(c => c.id === savedActiveId);
 
@@ -1179,15 +1484,12 @@ Diretrizes:
 
     function startNewConversation() {
       if (isGenerating) cancelCurrentGeneration();
-
-      // If current conversation is already empty, just refresh greeting
       const currentConv = conversations.find(c => c.id === activeConversationId);
       if (currentConv && currentConv.messages.length === 0) {
         renderChatMessages();
         triggerCuriousReaction();
         return;
       }
-
       createNewConversationObject();
       saveConversationsState();
       renderChatMessages();
@@ -1199,11 +1501,10 @@ Diretrizes:
       if (isGenerating) cancelCurrentGeneration();
       const target = conversations.find(c => c.id === convId);
       if (!target) return;
-
       activeConversationId = target.id;
       chatHistory = target.messages || [];
       localStorage.setItem(STORAGE_KEYS.ACTIVE_CONV_ID, activeConversationId);
-      closeModal('historyModal');
+      closeDrawer();
       renderChatMessages();
       renderConversationsList();
     }
@@ -1211,7 +1512,6 @@ Diretrizes:
     function deleteConversation(convId, event) {
       if (event) event.stopPropagation();
       conversations = conversations.filter(c => c.id !== convId);
-
       if (activeConversationId === convId) {
         if (conversations.length > 0) {
           activeConversationId = conversations[0].id;
@@ -1230,23 +1530,16 @@ Diretrizes:
       if (currentConv) {
         currentConv.messages = chatHistory.slice(-50);
         currentConv.updatedAt = Date.now();
-        // Auto-generate title from first user message
         const firstUser = currentConv.messages.find(m => m.role === 'user');
         if (firstUser && (!currentConv.title || currentConv.title === 'Nova conversa')) {
           currentConv.title = firstUser.text.replace(/\s+/g, ' ').trim().slice(0, 45);
         }
       }
-
-      // Sort most recent first
       conversations.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-
       try {
         localStorage.setItem(STORAGE_KEYS.CONVERSATIONS, JSON.stringify(conversations.slice(0, 40)));
         localStorage.setItem(STORAGE_KEYS.ACTIVE_CONV_ID, activeConversationId);
       } catch (e) {}
-
-      const badge = document.getElementById('historyCountBadge');
-      if (badge) badge.textContent = conversations.length;
       renderConversationsList();
     }
 
@@ -1257,34 +1550,29 @@ Diretrizes:
       const query = (document.getElementById('historySearchInput')?.value || '').toLowerCase().trim();
       const filtered = conversations.filter(c => {
         if (!query) return true;
-        const inTitle = (c.title || '').toLowerCase().includes(query);
-        const inMsgs = (c.messages || []).some(m => (m.text || '').toLowerCase().includes(query));
-        return inTitle || inMsgs;
+        return (c.title || '').toLowerCase().includes(query) ||
+               (c.messages || []).some(m => (m.text || '').toLowerCase().includes(query));
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 italic py-4 text-center">Nenhuma conversa encontrada.</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-400 italic py-3 text-center">Nenhuma conversa encontrada.</p>`;
         return;
       }
 
       container.innerHTML = filtered.map(conv => {
         const isActive = conv.id === activeConversationId;
         const msgCount = (conv.messages || []).length;
-        const dateStr = new Date(conv.updatedAt || Date.now()).toLocaleDateString('pt-BR', {
-          day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
-        });
-
         return `
-          <div onclick="switchConversation('${conv.id}')" class="group flex items-center justify-between gap-2 p-3 rounded-2xl cursor-pointer transition border ${isActive ? 'bg-amber-500/15 border-amber-500/50 dark:bg-amber-500/15' : 'bg-slate-50 dark:bg-slate-900/70 border-slate-200/70 dark:border-slate-800 hover:bg-amber-50/50 dark:hover:bg-slate-800'}">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="text-lg shrink-0">${isActive ? '🐱' : '🐾'}</span>
+          <div onclick="switchConversation('${conv.id}')" class="group flex items-center justify-between gap-2 px-3 py-2 rounded-xl cursor-pointer transition border ${isActive ? 'bg-amber-500/15 border-amber-500/40' : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200/60 dark:border-slate-800 hover:bg-amber-50/40'}">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-sm shrink-0">${isActive ? '🐱' : '🐾'}</span>
               <div class="min-w-0">
-                <p class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(conv.title || 'Nova conversa')}</p>
-                <p class="text-[10px] text-slate-400">${msgCount} mensagem(ns) • ${dateStr}</p>
+                <p class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${escapeHtml(conv.title || 'Nova conversa')}</p>
+                <p class="text-[10px] text-slate-400">${msgCount} msg(s)</p>
               </div>
             </div>
-            <button onclick="deleteConversation('${conv.id}', event)" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition shrink-0" title="Excluir conversa">
-              <i class="ph ph-trash text-sm"></i>
+            <button onclick="deleteConversation('${conv.id}', event)" class="p-1 rounded-lg text-slate-400 hover:text-rose-500 transition shrink-0">
+              <i class="ph ph-trash text-xs"></i>
             </button>
           </div>
         `;
@@ -1296,18 +1584,19 @@ Diretrizes:
         exportedAt: new Date().toISOString(),
         ownerName: localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || '',
         memories: ownerMemories,
+        agendaEvents: raulAgendaEvents,
         conversations
       };
       const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `historico_raul_${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `backup_raul_${new Date().toISOString().slice(0, 10)}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast('Backup do histórico exportado!', '📦');
+      showToast('Backup completo exportado!', '📦');
     }
 
     function importHistoryBackup(event) {
@@ -1328,9 +1617,13 @@ Diretrizes:
             ownerMemories = data.memories;
             saveMemories();
           }
+          if (Array.isArray(data.agendaEvents)) {
+            raulAgendaEvents = data.agendaEvents;
+            saveAgendaEvents();
+          }
           saveConversationsState();
           renderChatMessages();
-          showToast('Histórico importado com sucesso!', '🎉');
+          showToast('Backup restaurado com sucesso!', '🎉');
         } catch (e) {
           showToast('Arquivo de backup inválido.', '⚠️');
         }
@@ -1340,7 +1633,7 @@ Diretrizes:
     }
 
     /*************************************************************
-     * 7. CORNER CAT MODE ("GATO NO CANTO" / EXPANDED CHAT)
+     * 8. CORNER CAT MODE & GEOLOCATION
      *************************************************************/
     function toggleCornerMode(forceState) {
       isCornerMode = typeof forceState === 'boolean' ? forceState : !isCornerMode;
@@ -1351,32 +1644,25 @@ Diretrizes:
       const stageHolder = document.getElementById('raulStageSvgHolder');
       const cornerHolder = document.getElementById('raulCornerSvgHolder');
       const raulSvg = document.getElementById('raulSvg');
-      const textBtn = document.getElementById('textCornerMode');
 
       if (isCornerMode) {
         stageCard.classList.add('hidden');
         cornerDock.classList.remove('hidden');
         cornerDock.classList.add('flex');
         cornerHolder.appendChild(raulSvg);
-        if (textBtn) textBtn.textContent = 'Palco';
       } else {
         cornerDock.classList.add('hidden');
         cornerDock.classList.remove('flex');
         stageCard.classList.remove('hidden');
         stageHolder.appendChild(raulSvg);
-        if (textBtn) textBtn.textContent = 'Canto';
       }
       scrollToBottom();
     }
 
-    /*************************************************************
-     * 8. GEOLOCATION & LIVE WEATHER FORECAST
-     *************************************************************/
     async function requestUserLocation(manualClick = false) {
       const badgeText = document.getElementById('locationBadgeText');
       if (!navigator.geolocation) return;
-
-      if (manualClick) badgeText.textContent = '...';
+      if (manualClick) badgeText.textContent = 'Localizando...';
 
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
@@ -1436,7 +1722,7 @@ Diretrizes:
     }
 
     /*************************************************************
-     * 9. BOW TIE & PURE VISUAL CAT ANIMATIONS (NO WRITTEN STATUS)
+     * 9. BOW TIE & VISUAL CAT ANIMATIONS
      *************************************************************/
     function pickNewBowTieOnOpen() {
       const lastTieId = localStorage.getItem(STORAGE_KEYS.LAST_TIE);
@@ -1489,11 +1775,8 @@ Diretrizes:
         const dy = Math.max(-1, Math.min(1, (clientY - centerY) / (window.innerHeight * 0.35)));
 
         const pupils = document.querySelectorAll('.raul-pupil');
-        pupils.forEach(p => {
-          p.style.transform = `translate(${dx * 5.2}px, ${dy * 3.6}px)`;
-        });
+        pupils.forEach(p => { p.style.transform = `translate(${dx * 5.2}px, ${dy * 3.6}px)`; });
       };
-
       window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
         if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
@@ -1501,10 +1784,7 @@ Diretrizes:
     }
 
     function startIdleLifeLoop() {
-      setInterval(() => {
-        if (Math.random() < 0.75) blinkEyes();
-      }, 3600);
-
+      setInterval(() => { if (Math.random() < 0.75) blinkEyes(); }, 3600);
       setInterval(() => {
         if (!isGenerating && !isBlepActive && Math.random() < 0.25) {
           setBlepState(true);
@@ -1541,7 +1821,6 @@ Diretrizes:
 
       head.classList.add('raul-head-curious');
       curiousBubble.classList.remove('hidden');
-      // Dilate pupils with curiosity!
       if (leftPupil) leftPupil.setAttribute('rx', '7.5');
       if (rightPupil) rightPupil.setAttribute('rx', '7.5');
       playMeowSound(580, 760, 0.14);
@@ -1627,7 +1906,6 @@ Diretrizes:
       setTimeout(() => span.remove(), 1650);
     }
 
-    // Master Visual State Controller for R.A.U.L. (No written text!)
     function setRaulAnimationState(state) {
       const head = document.getElementById('raulHeadGroup');
       const jaw = document.getElementById('raulJawGroup');
@@ -1639,7 +1917,6 @@ Diretrizes:
       const pupils = document.querySelectorAll('.raul-pupil');
       const effort = getThinkingEffortObj();
 
-      // Reset classes
       head.classList.remove('raul-head-thinking', 'raul-head-curious');
       jaw.classList.remove('raul-talking-jaw');
       rightPaw.classList.remove('raul-thinking-paw');
@@ -1653,12 +1930,10 @@ Diretrizes:
         rightPaw.classList.add('raul-thinking-paw');
         thoughtBubble.classList.remove('hidden');
         pupils.forEach(p => (p.style.transform = 'translate(4px, -6px)'));
-        // Put on his golden intellectual glasses if Deep effort or analyzing files
         if (effort.id === 'deep' || pendingAttachments.length > 0) {
           smartGlasses.classList.remove('hidden');
         }
       } else if (state === 'speaking') {
-        // Brief "Eureka!" reaction when he starts answering
         ideaBubble.classList.remove('hidden');
         setTimeout(() => ideaBubble.classList.add('hidden'), 900);
         jaw.classList.add('raul-talking-jaw');
@@ -1670,16 +1945,14 @@ Diretrizes:
     }
 
     /*************************************************************
-     * 10. BOOSTED PURR SYNTHESIZER + HAPTICS
+     * 10. BOOSTED PURR SYNTHESIZER
      *************************************************************/
     function getAudioContext() {
       if (!audioCtx) {
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
         if (AudioContextClass) audioCtx = new AudioContextClass();
       }
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
 
@@ -1687,16 +1960,14 @@ Diretrizes:
       if (navigator.vibrate) {
         try { navigator.vibrate([90, 40, 110, 40, 130, 45, 110, 40, 90]); } catch (e) {}
       }
-
       if (!soundEnabled) return;
       try {
         const ctx = getAudioContext();
         if (!ctx) return;
-
         const now = ctx.currentTime;
         const duration = 2.2;
-        const volPercent = parseInt(localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '240', 10);
-        const masterLevel = Math.min(1.0, (volPercent / 100) * 0.38);
+        const volPercent = parseInt(localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '250', 10);
+        const masterLevel = Math.min(1.0, (volPercent / 100) * 0.40);
 
         const compressor = ctx.createDynamicsCompressor();
         compressor.threshold.setValueAtTime(-24, now);
@@ -1709,10 +1980,7 @@ Diretrizes:
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
         const osc3 = ctx.createOscillator();
-        osc1.type = 'sawtooth';
-        osc2.type = 'triangle';
-        osc3.type = 'sine';
-
+        osc1.type = 'sawtooth'; osc2.type = 'triangle'; osc3.type = 'sine';
         osc1.frequency.setValueAtTime(32, now);
         osc2.frequency.setValueAtTime(96, now);
         osc3.frequency.setValueAtTime(168, now);
@@ -1749,16 +2017,11 @@ Diretrizes:
         envelope.gain.linearRampToValueAtTime(masterLevel, now + 1.45);
         envelope.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-        osc1.connect(filter);
-        osc2.connect(filter);
-        osc3.connect(filter);
-        filter.connect(modNode);
-        modNode.connect(envelope);
-        envelope.connect(compressor);
+        osc1.connect(filter); osc2.connect(filter); osc3.connect(filter);
+        filter.connect(modNode); modNode.connect(envelope); envelope.connect(compressor);
 
         osc1.start(now); osc2.start(now); osc3.start(now);
         rattleLfo.start(now); breathLfo.start(now);
-
         osc1.stop(now + duration); osc2.stop(now + duration); osc3.stop(now + duration);
         rattleLfo.stop(now + duration); breathLfo.stop(now + duration);
       } catch (e) {}
@@ -1772,20 +2035,15 @@ Diretrizes:
         const now = ctx.currentTime;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
         osc.type = 'sine';
         osc.frequency.setValueAtTime(startFreq, now);
         osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration * 0.6);
         osc.frequency.exponentialRampToValueAtTime(startFreq * 0.9, now + duration);
-
         gain.gain.setValueAtTime(0.001, now);
         gain.gain.exponentialRampToValueAtTime(0.16, now + 0.03);
         gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + duration + 0.02);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + duration + 0.02);
       } catch (e) {}
     }
 
@@ -1803,10 +2061,16 @@ Diretrizes:
 
     function updateSoundIcon() {
       const icon = document.getElementById('iconSound');
-      if (!icon) return;
-      icon.className = soundEnabled
-        ? 'ph-fill ph-speaker-high text-base sm:text-lg text-amber-600 dark:text-amber-400'
-        : 'ph ph-speaker-slash text-base sm:text-lg text-slate-400';
+      const status = document.getElementById('drawerSoundStatus');
+      if (icon) {
+        icon.className = soundEnabled
+          ? 'ph-fill ph-speaker-high text-base text-amber-500'
+          : 'ph ph-speaker-slash text-base text-slate-400';
+      }
+      if (status) {
+        status.textContent = soundEnabled ? 'Ativo' : 'Mudo';
+        status.className = soundEnabled ? 'text-[10px] text-emerald-500 font-bold' : 'text-[10px] text-slate-400';
+      }
     }
 
     /*************************************************************
@@ -1816,17 +2080,27 @@ Diretrizes:
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
 
-      // Visual reaction when user attaches a file
       document.getElementById('raulSmartGlasses').classList.remove('hidden');
 
       for (const file of files) {
+        if (file.name.endsWith('.ics')) {
+          const icsText = await readFileAsText(file);
+          const imported = parseIcsContent(icsText);
+          if (imported.length > 0) {
+            const manualOnly = raulAgendaEvents.filter(e => e.source !== 'google');
+            raulAgendaEvents = [...manualOnly, ...imported];
+            saveAgendaEvents();
+            showToast(`${imported.length} eventos da agenda importados!`, '📅');
+          }
+        }
+
         if (file.size > 18 * 1024 * 1024) {
           showToast(`O arquivo ${file.name} excede 18MB.`, '⚠️');
           continue;
         }
 
         const mimeType = file.type || guessMimeType(file.name);
-        const isTextLike = mimeType.startsWith('text/') || /\.(txt|csv|md|json|html|xml|js|py)$/i.test(file.name);
+        const isTextLike = mimeType.startsWith('text/') || /\.(txt|csv|md|json|html|xml|js|py|ics)$/i.test(file.name);
 
         if (isTextLike) {
           const textContent = await readFileAsText(file);
@@ -1896,9 +2170,8 @@ Diretrizes:
       bar.classList.remove('hidden');
       bar.innerHTML = pendingAttachments.map((att, idx) => `
         <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white dark:bg-slate-800 border border-amber-300 dark:border-slate-700 text-xs font-medium shadow-sm">
-          <i class="ph-fill ${att.mimeType.startsWith('image/') ? 'ph-image text-pink-500' : att.mimeType === 'application/pdf' ? 'ph-file-pdf text-rose-500' : 'ph-file-text text-amber-500'}"></i>
+          <i class="ph-fill ph-paperclip text-amber-500"></i>
           <span class="truncate max-w-[140px]">${escapeHtml(att.name)}</span>
-          <span class="text-[10px] text-slate-400">(${att.size})</span>
           <button type="button" onclick="removeAttachment(${idx})" class="text-slate-400 hover:text-rose-500 ml-1">
             <i class="ph-bold ph-x"></i>
           </button>
@@ -1907,7 +2180,7 @@ Diretrizes:
     }
 
     /*************************************************************
-     * 12. AUTO-UPDATING GEMINI FLASH STREAMING API
+     * 12. GEMINI API CALL USING ONLY AUTOMATIC SHORTCUT (gemini-flash-latest)
      *************************************************************/
     function getOwnerDisplayName() {
       return (localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || 'Gi').trim() || 'Gi';
@@ -1918,15 +2191,24 @@ Diretrizes:
       const customPrompt = (localStorage.getItem(STORAGE_KEYS.CUSTOM_PROMPT) || DEFAULT_PERSONALITY).trim();
 
       const memoriesBlock = ownerMemories.length > 0
-        ? `\nMemórias sobre ${ownerName}:\n- ${ownerMemories.join('\n- ')}`
+        ? `\nMemórias salvas sobre ${ownerName}:\n- ${ownerMemories.join('\n- ')}`
+        : '';
+
+      const agendaBlock = raulAgendaEvents.length > 0
+        ? `\nCOMPROMISSOS ATUAIS NA AGENDA DE ${ownerName.toUpperCase()}:\n` +
+          raulAgendaEvents.map(ev => `- [${ev.dateStr}] ${ev.title}`).join('\n')
+        : `\nCOMPROMISSOS NA AGENDA: Ainda não há compromissos listados na Agenda do R.A.U.L. Se ela perguntar sobre a agenda dela, informe carinhosamente que a agenda está livre por enquanto ou que ela pode tocar no botão "📅 Agenda" lá no topo para sincronizar a Google Agenda dela (ou simplesmente te dizer os compromissos aqui no chat para você anotar!).`;
+
+      const gmailBlock = googleGmailSnippets.length > 0
+        ? `\nÚLTIMOS E-MAILS DO GMAIL DELA:\n` + googleGmailSnippets.map(s => `- ${s}`).join('\n')
         : '';
 
       const locationBlock = userLocationContext
         ? `\nLocalização e Clima em Tempo Real (${userLocationContext.updatedAt || 'agora'}):
-- Cidade/Região: ${userLocationContext.city}
+- Cidade: ${userLocationContext.city}
 - Clima Atual: ${userLocationContext.currentTemp}°C (Sensação: ${userLocationContext.feelsLike}°C), ${userLocationContext.weatherDesc}
 - Previsão próximos dias: ${userLocationContext.dailySummary || 'Disponível'}`
-        : `\nLocalização: Caso ela pergunte sobre o tempo/clima e a localização ainda não esteja ativa, peça para ela tocar no botão "Clima/Local" no topo da tela.`;
+        : '';
 
       const nowStr = new Date().toLocaleString('pt-BR', {
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -1934,33 +2216,36 @@ Diretrizes:
 
       return `${customPrompt}
 Nome da pessoa: "${ownerName}".
-REGRA DE SAUDAÇÃO: Sempre que cumprimentar, use exatamente "Miau! ${ownerName}".
+REGRA DE SAUDAÇÃO: Sempre que cumprimentar, use "Miau! ${ownerName}".
 REGRA DE FORMATO: Vá direto à resposta, nunca coloque títulos ou rótulos como "R.A.U.L.:" antes do texto.
-Data e hora atual: ${nowStr}.
+Data e hora exata de agora: ${nowStr}.
 Hoje você está usando sua **${currentBowTie.description}** ("${currentBowTie.name}").
 ${locationBlock}
+${agendaBlock}
+${gmailBlock}
 ${memoriesBlock}
 
-SUPERPODERES DE ARQUIVOS E GOOGLE APPS:
-1. GERAR ARQUIVOS PARA ELA BAIXAR OU SALVAR NO GOOGLE DRIVE:
-Sempre que ela pedir para você gerar/criar um arquivo, documento, texto para guardar, planilha, lista ou relatório, inclua o conteúdo dentro desta tag exata:
+SUPERPODERES DE AGENDA, ARQUIVOS E GOOGLE APPS:
+1. ANOTAR OU AGENDAR COMPROMISSOS AUTOMATICAMENTE:
+Sempre que ela disser que tem um compromisso ou pedir para você agendar/lembrar de algo (ex: "Tenho médico segunda às 14h" ou "Agende reunião amanhã às 10h"), inclua no final da resposta esta tag exata (datas em YYYYMMDDTHHMMSS):
+[AGENDA: Título do Evento | 20250520T140000/20250520T150000 | Descrição | Local]
+O aplicativo salvará automaticamente esse compromisso na Agenda interna do R.A.U.L. e mostrará o botão da Google Agenda!
+
+2. GERAR ARQUIVOS PARA ELA BAIXAR OU SALVAR NO GOOGLE DRIVE:
+Sempre que ela pedir para gerar um arquivo, documento, planejamento ou lista para salvar, inclua dentro desta tag exata:
 [ARQUIVO: nome_do_arquivo.doc]
 Conteúdo completo do arquivo aqui...
 [/ARQUIVO]
 
-2. AGENDAR NO GOOGLE AGENDA:
-Sempre que ela pedir para marcar um compromisso ou evento na agenda, inclua no final da resposta esta tag exata (datas no formato YYYYMMDDTHHMMSS):
-[AGENDA: Título do Evento | 20250520T140000/20250520T150000 | Descrição | Local]
-
 3. CRIAR E-MAIL PARA O GMAIL:
-Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta tag exata:
+Sempre que ela pedir para redigir um e-mail, inclua no final da resposta esta tag exata:
 [EMAIL: destinatario@email.com | Assunto do E-mail | Corpo do e-mail pronto]`;
     }
 
     async function streamRaulGeminiAPI(userMessageText, attachments, onChunkCallback, signal) {
-      const userKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
-      const apiKey = userKey || "";
+      const apiKey = (localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '').trim();
       const effort = getThinkingEffortObj();
+      const modelName = AUTO_MODEL_SHORTCUT; // Exclusivamente 'gemini-flash-latest'
 
       const recentTurns = chatHistory.slice(-12).map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
@@ -1971,13 +2256,9 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       if (attachments && attachments.length > 0) {
         for (const att of attachments) {
           if (att.textContent) {
-            userParts.push({
-              text: `\n--- CONTEÚDO DO ARQUIVO ANEXADO (${att.name}) ---\n${att.textContent}\n--- FIM DO ARQUIVO ---\n`
-            });
+            userParts.push({ text: `\n--- ARQUIVO ANEXADO (${att.name}) ---\n${att.textContent}\n--- FIM ---\n` });
           } else if (att.base64Data) {
-            userParts.push({
-              inlineData: { mimeType: att.mimeType, data: att.base64Data }
-            });
+            userParts.push({ inlineData: { mimeType: att.mimeType, data: att.base64Data } });
           }
         }
       }
@@ -1989,51 +2270,33 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
         systemInstruction: { parts: [{ text: buildSystemPrompt() }] }
       };
 
-      // Self-updating model priority chain:
-      // 1. Dynamically discovered newest flash model from Google API
-      // 2. 'gemini-flash-latest' (official Google alias that always points to the latest Flash release)
-      // 3. 'gemini-2.5-flash' / 'gemini-3-flash-preview' fallbacks
-      const modelsToTry = userKey
-        ? Array.from(new Set([dynamicLatestFlashModel, 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-3-flash-preview']))
-        : ['gemini-3-flash-preview', 'gemini-flash-latest', 'gemini-2.5-flash'];
+      const payload = JSON.parse(JSON.stringify(basePayload));
+      payload.generationConfig = {
+        thinkingConfig: { thinkingBudget: effort.budget }
+      };
 
-      let lastError = null;
+      const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
-      for (const modelName of modelsToTry) {
-        if (signal.aborted) throw new Error('AbortError');
+      try {
+        let response = await fetch(streamUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal
+        });
 
-        const payload = JSON.parse(JSON.stringify(basePayload));
-        payload.generationConfig = {
-          thinkingConfig: { thinkingBudget: effort.budget }
-        };
-
-        const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${apiKey}`;
-
-        try {
-          let response = await fetch(streamUrl, {
+        // Se a configuração de thinkingBudget não for aceita pelo endpoint atual, refaz sem ela automaticamente
+        if (!response.ok && response.status === 400 && payload.generationConfig) {
+          delete payload.generationConfig;
+          response = await fetch(streamUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
             signal
           });
+        }
 
-          // If a specific model version doesn't accept thinkingConfig parameter, retry immediately without thinkingConfig
-          if (!response.ok && response.status === 400) {
-            delete payload.generationConfig;
-            response = await fetch(streamUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
-              signal
-            });
-          }
-
-          if (!response.ok) {
-            const errJson = await response.json().catch(() => ({}));
-            lastError = errJson?.error?.message || `HTTP ${response.status}`;
-            continue;
-          }
-
+        if (response.ok && response.body) {
           const reader = response.body.getReader();
           const decoder = new TextDecoder('utf-8');
           let fullText = '';
@@ -2056,7 +2319,6 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
                   const parsed = JSON.parse(dataStr);
                   const parts = parsed?.candidates?.[0]?.content?.parts || [];
                   for (const part of parts) {
-                    // Skip internal thought parts if returned, only stream the final answer text
                     if (part.thought) continue;
                     if (part.text) {
                       fullText += part.text;
@@ -2069,15 +2331,37 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
           }
 
           if (fullText.trim()) return fullText;
-        } catch (err) {
-          if (err.name === 'AbortError' || err.message === 'AbortError') {
-            throw new Error('AbortError');
-          }
-          lastError = err.message;
         }
+
+        // Fallback direto para chamada padrão no mesmo atalho 'gemini-flash-latest'
+        const stdUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        const stdRes = await fetch(stdUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(basePayload),
+          signal
+        });
+
+        if (stdRes.ok) {
+          const stdData = await stdRes.json();
+          const parts = stdData?.candidates?.[0]?.content?.parts || [];
+          const txt = parts.filter(p => !p.thought && p.text).map(p => p.text).join('');
+          if (txt.trim()) {
+            onChunkCallback(txt);
+            return txt;
+          }
+        } else {
+          const errJson = await stdRes.json().catch(() => ({}));
+          throw new Error(errJson?.error?.message || `HTTP ${stdRes.status}`);
+        }
+      } catch (err) {
+        if (err.name === 'AbortError' || err.message === 'AbortError') {
+          throw new Error('AbortError');
+        }
+        throw err;
       }
 
-      throw new Error(lastError || 'Não foi possível conectar à API do Gemini.');
+      throw new Error('Não foi possível conectar à API do Gemini.');
     }
 
     function cancelCurrentGeneration() {
@@ -2088,7 +2372,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
     }
 
     /*************************************************************
-     * 13. CHAT UI (NO PRE-RESPONSE TEXT, GREETING "Miau! Nome")
+     * 13. CHAT UI & AUTO-SAVING AGENDA EVENTS FROM CHAT
      *************************************************************/
     function getWelcomeMessage() {
       const ownerName = getOwnerDisplayName();
@@ -2120,12 +2404,12 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
         wrapper.innerHTML = `
           <div class="max-w-[85%] sm:max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2.5 bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-sm shadow-sm leading-relaxed">
             ${attBadges}
-            <div class="prose-raul">${formatMarkdownAndActions(text)}</div>
+            <div class="prose-raul">${formatMarkdownAndActions(text, false)}</div>
           </div>
         `;
       } else {
         wrapper.className = 'flex items-start gap-2';
-        wrapper.innerHTML = buildModelBubbleInnerHtml(text);
+        wrapper.innerHTML = buildModelBubbleInnerHtml(text, false);
       }
 
       container.appendChild(wrapper);
@@ -2133,8 +2417,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       return wrapper;
     }
 
-    // Clean model bubble without any written label before or inside the response!
-    function buildModelBubbleInnerHtml(text) {
+    function buildModelBubbleInnerHtml(text, autoSaveAgenda = false) {
       const msgFileId = 'msg_' + Math.random().toString(36).substring(2, 9);
       generatedFilesStore[msgFileId] = {
         filename: `RAUL_${new Date().toISOString().slice(0,10)}.doc`,
@@ -2143,8 +2426,8 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       };
 
       return `
-        <div class="group relative max-w-[90%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
-          <div class="prose-raul model-stream-content">${formatMarkdownAndActions(text)}</div>
+        <div class="group relative max-w-[92%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
+          <div class="prose-raul model-stream-content">${formatMarkdownAndActions(text, autoSaveAgenda)}</div>
           <div class="mt-1.5 pt-1 border-t border-amber-200/40 dark:border-slate-700/50 flex items-center justify-end gap-3 text-[11px] text-slate-400 opacity-80 group-hover:opacity-100 transition">
             <button onclick="downloadGeneratedFile('${msgFileId}')" class="hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 transition" title="Baixar como documento">
               <i class="ph-bold ph-download-simple"></i> Doc
@@ -2197,7 +2480,6 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       chatHistory.push({ role: 'user', text: displayUserText, attachmentNames });
       saveConversationsState();
 
-      // R.A.U.L. visually animates thinking (paw on chin + comic thought cloud above his head, NO written text!)
       setRaulAnimationState('thinking');
 
       const container = document.getElementById('chatContainer');
@@ -2216,11 +2498,10 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
               setRaulAnimationState('speaking');
               playMeowSound(520, 680, 0.12);
 
-              // Create the response bubble only when the first words arrive (no pre-response text!)
               streamRow = document.createElement('div');
               streamRow.className = 'flex items-start gap-2';
               streamRow.innerHTML = `
-                <div class="max-w-[90%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
+                <div class="max-w-[92%] sm:max-w-[82%] rounded-2xl rounded-tl-sm px-4 py-2.5 bg-amber-50/85 dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-amber-200/60 dark:border-slate-700/70 text-sm shadow-sm leading-relaxed">
                   <div id="liveStreamContent" class="prose-raul"></div>
                 </div>
               `;
@@ -2228,7 +2509,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
             }
             const liveBox = document.getElementById('liveStreamContent');
             if (liveBox) {
-              liveBox.innerHTML = formatMarkdownAndActions(liveText);
+              liveBox.innerHTML = formatMarkdownAndActions(liveText, false);
               scrollToBottom();
             }
           },
@@ -2240,7 +2521,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
           streamRow.className = 'flex items-start gap-2';
           container.appendChild(streamRow);
         }
-        streamRow.innerHTML = buildModelBubbleInnerHtml(finalReply);
+        streamRow.innerHTML = buildModelBubbleInnerHtml(finalReply, true);
         chatHistory.push({ role: 'model', text: finalReply });
         saveConversationsState();
         scrollToBottom();
@@ -2248,7 +2529,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       } catch (err) {
         if (err.message === 'AbortError') {
           if (partialReply && streamRow) {
-            streamRow.innerHTML = buildModelBubbleInnerHtml(partialReply);
+            streamRow.innerHTML = buildModelBubbleInnerHtml(partialReply, false);
             chatHistory.push({ role: 'model', text: partialReply });
             saveConversationsState();
           }
@@ -2258,8 +2539,8 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
             streamRow.className = 'flex items-start gap-2';
             container.appendChild(streamRow);
           }
-          const friendlyError = `Miau! Verifique sua chave gratuita do Google AI Studio no botão ⚙️ no topo (\`${err.message}\`).`;
-          streamRow.innerHTML = buildModelBubbleInnerHtml(friendlyError);
+          const friendlyError = `Miau! Verifique sua chave gratuita do Google AI Studio no menu ☰ lá no topo (\`${err.message}\`).`;
+          streamRow.innerHTML = buildModelBubbleInnerHtml(friendlyError, false);
           document.getElementById('apiKeyAlertDot').classList.remove('hidden');
         }
       } finally {
@@ -2273,9 +2554,9 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
     }
 
     /*************************************************************
-     * 14. PARSING FILES, GOOGLE CALENDAR & GMAIL CARDS IN CHAT
+     * 14. PARSING FILES, AGENDA & GMAIL CARDS IN CHAT
      *************************************************************/
-    function formatMarkdownAndActions(rawText) {
+    function formatMarkdownAndActions(rawText, autoSaveAgenda = false) {
       let working = String(rawText || '');
       const actionCardsHtml = [];
 
@@ -2295,9 +2576,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
                 <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                   <i class="ph-fill ph-file-doc text-lg"></i>
                 </div>
-                <div class="min-w-0">
-                  <p class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(filename)}</p>
-                </div>
+                <p class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(filename)}</p>
               </div>
             </div>
             <div class="flex flex-wrap gap-1.5 pt-1">
@@ -2319,18 +2598,39 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       // 2. Parse [AGENDA: Title | Dates | Details | Location]
       working = working.replace(/\[AGENDA:\s*([^\]]+)\]/gi, (_, inner) => {
         const parts = inner.split('|').map(s => s.trim());
-        const title = encodeURIComponent(parts[0] || 'Compromisso R.A.U.L.');
-        const dates = encodeURIComponent(parts[1] || '');
+        const evTitle = parts[0] || 'Compromisso R.A.U.L.';
+        const rawDates = parts[1] || '';
         const details = encodeURIComponent(parts[2] || 'Agendado pelo R.A.U.L.');
         const location = encodeURIComponent(parts[3] || '');
-        const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}${dates ? `&dates=${dates}` : ''}&details=${details}&location=${location}`;
+        const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(evTitle)}${rawDates ? `&dates=${encodeURIComponent(rawDates)}` : ''}&details=${details}&location=${location}`;
+
+        if (autoSaveAgenda) {
+          const startPart = rawDates.split('/')[0] || '';
+          const parsedD = parseIcsDate(startPart);
+          const readableDate = parsedD
+            ? parsedD.toLocaleString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+            : (startPart || 'Agendado');
+
+          const alreadyExists = raulAgendaEvents.some(e => e.title === evTitle && e.dateStr === readableDate);
+          if (!alreadyExists) {
+            raulAgendaEvents.push({
+              id: 'chat_ev_' + Date.now(),
+              title: evTitle,
+              dateStr: readableDate,
+              rawIso: parsedD ? parsedD.toISOString() : '',
+              source: 'manual'
+            });
+            saveAgendaEvents();
+          }
+        }
 
         actionCardsHtml.push(`
           <div class="my-2 p-3 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 min-w-0">
               <i class="ph-fill ph-calendar-plus text-xl text-blue-600 dark:text-blue-400 shrink-0"></i>
               <div class="min-w-0">
-                <p class="font-bold text-xs text-blue-950 dark:text-blue-200 truncate">${escapeHtml(parts[0] || 'Compromisso')}</p>
+                <p class="font-bold text-xs text-blue-950 dark:text-blue-200 truncate">${escapeHtml(evTitle)}</p>
+                <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ Salvo na Agenda do R.A.U.L.</p>
               </div>
             </div>
             <a href="${calUrl}" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 flex items-center gap-1">
@@ -2355,17 +2655,11 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
           <div class="my-2 p-3 rounded-2xl bg-rose-50/90 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2 min-w-0">
               <i class="ph-fill ph-envelope-open text-xl text-rose-600 dark:text-rose-400 shrink-0"></i>
-              <div class="min-w-0">
-                <p class="font-bold text-xs text-rose-950 dark:text-rose-200 truncate">${escapeHtml(parts[1] || 'E-mail')}</p>
-              </div>
+              <p class="font-bold text-xs text-rose-950 dark:text-rose-200 truncate">${escapeHtml(parts[1] || 'E-mail')}</p>
             </div>
             <div class="flex gap-1.5">
-              <a href="${mailtoUrl}" class="px-2.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-semibold flex items-center gap-1">
-                <span>App E-mail</span>
-              </a>
-              <a href="${gmailUrl}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold flex items-center gap-1">
-                <span>Gmail</span>
-              </a>
+              <a href="${mailtoUrl}" class="px-2.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-semibold flex items-center gap-1">App E-mail</a>
+              <a href="${gmailUrl}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold flex items-center gap-1">Gmail</a>
             </div>
           </div>
         `);
@@ -2446,27 +2740,8 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       setTimeout(() => { window.open('https://docs.new', '_blank'); }, 400);
     }
 
-    function connectGoogleOAuth() {
-      const clientId = document.getElementById('inputGoogleClientId').value.trim();
-      if (!clientId) return;
-      localStorage.setItem(STORAGE_KEYS.GOOGLE_CLIENT_ID, clientId);
-      try {
-        const client = google.accounts.oauth2.initTokenClient({
-          client_id: clientId,
-          scope: 'https://www.googleapis.com/auth/drive.file',
-          callback: (tokenResponse) => {
-            if (tokenResponse && tokenResponse.access_token) {
-              googleAccessToken = tokenResponse.access_token;
-              document.getElementById('oauthStatusBadge').textContent = 'Conectado ao Drive ✅';
-            }
-          }
-        });
-        client.requestAccessToken();
-      } catch (e) {}
-    }
-
     /*************************************************************
-     * 15. MARKDOWN & UTILITIES
+     * 15. MARKDOWN, SETTINGS & UTILITIES
      *************************************************************/
     function escapeHtml(str) {
       return String(str)
@@ -2533,11 +2808,7 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       if (container) container.scrollTop = container.scrollHeight;
     }
 
-    /*************************************************************
-     * 16. SETTINGS, MEMORIES & THEME
-     *************************************************************/
     function openModal(id) {
-      if (id === 'historyModal') renderConversationsList();
       const m = document.getElementById(id);
       if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
     }
@@ -2551,9 +2822,10 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       document.getElementById('inputOwnerName').value = localStorage.getItem(STORAGE_KEYS.OWNER_NAME) || 'Gi';
       document.getElementById('inputApiKey').value = localStorage.getItem(STORAGE_KEYS.USER_API_KEY) || '';
       document.getElementById('inputCustomPrompt').value = localStorage.getItem(STORAGE_KEYS.CUSTOM_PROMPT) || DEFAULT_PERSONALITY;
-      document.getElementById('inputPurrVolume').value = localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '240';
+      document.getElementById('inputPurrVolume').value = localStorage.getItem(STORAGE_KEYS.PURR_VOLUME) || '250';
       document.getElementById('inputSpeedMode').value = localStorage.getItem(STORAGE_KEYS.THINKING_EFFORT) || 'fast';
       document.getElementById('inputGoogleClientId').value = localStorage.getItem(STORAGE_KEYS.GOOGLE_CLIENT_ID) || '';
+      document.getElementById('inputIcalUrl').value = localStorage.getItem(STORAGE_KEYS.ICAL_URL) || '';
     }
 
     function resetDefaultPrompt() {
@@ -2568,7 +2840,6 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       localStorage.setItem(STORAGE_KEYS.THINKING_EFFORT, document.getElementById('inputSpeedMode').value);
 
       updateThinkingEffortUI();
-      discoverLatestGeminiFlashModel();
       document.getElementById('apiKeyAlertDot').classList.add('hidden');
       closeModal('settingsModal');
       renderChatMessages();
@@ -2604,6 +2875,8 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
 
     function renderMemoriesList() {
       const list = document.getElementById('memoriesList');
+      const countEl = document.getElementById('drawerMemoriesCount');
+      if (countEl) countEl.textContent = ownerMemories.length;
       if (!list) return;
       if (ownerMemories.length === 0) {
         list.innerHTML = `<li class="text-xs text-slate-400 italic py-3 text-center">Nenhuma memória adicionada ainda.</li>`;
@@ -2628,7 +2901,6 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       }
       saveConversationsState();
       closeModal('confirmClearModal');
-      closeModal('historyModal');
       renderChatMessages();
     }
 
@@ -2660,8 +2932,8 @@ Sempre que ela pedir para escrever um e-mail, inclua no final da resposta esta t
       const icon = document.getElementById('iconTheme');
       if (!icon) return;
       icon.className = document.documentElement.classList.contains('dark')
-        ? 'ph-fill ph-sun text-base sm:text-lg text-amber-400'
-        : 'ph ph-moon text-base sm:text-lg';
+        ? 'ph-fill ph-sun text-base text-amber-400'
+        : 'ph ph-moon text-base text-purple-500';
     }
 
     function injectDynamicPWA() {
